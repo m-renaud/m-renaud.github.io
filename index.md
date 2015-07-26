@@ -1,5 +1,5 @@
 ---
-Time-stamp: <2014-10-11 11:41:50 ()>
+Time-stamp: <2015-07-26 11:29:11 ()>
 layout: default
 title: "Matt Renaud"
 ---
@@ -7,16 +7,12 @@ title: "Matt Renaud"
 # A Brief Introduction
 
 Hey there! My name is Matt Renaud and I'm a software engineer at
-Google Inc. working on Search Infrastructure. You can find me most
-places online going by the name mrenaud92 (since mrenaud is taken
-almost everywhere, except for domain names apparently, go figure). I
-really enjoy learning, regardless of what subject, but my main area of
-interest is Computer Science. I graduated in June and have just
-recently started a full time position as a software engineer at Google
-in Mountain View California.
+Google Inc. working on Search Infrastructure.  I really enjoy
+learning, regardless of what subject, but my main area of interest is
+Computer Science.
 
 I was first introduced to Computer Science (well, just Linux actually)
-around 5 years ago by my uncle Roland and was instantly intrigued when
+around 6 years ago by my uncle Roland and was instantly intrigued when
 I saw him banging away at the terminal and stuff was happening! It
 turns out that I was somewhat technology sheltered up until that
 point.
@@ -38,9 +34,11 @@ explore all of them so, I'll just put a small list here:
 
   I have always been interested in the way that programming languages
   are designed, and how that design effects how you approach solving a
-  problem in that language.  In particular, I enjoy writing in C++ but
-  I've always had a *thing* for functional languages like Haskell and
-  CommonLisp (but I'll get to that in a blog entry sometime).
+  problem in that language.  I used to really enjoy writing everything
+  in C++ but working in a huge C++ codebase has really exposed some of
+  the sharper edges and limitations of the language. I find that
+  working in functional languages is much more natural to me with my
+  favorite language being Haskell.
 
 - <span class="heading">Distributed Computing</span>
 
