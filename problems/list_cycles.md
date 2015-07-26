@@ -1,8 +1,7 @@
 ---
-Time-stamp: <2014-10-11 13:02:02 ()>
+Time-stamp: <2014-10-11 13:02:36 ()>
 layout: default
 title: "List Cycles"
-resource: true
 problem: true
 difficulty: easy
 desc: "Determine if a linked list has a cycle in it."

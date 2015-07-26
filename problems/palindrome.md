@@ -1,11 +1,10 @@
 ---
-Time-stamp: <2014-10-11 12:48:37 ()>
+Time-stamp: <2014-10-11 13:03:16 ()>
 layout: default
 title: "Palindrome"
-resource: true
 problem: true
 difficulty: easy
-desc: "Simple programming problem involving palindromes"
+desc: "Determine if a sequence is a palindrome."
 
 ---
 
