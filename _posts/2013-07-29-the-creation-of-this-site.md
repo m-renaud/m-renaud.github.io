@@ -1,5 +1,5 @@
 ---
-Time-stamp: <2013-07-29 23:46:48 ()>
+Time-stamp: <2015-07-26 11:20:55 ()>
 layout: default
 title: "The Creation of This Site"
 tags: [meta]
@@ -141,13 +141,14 @@ scalable way of doing it. I found a
 [question](http://stackoverflow.com/questions/17118551/jekyll-generating-a-list-of-pages-not-posts-in-a-given-category/17913214#17913214)
 on Stack Overflow from someone who wanted to do something very
 similar and wrote a detailed response there so other people can find
-it. A *top answer* was already chosen that didn't really fully answer
-the question so hopefully people scroll down a little bit. If you find
-the answer useful, remember to up vote it so it's more visible.
-
+it. It was eventually accepted as the *top answer*.
 
 # Conclusion
 
 Well, that's about it. If you are interested in using Jekyll, check
 out the documentation on it's site, make a GitHub page, play around
 with it, make it your own.
+
+# Edits
+
+- 2015-07-26: The answer on StackOverflow is now the *top answer*.
