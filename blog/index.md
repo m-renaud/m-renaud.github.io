@@ -1,8 +1,9 @@
 ---
-Time-stamp: <2013-07-29 22:58:01 ()>
+Time-stamp: <2015-07-26 11:35:18 ()>
 layout: default
 title: "My Blog"
 tagline: "Sporadic at best."
+
 ---
 
 Here you will find the articles that I write ranging from technical
