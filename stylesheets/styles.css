@@ -323,6 +323,11 @@ ul {
   list-style-image: url("../images/bullet.png");
 }
 
+ul.hide-bullet {
+    list-style-image: none;
+    list-style-type: none;
+}
+
 strong {
   font-family: "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   font-weight: normal;
@@ -586,7 +591,6 @@ section #title p {
 .post-tags, .post-tags a {
   color: #656565;
   font-weight: bold;
-  float: right;
 }
 
 .post-tags a:hover {

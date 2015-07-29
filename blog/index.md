@@ -1,5 +1,5 @@
 ---
-Time-stamp: <2015-07-26 11:35:18 ()>
+Time-stamp: <2015-07-28 21:15:52 ()>
 layout: default
 title: "My Blog"
 tagline: "Sporadic at best."
@@ -13,13 +13,15 @@ nothing here now. I'll get around to writing some eventually.
 <ul>
   {% for post in site.posts %}
   <li>
-    <span class="post-list-date">{{ post.date | date: "%B %e, %Y" }}</span>
+    <div class="post-list-date">{{ post.date | date: "%B %e, %Y" }}</span>
 	&mdash;
 	<a href="{{ post.url }}">{{ post.title }}</a>
+	<ul class="hide-bullet"><li>
 	<span class="post-tags">
 	{% for tag in post.tags %}
 	  <span class="accent">{{ tag }}</span> &nbsp;
-	{% endfor %}
+	  {% endfor %}
+    </li></ul>
 	</span>
   </li>
   {% endfor %}
