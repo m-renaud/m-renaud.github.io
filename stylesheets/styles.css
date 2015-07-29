@@ -466,7 +466,7 @@ dt {
 #header .title {
   color: #858585;
   float: left;
-  font-size: 35px;
+  font-size: 25px;
   font-weight: 550;
   padding: 2px 20px;
 }
@@ -576,7 +576,7 @@ section #title h1 {
   font-weight: normal;
   font-size: 42px;
   text-align: center;
-  line-height: 28px;
+  line-height: 48px;
   padding-bottom: 5px;
 }
 
