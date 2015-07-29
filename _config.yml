@@ -8,7 +8,7 @@ author:
   github: mrenaud92
 
 markdown: rdiscount
-pygments: true
+highlighter: pygments
 permalink: /blog/:year/:month/:day/:title
 
 production_url: http://mrenaud.ca
