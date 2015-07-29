@@ -1,3 +1,5 @@
+.blob-code { color: #ddd !important; }
+.js-line-number {color: #ddd !important; }
 .highlight .hll { background-color: #49483e !important }
 .highlight  { background: #272822 !important; color: #f8f8f2  !important}
 .highlight pre { background: transparent !important; color: #f8f8f2  !important}
