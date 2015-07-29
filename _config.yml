@@ -7,7 +7,7 @@ author:
   email: mrenaud92@gmail.com
   github: mrenaud92
 
-markdown: rdiscount
+markdown: redcarpet
 highlighter: pygments
 permalink: /blog/:year/:month/:day/:title
 
