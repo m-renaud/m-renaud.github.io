@@ -7,7 +7,7 @@ author:
   email: mrenaud92@gmail.com
   github: mrenaud92
 
-highlighter: rogue
+highlighter: rouge
 permalink: /blog/:year/:month/:day/:title
 
 production_url: http://mrenaud.ca
