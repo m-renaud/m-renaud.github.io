@@ -1,0 +1,15 @@
+{
+    "short_name": "MTG Counter",
+    "name": "Super awesome MTG Counter thingy",
+    "background_color": "#000",
+    "icons": [
+        {
+            "src": "assets/images/mtg-thumbnail.jpg",
+            "sizes": "192x192",
+            "type": "image/jpg"
+        }
+    ],
+    "start_url": "/index.html",
+    "display": "standalone",
+    "orientation": "landscape"
+}
