@@ -14443,9 +14443,9 @@ var _m_renaud$mtg_counter$Player$view = function (model) {
 			]));
 };
 
-var _m_renaud$mtg_counter$Types$Model = F5(
-	function (a, b, c, d, e) {
-		return {player1: a, player2: b, startingPlayer: c, mdl: d, selectedTab: e};
+var _m_renaud$mtg_counter$Types$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {player1: a, player2: b, startingPlayer: c, confirmResetGame: d, mdl: e, selectedTab: f};
 	});
 var _m_renaud$mtg_counter$Types$Mdl = function (a) {
 	return {ctor: 'Mdl', _0: a};
@@ -14459,6 +14459,8 @@ var _m_renaud$mtg_counter$Types$ShowStartingPlayer = function (a) {
 };
 var _m_renaud$mtg_counter$Types$SelectStartingPlayer = {ctor: 'SelectStartingPlayer'};
 var _m_renaud$mtg_counter$Types$SelectStartingPlayerClick = {ctor: 'SelectStartingPlayerClick'};
+var _m_renaud$mtg_counter$Types$CancelReset = {ctor: 'CancelReset'};
+var _m_renaud$mtg_counter$Types$ConfirmReset = {ctor: 'ConfirmReset'};
 var _m_renaud$mtg_counter$Types$Reset = {ctor: 'Reset'};
 var _m_renaud$mtg_counter$Types$Player2Msg = function (a) {
 	return {ctor: 'Player2Msg', _0: a};
@@ -14532,9 +14534,26 @@ var _m_renaud$mtg_counter$State$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
+						{confirmResetGame: true}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'CancelReset':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{confirmResetGame: false}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ConfirmReset':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
 						{
 							player1: A2(_m_renaud$mtg_counter$Player$setLifeTotal, 20, model.player1),
-							player2: A2(_m_renaud$mtg_counter$Player$setLifeTotal, 20, model.player2)
+							player2: A2(_m_renaud$mtg_counter$Player$setLifeTotal, 20, model.player2),
+							confirmResetGame: false
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -14592,6 +14611,7 @@ var _m_renaud$mtg_counter$State$init = function () {
 		player1: A2(_m_renaud$mtg_counter$Player$init, 'Player 1', 20),
 		player2: A2(_m_renaud$mtg_counter$Player$init, 'Player 2', 20),
 		startingPlayer: _elm_lang$core$Maybe$Nothing,
+		confirmResetGame: false,
 		mdl: _debois$elm_mdl$Material$model,
 		selectedTab: 0
 	};
@@ -14713,6 +14733,92 @@ var _m_renaud$mtg_counter$View$startingPlayerCard = function (startingPlayer) {
 				[]));
 	}
 };
+var _m_renaud$mtg_counter$View$floatingCardActions = function (actions) {
+	return A2(
+		_debois$elm_mdl$Material_Card$actions,
+		_elm_lang$core$Native_List.fromArray(
+			[_debois$elm_mdl$Material_Options$center, _debois$elm_mdl$Material_Card$border]),
+		actions);
+};
+var _m_renaud$mtg_counter$View$floatingCardTitle = function (titleText) {
+	return A2(
+		_debois$elm_mdl$Material_Card$title,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(_debois$elm_mdl$Material_Options$css, 'display', 'flex'),
+				A2(_debois$elm_mdl$Material_Options$css, 'flex-direction', 'row'),
+				A2(_debois$elm_mdl$Material_Options$css, 'justify-content', 'space-between'),
+				_debois$elm_mdl$Material_Color$background(_debois$elm_mdl$Material_Color$accent),
+				_debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white)
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(titleText),
+				_debois$elm_mdl$Material_Icon$i('clear')
+			]));
+};
+var _m_renaud$mtg_counter$View$floatingCardStyle = function (msg) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			_debois$elm_mdl$Material_Color$background(_debois$elm_mdl$Material_Color$white),
+			_debois$elm_mdl$Material_Options$attribute(
+			_elm_lang$html$Html_Events$onClick(msg)),
+			_debois$elm_mdl$Material_Elevation$e8,
+			A2(_debois$elm_mdl$Material_Options$css, 'width', '60%'),
+			A2(_debois$elm_mdl$Material_Options$css, 'margin-left', '20%'),
+			A2(_debois$elm_mdl$Material_Options$css, 'z-index', '2'),
+			A2(_debois$elm_mdl$Material_Options$css, 'position', 'absolute'),
+			A2(_debois$elm_mdl$Material_Options$css, 'top', '25%')
+		]);
+};
+var _m_renaud$mtg_counter$View$resetCard = function (mdlModel) {
+	return A2(
+		_debois$elm_mdl$Material_Card$view,
+		_m_renaud$mtg_counter$View$floatingCardStyle(_m_renaud$mtg_counter$Types$CancelReset),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_m_renaud$mtg_counter$View$floatingCardTitle('Reset game?'),
+				_m_renaud$mtg_counter$View$floatingCardActions(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A5(
+						_debois$elm_mdl$Material_Button$render,
+						_m_renaud$mtg_counter$Types$Mdl,
+						_elm_lang$core$Native_List.fromArray(
+							[0]),
+						mdlModel,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_debois$elm_mdl$Material_Button$onClick(_m_renaud$mtg_counter$Types$CancelReset),
+								_debois$elm_mdl$Material_Button$raised,
+								A2(_debois$elm_mdl$Material_Options$css, 'padding', '0px'),
+								A2(_debois$elm_mdl$Material_Options$css, 'margin', '5% 5% 5% 5%')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('Cancel')
+							])),
+						A5(
+						_debois$elm_mdl$Material_Button$render,
+						_m_renaud$mtg_counter$Types$Mdl,
+						_elm_lang$core$Native_List.fromArray(
+							[1]),
+						mdlModel,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_debois$elm_mdl$Material_Button$onClick(_m_renaud$mtg_counter$Types$ConfirmReset),
+								_debois$elm_mdl$Material_Button$raised,
+								_debois$elm_mdl$Material_Button$accent,
+								A2(_debois$elm_mdl$Material_Options$css, 'padding', '0px'),
+								A2(_debois$elm_mdl$Material_Options$css, 'margin', '5% 5% 5% 5%')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('Reset')
+							]))
+					]))
+			]));
+};
 var _m_renaud$mtg_counter$View$resetButton = function (model) {
 	return A5(
 		_debois$elm_mdl$Material_Button$render,
@@ -14827,6 +14933,12 @@ var _m_renaud$mtg_counter$View$view = function (model) {
 					_elm_lang$core$Native_List.fromArray(
 						[
 							_m_renaud$mtg_counter$View$startingPlayerCard(model.startingPlayer),
+							model.confirmResetGame ? _m_renaud$mtg_counter$View$resetCard(model.mdl) : A2(
+							_debois$elm_mdl$Material_Options$div,
+							_elm_lang$core$Native_List.fromArray(
+								[]),
+							_elm_lang$core$Native_List.fromArray(
+								[])),
 							_m_renaud$mtg_counter$View$viewBodyGrid(model)
 						])),
 					_m_renaud$mtg_counter$View$resetButton(model)

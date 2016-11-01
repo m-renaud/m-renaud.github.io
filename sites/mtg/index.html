@@ -8,7 +8,7 @@
 
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500|Roboto+Mono|Roboto+Condensed:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.green-orange.min.css" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.green-deep_orange.min.css" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,7 +17,8 @@
   <link rel="manifest" href="/manifest.json">
   <link rel="icon" sizes="192x192" href="assets/images/mtg-thumbnail.jpg">
 
-  <script type='application/javascript' src='fastclick.js'></script>
+  <!-- Load fastclick to work around standalone iOS webapps being laggy -->
+  <script type='application/javascript' src='assets/fastclick.js'></script>
 </head>
 
 <body id="body">
@@ -27,6 +28,7 @@
   </script>
 </body>
 </html>
+
 
 <!-- Fix iOS standalone app click delay: http://stackoverflow.com/a/40272745/1553313 -->
 <script type="text/javascript">
