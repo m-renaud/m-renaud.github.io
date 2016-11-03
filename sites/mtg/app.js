@@ -14312,16 +14312,191 @@ var _elm_lang$core$Random$cmdMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Random'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Random$init, onEffects: _elm_lang$core$Random$onEffects, onSelfMsg: _elm_lang$core$Random$onSelfMsg, tag: 'cmd', cmdMap: _elm_lang$core$Random$cmdMap};
 
+var _elm_lang$dom$Dom$blur = _elm_lang$dom$Native_Dom.blur;
+var _elm_lang$dom$Dom$focus = _elm_lang$dom$Native_Dom.focus;
+var _elm_lang$dom$Dom$NotFound = function (a) {
+	return {ctor: 'NotFound', _0: a};
+};
+
+var _m_renaud$mtg_counter$Player$is13 = function (code) {
+	return _elm_lang$core$Native_Utils.eq(code, 13) ? _elm_lang$core$Result$Ok(
+		{ctor: '_Tuple0'}) : _elm_lang$core$Result$Err('not the right key code');
+};
+var _m_renaud$mtg_counter$Player$onEnter = function (msg) {
+	return A2(
+		_debois$elm_mdl$Material_Textfield$on,
+		'keydown',
+		A2(
+			_elm_lang$core$Json_Decode$map,
+			_elm_lang$core$Basics$always(msg),
+			A2(_elm_lang$core$Json_Decode$customDecoder, _elm_lang$html$Html_Events$keyCode, _m_renaud$mtg_counter$Player$is13)));
+};
+var _m_renaud$mtg_counter$Player$cardStyle = function (backgroundColor) {
+	return _elm_lang$core$Native_List.fromArray(
+		[
+			_debois$elm_mdl$Material_Color$background(backgroundColor),
+			_debois$elm_mdl$Material_Elevation$e2,
+			A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+			A2(_debois$elm_mdl$Material_Options$css, 'height', '100%')
+		]);
+};
 var _m_renaud$mtg_counter$Player$textColorFromLifeTotal = function (lifeTotal) {
 	return (_elm_lang$core$Native_Utils.cmp(lifeTotal, 0) > 0) ? _debois$elm_mdl$Material_Color$white : A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Red, _debois$elm_mdl$Material_Color$S600);
+};
+var _m_renaud$mtg_counter$Player$cardText = function (lifeTotal) {
+	return A2(
+		_debois$elm_mdl$Material_Card$text,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_debois$elm_mdl$Material_Typography$center,
+				A2(_debois$elm_mdl$Material_Options$css, 'font-size', '60px'),
+				_debois$elm_mdl$Material_Color$text(
+				_m_renaud$mtg_counter$Player$textColorFromLifeTotal(lifeTotal))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(
+				_elm_lang$core$Basics$toString(lifeTotal))
+			]));
 };
 var _m_renaud$mtg_counter$Player$backgroundColorFromLifeTotal = function (lifeTotal) {
 	return (_elm_lang$core$Native_Utils.cmp(lifeTotal, 15) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Green, _debois$elm_mdl$Material_Color$S600) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 10) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Yellow, _debois$elm_mdl$Material_Color$S800) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 5) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Orange, _debois$elm_mdl$Material_Color$S800) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 3) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Red, _debois$elm_mdl$Material_Color$S600) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 0) > 0) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Red, _debois$elm_mdl$Material_Color$S900) : _debois$elm_mdl$Material_Color$black))));
 };
+var _m_renaud$mtg_counter$Player$setLifeTotal = F2(
+	function (life, model) {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{lifeTotal: life});
+	});
+var _m_renaud$mtg_counter$Player$init = F2(
+	function (playerName, initialLife) {
+		return {name: playerName, lifeTotal: initialLife, editingName: false, mdl: _debois$elm_mdl$Material$model};
+	});
+var _m_renaud$mtg_counter$Player$Model = F4(
+	function (a, b, c, d) {
+		return {name: a, lifeTotal: b, editingName: c, mdl: d};
+	});
+var _m_renaud$mtg_counter$Player$Mdl = function (a) {
+	return {ctor: 'Mdl', _0: a};
+};
+var _m_renaud$mtg_counter$Player$UpdateName = function (a) {
+	return {ctor: 'UpdateName', _0: a};
+};
+var _m_renaud$mtg_counter$Player$EditingName = F2(
+	function (a, b) {
+		return {ctor: 'EditingName', _0: a, _1: b};
+	});
+var _m_renaud$mtg_counter$Player$cardTitle = F3(
+	function (playerName, domIdSuffix, mdlModel) {
+		return A2(
+			_debois$elm_mdl$Material_Card$title,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+					A2(_debois$elm_mdl$Material_Options$css, 'font-size', '24px'),
+					A2(_debois$elm_mdl$Material_Options$css, 'margin-top', '0'),
+					A2(_debois$elm_mdl$Material_Options$css, 'margin-bottom', '0'),
+					A2(_debois$elm_mdl$Material_Options$css, 'padding-top', '0'),
+					A2(_debois$elm_mdl$Material_Options$css, 'padding-bottom', '0')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A4(
+					_debois$elm_mdl$Material_Textfield$render,
+					_m_renaud$mtg_counter$Player$Mdl,
+					_elm_lang$core$Native_List.fromArray(
+						[3]),
+					mdlModel,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_debois$elm_mdl$Material_Textfield$label('PlayerName'),
+							_debois$elm_mdl$Material_Textfield$value(playerName),
+							_debois$elm_mdl$Material_Textfield$style(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									A2(_debois$elm_mdl$Material_Options$css, 'font-size', '24px'),
+									A2(_debois$elm_mdl$Material_Options$css, 'border-bottom', '0px'),
+									_debois$elm_mdl$Material_Options$attribute(
+									_elm_lang$html$Html_Attributes$id(
+										A2(_elm_lang$core$Basics_ops['++'], 'player-name-', domIdSuffix)))
+								])),
+							_debois$elm_mdl$Material_Textfield$onInput(_m_renaud$mtg_counter$Player$UpdateName),
+							_debois$elm_mdl$Material_Textfield$onBlur(
+							A2(_m_renaud$mtg_counter$Player$EditingName, domIdSuffix, false)),
+							_m_renaud$mtg_counter$Player$onEnter(
+							A2(_m_renaud$mtg_counter$Player$EditingName, domIdSuffix, false))
+						]))
+				]));
+	});
+var _m_renaud$mtg_counter$Player$DecreaseLife = {ctor: 'DecreaseLife'};
+var _m_renaud$mtg_counter$Player$IncreaseLife = {ctor: 'IncreaseLife'};
+var _m_renaud$mtg_counter$Player$cardActions = function (mdlModel) {
+	return A2(
+		_debois$elm_mdl$Material_Card$actions,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_debois$elm_mdl$Material_Options$center,
+				A2(_debois$elm_mdl$Material_Options$css, 'padding-left', '8px'),
+				A2(_debois$elm_mdl$Material_Options$css, 'padding-top', '4px')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A5(
+				_debois$elm_mdl$Material_Button$render,
+				_m_renaud$mtg_counter$Player$Mdl,
+				_elm_lang$core$Native_List.fromArray(
+					[1]),
+				mdlModel,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_debois$elm_mdl$Material_Button$onClick(_m_renaud$mtg_counter$Player$DecreaseLife),
+						_debois$elm_mdl$Material_Button$fab
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('-')
+					])),
+				A5(
+				_debois$elm_mdl$Material_Button$render,
+				_m_renaud$mtg_counter$Player$Mdl,
+				_elm_lang$core$Native_List.fromArray(
+					[0]),
+				mdlModel,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_debois$elm_mdl$Material_Button$onClick(_m_renaud$mtg_counter$Player$IncreaseLife),
+						_debois$elm_mdl$Material_Button$fab
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('+')
+					]))
+			]));
+};
+var _m_renaud$mtg_counter$Player$view = F2(
+	function (domIdSuffix, model) {
+		return A2(
+			_debois$elm_mdl$Material_Card$view,
+			_m_renaud$mtg_counter$Player$cardStyle(
+				_m_renaud$mtg_counter$Player$backgroundColorFromLifeTotal(model.lifeTotal)),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A3(_m_renaud$mtg_counter$Player$cardTitle, model.name, domIdSuffix, model.mdl),
+					_m_renaud$mtg_counter$Player$cardText(model.lifeTotal),
+					_m_renaud$mtg_counter$Player$cardActions(model.mdl)
+				]));
+	});
+var _m_renaud$mtg_counter$Player$NoOp = {ctor: 'NoOp'};
 var _m_renaud$mtg_counter$Player$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
 		switch (_p0.ctor) {
+			case 'NoOp':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					model,
+					_elm_lang$core$Native_List.fromArray(
+						[]));
 			case 'IncreaseLife':
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
@@ -14338,110 +14513,41 @@ var _m_renaud$mtg_counter$Player$update = F2(
 						{lifeTotal: model.lifeTotal - 1}),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
+			case 'EditingName':
+				var _p4 = _p0._1;
+				var _p3 = _p0._0;
+				var focus = _p4 ? _elm_lang$dom$Dom$focus(
+					A2(_elm_lang$core$Basics_ops['++'], 'player-name-', _p3)) : _elm_lang$dom$Dom$blur(
+					A2(_elm_lang$core$Basics_ops['++'], 'player-name-', _p3));
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{editingName: _p4}),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A3(
+							_elm_lang$core$Task$perform,
+							function (_p1) {
+								return _m_renaud$mtg_counter$Player$NoOp;
+							},
+							function (_p2) {
+								return _m_renaud$mtg_counter$Player$NoOp;
+							},
+							focus)
+						]));
+			case 'UpdateName':
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{name: _p0._0}),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
 			default:
 				return A2(_debois$elm_mdl$Material$update, _p0._0, model);
 		}
 	});
-var _m_renaud$mtg_counter$Player$setLifeTotal = F2(
-	function (life, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{lifeTotal: life});
-	});
-var _m_renaud$mtg_counter$Player$init = F2(
-	function (playerName, initialLife) {
-		return {name: playerName, lifeTotal: initialLife, mdl: _debois$elm_mdl$Material$model};
-	});
-var _m_renaud$mtg_counter$Player$Model = F3(
-	function (a, b, c) {
-		return {name: a, lifeTotal: b, mdl: c};
-	});
-var _m_renaud$mtg_counter$Player$Mdl = function (a) {
-	return {ctor: 'Mdl', _0: a};
-};
-var _m_renaud$mtg_counter$Player$DecreaseLife = {ctor: 'DecreaseLife'};
-var _m_renaud$mtg_counter$Player$IncreaseLife = {ctor: 'IncreaseLife'};
-var _m_renaud$mtg_counter$Player$view = function (model) {
-	return A2(
-		_debois$elm_mdl$Material_Card$view,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_debois$elm_mdl$Material_Color$background(
-				_m_renaud$mtg_counter$Player$backgroundColorFromLifeTotal(model.lifeTotal)),
-				_debois$elm_mdl$Material_Elevation$e2,
-				A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
-				A2(_debois$elm_mdl$Material_Options$css, 'height', '100%')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_debois$elm_mdl$Material_Card$title,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
-						A2(_debois$elm_mdl$Material_Options$css, 'font-size', '24px')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text(model.name)
-					])),
-				A2(
-				_debois$elm_mdl$Material_Card$text,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_debois$elm_mdl$Material_Typography$center,
-						A2(_debois$elm_mdl$Material_Options$css, 'font-size', '60px'),
-						_debois$elm_mdl$Material_Color$text(
-						_m_renaud$mtg_counter$Player$textColorFromLifeTotal(model.lifeTotal))
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text(
-						_elm_lang$core$Basics$toString(model.lifeTotal))
-					])),
-				A2(
-				_debois$elm_mdl$Material_Card$actions,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_debois$elm_mdl$Material_Options$center,
-						A2(_debois$elm_mdl$Material_Options$css, 'padding-left', '8px'),
-						A2(_debois$elm_mdl$Material_Options$css, 'padding-top', '4px')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A5(
-						_debois$elm_mdl$Material_Button$render,
-						_m_renaud$mtg_counter$Player$Mdl,
-						_elm_lang$core$Native_List.fromArray(
-							[1]),
-						model.mdl,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_debois$elm_mdl$Material_Button$onClick(_m_renaud$mtg_counter$Player$DecreaseLife),
-								_debois$elm_mdl$Material_Button$fab
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text('-')
-							])),
-						A5(
-						_debois$elm_mdl$Material_Button$render,
-						_m_renaud$mtg_counter$Player$Mdl,
-						_elm_lang$core$Native_List.fromArray(
-							[0]),
-						model.mdl,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_debois$elm_mdl$Material_Button$onClick(_m_renaud$mtg_counter$Player$IncreaseLife),
-								_debois$elm_mdl$Material_Button$fab
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text('+')
-							]))
-					]))
-			]));
-};
 
 var _m_renaud$mtg_counter$Types$Model = F6(
 	function (a, b, c, d, e, f) {
@@ -14577,12 +14683,13 @@ var _m_renaud$mtg_counter$State$update = F2(
 						A2(_elm_lang$core$Random$int, 1, 2))
 				};
 			case 'ShowStartingPlayer':
+				var startingPlayerName = _elm_lang$core$Native_Utils.eq(_p4._0, 1) ? model.player1.name : model.player2.name;
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							startingPlayer: _elm_lang$core$Maybe$Just(_p4._0)
+							startingPlayer: _elm_lang$core$Maybe$Just(startingPlayerName)
 						}),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
@@ -14658,7 +14765,7 @@ var _m_renaud$mtg_counter$View$viewBodyGrid = function (model) {
 								A2(
 								_elm_lang$html$Html_App$map,
 								_m_renaud$mtg_counter$Types$Player1Msg,
-								_m_renaud$mtg_counter$Player$view(model.player1))
+								A2(_m_renaud$mtg_counter$Player$view, '1', model.player1))
 							])),
 						A2(
 						_debois$elm_mdl$Material_Grid$cell,
@@ -14668,7 +14775,7 @@ var _m_renaud$mtg_counter$View$viewBodyGrid = function (model) {
 								A2(
 								_elm_lang$html$Html_App$map,
 								_m_renaud$mtg_counter$Types$Player2Msg,
-								_m_renaud$mtg_counter$Player$view(model.player2))
+								A2(_m_renaud$mtg_counter$Player$view, '2', model.player2))
 							]))
 					]))
 			]));
@@ -14682,8 +14789,8 @@ var _m_renaud$mtg_counter$View$cellStyle = _elm_lang$core$Native_List.fromArray(
 		A2(_debois$elm_mdl$Material_Options$css, 'padding-right', '4px'),
 		A2(_debois$elm_mdl$Material_Options$css, 'padding-top', '4px')
 	]);
-var _m_renaud$mtg_counter$View$startingPlayerCard = function (startingPlayer) {
-	var _p0 = startingPlayer;
+var _m_renaud$mtg_counter$View$startingPlayerCard = function (maybeStartingPlayer) {
+	var _p0 = maybeStartingPlayer;
 	if (_p0.ctor === 'Just') {
 		return A2(
 			_debois$elm_mdl$Material_Card$view,
@@ -14720,8 +14827,7 @@ var _m_renaud$mtg_counter$View$startingPlayerCard = function (startingPlayer) {
 						[]),
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_elm_lang$html$Html$text(
-							_elm_lang$core$Native_Utils.eq(_p0._0, 1) ? 'Player 1' : 'Player 2')
+							_elm_lang$html$Html$text(_p0._0)
 						]))
 				]));
 	} else {
@@ -14870,7 +14976,7 @@ var _m_renaud$mtg_counter$View$drawer = _elm_lang$core$Native_List.fromArray(
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('Pick starting player')
+						_elm_lang$html$Html$text('Randomly pick starting player')
 					]))
 			]))
 	]);
