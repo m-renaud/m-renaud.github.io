@@ -4,61 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <title>MTG Counter</title>
-  <script type="text/javascript" src="app.js"></script>
-
-  <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500|Roboto+Mono|Roboto+Condensed:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.green-deep_orange.min.css" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#43a047" />
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" sizes="192x192" href="assets/images/mtg-thumbnail.jpg">
-
-  <!-- Load fastclick to work around standalone iOS webapps being laggy -->
-  <script type='application/javascript' src='assets/fastclick.js'></script>
 </head>
 
 <body id="body">
-  <script type="text/javascript">
-    var node = document.getElementById('body');
-    var main = Elm.App.embed(node);
-  </script>
+  <div><p>This page has moved to <a href="http://mtg.mrenaud.ca">mtg.mrenaud.ca</a></p></div>
 </body>
 </html>
-
-
-<!-- Fix iOS standalone app click delay: http://stackoverflow.com/a/40272745/1553313 -->
-<script type="text/javascript">
-isIos = function () {
-  // Reference: http://stackoverflow.com/questions/9038625/detect-if-device-is-ios#answer-9039885
-  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-};
-
-isRunningStandalone = function () {
-  // Bullet proof way to check if iOS standalone
-  var isRunningiOSStandalone = window.navigator.standalone;
-
-  // Reliable way (in newer browsers) to check if Android standalone.
-  // http://stackoverflow.com/questions/21125337/how-to-detect-if-web-app-running-standalone-on-chrome-mobile#answer-34516083
-  var isRunningAndroidStandalone = window.matchMedia('(display-mode: standalone)').matches;
-
-  return isRunningiOSStandalone || isRunningAndroidStandalone;
-};
-
-
-if (isIos() && isRunningStandalone()) {
-
-  // Initialize Fast Click
-  // Even with the latest webkit updates, unfortunatley iOS standalone apps still have the 350ms click delay,
-  // so we need to bring in fastclick to alleviate this.
-  // See http://stackoverflow.com/questions/39951945/ios-standalone-app-300ms-click-delay
-  if ('addEventListener' in document) {
-    document.addEventListener('DOMContentLoaded', function () {
-        FastClick.attach(document.body);
-    }, false);
-  }
-}
-</script>
