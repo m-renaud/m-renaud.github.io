@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-pragma">{-# LANGUAGE FlexibleInstances #-}</span><span>
+</span><a name="line-2"></a><span class="hs-pragma">{-# LANGUAGE GADTs #-}</span><span>
+</span><a name="line-3"></a><span class="hs-pragma">{-# LANGUAGE DataKinds #-}</span><span>
+</span><a name="line-4"></a><span class="hs-pragma">{-# LANGUAGE TypeOperators #-}</span><span>
+</span><a name="line-5"></a><span class="hs-pragma">{-# LANGUAGE StandaloneDeriving #-}</span><span>
+</span><a name="line-6"></a><span class="hs-pragma">{-# LANGUAGE KindSignatures #-}</span><span>
+</span><a name="line-7"></a><span class="hs-comment">{-|
+Module      : DataForecast.TimeSeries
+Description : Time series analysis.
+-}</span><span>
+</span><a name="line-11"></a><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">DataForecast</span><span class="hs-operator">.</span><span class="hs-identifier">TimeSeries</span><span>
+</span><a name="line-12"></a><span>    </span><span class="hs-special">(</span><span>
+</span><a name="line-13"></a><span>    </span><span class="hs-comment">-- * TimeSeries</span><span>
+</span><a name="line-14"></a><span>      </span><a href="DataForecast.TimeSeries.html#TimeSeries"><span class="hs-identifier hs-type">TimeSeries</span></a><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><a name="line-15"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#getSD"><span class="hs-identifier hs-var">getSD</span></a><span>
+</span><a name="line-16"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#setSD"><span class="hs-identifier hs-var">setSD</span></a><span>
+</span><a name="line-17"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#getSub"><span class="hs-identifier hs-var">getSub</span></a><span>
+</span><a name="line-18"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#setSub"><span class="hs-identifier hs-var">setSub</span></a><span>
+</span><a name="line-19"></a><span>    </span><span class="hs-comment">-- ** Construction.</span><span>
+</span><a name="line-20"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#BuildTS"><span class="hs-identifier hs-type">BuildTS</span></a><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><a name="line-21"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#raw"><span class="hs-identifier hs-var">raw</span></a><span>
+</span><a name="line-22"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#fromParts"><span class="hs-identifier hs-var">fromParts</span></a><span>
+</span><a name="line-23"></a><span>    </span><span>
+</span><a name="line-24"></a><span>    </span><span class="hs-comment">-- * TsPeriod</span><span>
+</span><a name="line-25"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#TsPeriod"><span class="hs-identifier hs-type">TsPeriod</span></a><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><a name="line-26"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#SPeriod"><span class="hs-identifier hs-type">SPeriod</span></a><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><a name="line-27"></a><span>
+</span><a name="line-28"></a><span>    </span><span class="hs-comment">-- * SummaryData</span><span>
+</span><a name="line-29"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#SummaryData"><span class="hs-identifier hs-type">SummaryData</span></a><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><a name="line-30"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#defaultSummary"><span class="hs-identifier hs-var">defaultSummary</span></a><span>
+</span><a name="line-31"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#summaryWithTotal"><span class="hs-identifier hs-var">summaryWithTotal</span></a><span>
+</span><a name="line-32"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#setSdTotal"><span class="hs-identifier hs-var">setSdTotal</span></a><span>
+</span><a name="line-33"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#setSdMean"><span class="hs-identifier hs-var">setSdMean</span></a><span>
+</span><a name="line-34"></a><span>
+</span><a name="line-35"></a><span>    </span><span class="hs-comment">-- * Subparts</span><span>
+</span><a name="line-36"></a><span>    </span><span class="hs-special">,</span><span> </span><a href="DataForecast.TimeSeries.html#Subparts"><span class="hs-identifier hs-type">Subparts</span></a><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span>
+</span><a name="line-37"></a><span>    </span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><a name="line-38"></a><span>
+</span><a name="line-39"></a><span class="hs-keyword">import</span><span> </span><a href="DataForecast.Prelude.html"><span class="hs-identifier">DataForecast</span><span class="hs-operator">.</span><span class="hs-identifier">Prelude</span></a><span>
+</span><a name="line-40"></a><span>
+</span><a name="line-41"></a><span>
+</span><a name="line-42"></a><span class="hs-comment">-- | Time series date representation with the resolution breakdown encoded in the</span><span>
+</span><a name="line-43"></a><span class="hs-comment">-- type.</span><span>
+</span><a name="line-44"></a><span class="hs-comment">--</span><span>
+</span><a name="line-45"></a><span class="hs-comment">-- 'parts' has kind '[TsPeriod]' which represents the hierarchical breakdown of</span><span>
+</span><a name="line-46"></a><span class="hs-comment">-- your data. You are responsible for providing the correct type hierarchy for</span><span>
+</span><a name="line-47"></a><span class="hs-comment">-- your data initially, but once you have done that the library ensures that all</span><span>
+</span><a name="line-48"></a><span class="hs-comment">-- analysis performed is valid.</span><span>
+</span><a name="line-49"></a><span class="hs-comment">--</span><span>
+</span><a name="line-50"></a><span class="hs-comment">-- In general you should not use the 'TimeSeries' constructor directly, instead</span><span>
+</span><a name="line-51"></a><span class="hs-comment">-- use the 'raw' and 'fromParts' construction functions defined below.</span><span>
+</span><a name="line-52"></a><span class="hs-keyword">data</span><span> </span><a name="TimeSeries"><a href="DataForecast.TimeSeries.html#TimeSeries"><span class="hs-identifier">TimeSeries</span></a></a><span> </span><span class="hs-special">(</span><a name="local-1627409096"><a href="#local-1627409096"><span class="hs-identifier">parts</span></a></a><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">[</span><a href="DataForecast.TimeSeries.html#TsPeriod"><span class="hs-identifier hs-type">TsPeriod</span></a><span class="hs-special">]</span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><a name="line-53"></a><span>    </span><a name="TimeSeries"><a href="DataForecast.TimeSeries.html#TimeSeries"><span class="hs-identifier">TimeSeries</span></a></a><span> </span><span class="hs-glyph">::</span><span>
+</span><a name="line-54"></a><span>        </span><a href="DataForecast.TimeSeries.html#SPeriod"><span class="hs-identifier hs-type">SPeriod</span></a><span> </span><a href="#local-1627409097"><span class="hs-identifier hs-type">p</span></a><span>
+</span><a name="line-55"></a><span>        </span><span class="hs-glyph">-&gt;</span><span> </span><a href="DataForecast.TimeSeries.html#SummaryData"><span class="hs-identifier hs-type">SummaryData</span></a><span>
+</span><a name="line-56"></a><span>        </span><span class="hs-glyph">-&gt;</span><span> </span><a href="DataForecast.TimeSeries.html#Subparts"><span class="hs-identifier hs-type">Subparts</span></a><span> </span><a href="#local-1627409098"><span class="hs-identifier hs-type">subparts</span></a><span>
+</span><a name="line-57"></a><span>        </span><span class="hs-glyph">-&gt;</span><span> </span><a href="DataForecast.TimeSeries.html#TimeSeries"><span class="hs-identifier hs-type">TimeSeries</span></a><span> </span><span class="hs-special">(</span><a href="#local-1627409097"><span class="hs-identifier hs-type">p</span></a><span> </span><span class="hs-char">': subparts)
+deriving instance Eq (TimeSeries parts)
+deriving instance Show (TimeSeries parts)
+
+
+-- | Get the 'SummaryData' out of a TimeSeries.
+getSD :: TimeSeries parts -&gt; SummaryData
+getSD (TimeSeries _ sd _) = sd
+
+
+-- | Set the 'SummaryData' field of a 'TimeSeries'. We can't use record syntax
+-- because https://ghc.haskell.org/trac/ghc/ticket/2595 is not implemented.
+setSD :: SummaryData -&gt; TimeSeries parts -&gt; TimeSeries parts
+setSD sd (TimeSeries t _sd sub) = TimeSeries t sd sub
+
+
+-- | Get the 'Subparts' out of a 'TimeSeries'.
+getSub :: TimeSeries (p ': subparts) -&gt; Subparts subparts
+getSub (TimeSeries _ _ sub) = sub
+
+
+-- | Set the 'Subparts' of the 'TimeSeries'.
+setSub ::
+    Subparts subparts
+    -&gt; TimeSeries (p ': subparts)
+    -&gt; TimeSeries (p ': subparts)
+setSub sub (TimeSeries t sd _sub) = TimeSeries t sd sub
+
+
+-- | Construct a leaf 'TimeSeries' with the given 'total'.
+--
+-- __Example__:
+--
+--   &gt; raw 42 :: TimeSeries '[ 'Year ]
+raw :: BuildTS p =&gt; Double -&gt; TimeSeries '[p]
+raw total = build (SummaryData (Just total) Nothing) def
+
+
+-- | Construct a 'TimeSeries' given the constituent 'TimeSeries' parts.
+--
+-- __Example__:
+--
+--   &gt; yearByQuarter :: TimeSeries '[ 'Year, 'Quarter ]
+--   &gt; yearByQuarter = fromParts [ raw 10, raw 20, raw 30, raw 15 ]
+fromParts :: BuildTS part
+    =&gt; [TimeSeries subparts]
+    -&gt; TimeSeries (part ': subparts)
+fromParts subseries = build def (Subparts (Just subseries))
+
+
+
+-- | Typeclass for constructing 'TimeSeries' with default data.
+--
+-- This is used by several of the 'TimeSeries' construction functions such as
+-- 'raw'. It provides a convenient way for constructing time series of different
+-- types with the same functions and allowing the concrete type to be pinned down
+-- by a type signature.
+class BuildTS p where
+    build :: SummaryData -&gt; Subparts rest -&gt; TimeSeries (p ': rest)
+
+instance BuildTS 'Year where
+    build = TimeSeries SYear
+instance BuildTS 'Quarter where
+    build = TimeSeries SQuarter
+instance BuildTS 'Month where
+    build = TimeSeries SMonth
+instance BuildTS 'Day where
+    build = TimeSeries SDay
+
+
+
+-- | Use promoted constructors to represent the different timeseries that we have.
+-- When using these as kinds you must prefix them with a single quote (').
+--
+-- __Example__:
+--
+--   &gt; raw 4 :: TimeSeries '[ 'Day ]
+data TsPeriod
+    = Decade
+    | Year
+    | Quarter
+    | Month
+    | Day
+    deriving (Eq, Show)
+
+
+-- | The singleton for the promoted 'TsPeriod' type.
+--
+-- See
+-- https://www.schoolofhaskell.com/user/konn/prove-your-haskell-for-great-safety/dependent-types-in-haskell#singleton-patterns
+-- for details.
+data SPeriod (x :: TsPeriod) where
+    SDecade :: SPeriod 'Decade
+    SYear :: SPeriod 'Year
+    SQuarter :: SPeriod 'Quarter
+    SMonth :: SPeriod 'Month
+    SDay :: SPeriod 'Day
+deriving instance Eq (SPeriod x)
+deriving instance Show (SPeriod x)
+
+
+
+-- | The summarization of the entire time series rooted at the current
+-- 'TimeSeries.
+data SummaryData = SummaryData
+    { sdtotal :: Maybe Double
+    , sdmean :: Maybe Double
+    }
+deriving instance Eq SummaryData
+deriving instance Show SummaryData
+
+instance Default SummaryData where
+    def = SummaryData Nothing Nothing
+
+
+-- | The default 'SummaryData' with 'Nothing' for the 'sdtotal' and 'sdmean'.
+defaultSummary :: SummaryData
+defaultSummary = def
+
+
+-- | Construct a 'SummaryData' with the 'sdtotal' set.
+summaryWithTotal :: Double -&gt; SummaryData
+summaryWithTotal total = setSdTotal total defaultSummary
+
+
+-- | Set the total for the 'SummaryData'.
+setSdTotal :: Double -&gt; SummaryData -&gt; SummaryData
+setSdTotal total sd = sd { sdtotal = Just total }
+
+
+-- | Set the mean for the 'SummaryData'.
+setSdMean :: Double -&gt; SummaryData -&gt; SummaryData
+setSdMean mean sd = sd { sdmean = Just mean }
+
+
+
+-- | The constituent components of a 'TimeSeries'. If the 'TimeSeries' is just a
+-- leaf with raw data then 'subs' will be 'Nothing'.
+data Subparts (parts :: [TsPeriod]) = Subparts
+    { subs :: Maybe [TimeSeries parts]
+    }
+deriving instance Eq (Subparts parts)
+deriving instance Show (Subparts parts)
+
+instance Default (Subparts '[]) where
+    def = Subparts Nothing
+</span></pre></body></html>

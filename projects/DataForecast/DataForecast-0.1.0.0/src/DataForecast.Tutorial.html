@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-identifier">DataForecast</span><span class="hs-operator">.</span><span class="hs-identifier">Tutorial</span><span>
+</span><a name="line-2"></a><span class="hs-comment">---------------------</span><span>
+</span><a name="line-3"></a><span>
+</span><a name="line-4"></a><span class="hs-identifier">This</span><span> </span><span class="hs-identifier">file</span><span> </span><span class="hs-identifier">walks</span><span> </span><span class="hs-identifier">through</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">different</span><span> </span><span class="hs-identifier">components</span><span> </span><span class="hs-keyword">of</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">DataForecast</span><span> </span><span class="hs-identifier">library</span><span class="hs-operator">.</span><span>
+</span><a name="line-5"></a><span>
+</span><a name="line-6"></a><span class="hs-identifier">Preliminaries</span><span>
+</span><a name="line-7"></a><span class="hs-comment">-------------</span><span>
+</span><a name="line-8"></a><span>
+</span><a name="line-9"></a><span class="hs-identifier">This</span><span> </span><span class="hs-identifier">library</span><span> </span><span class="hs-identifier">uses</span><span> </span><span class="hs-keyword">type</span><span class="hs-glyph">-</span><span class="hs-identifier">level</span><span> </span><span class="hs-identifier">lists</span><span> </span><span class="hs-identifier">and</span><span> </span><span class="hs-identifier">promoted</span><span> </span><span class="hs-keyword">data</span><span> </span><span class="hs-identifier">constructors</span><span> </span><span class="hs-identifier">so</span><span> </span><span class="hs-identifier">we</span><span> </span><span class="hs-identifier">need</span><span> </span><span class="hs-identifier">the</span><span>
+</span><a name="line-10"></a><span class="hs-identifier">TypeOperators</span><span> </span><span class="hs-identifier">and</span><span> </span><span class="hs-identifier">DataKinds</span><span> </span><span class="hs-identifier">language</span><span> </span><span class="hs-identifier">extensions</span><span class="hs-operator">.</span><span>
+</span><a name="line-11"></a><span>
+</span><a name="line-12"></a><span class="hs-glyph">\</span><span class="hs-identifier">begin</span><span class="hs-special">{</span><span class="hs-identifier">code</span><span class="hs-special">}</span><span>
+</span><a name="line-13"></a><span class="hs-pragma">{-# LANGUAGE TypeOperators #-}</span><span>
+</span><a name="line-14"></a><span class="hs-pragma">{-# LANGUAGE DataKinds #-}</span><span>
+</span><a name="line-15"></a><span class="hs-comment">{-|
+Module      : DataForecast.Tutorial
+Description : Some simple uses of DataForecast.
+-}</span><span>
+</span><a name="line-19"></a><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">DataForecast</span><span class="hs-operator">.</span><span class="hs-identifier">Tutorial</span><span> </span><span class="hs-keyword">where</span><span>
+</span><a name="line-20"></a><span>
+</span><a name="line-21"></a><span class="hs-keyword">import</span><span> </span><a href="DataForecast.html"><span class="hs-identifier">DataForecast</span></a><span>
+</span><a name="line-22"></a><span class="hs-keyword">import</span><span> </span><a href="DataForecast.Prelude.html"><span class="hs-identifier">DataForecast</span><span class="hs-operator">.</span><span class="hs-identifier">Prelude</span></a><span>
+</span><a name="line-23"></a><span class="hs-glyph">\</span><span class="hs-identifier">end</span><span class="hs-special">{</span><span class="hs-identifier">code</span><span class="hs-special">}</span><span>
+</span><a name="line-24"></a><span>
+</span><a name="line-25"></a><span>
+</span><a name="line-26"></a><span class="hs-identifier">Constructing</span><span> </span><span class="hs-identifier">a</span><span> </span><span class="hs-special">`</span><span class="hs-identifier">TimeSeries</span><span class="hs-special">`</span><span>
+</span><a name="line-27"></a><span class="hs-comment">---------------------------</span><span>
+</span><a name="line-28"></a><span>
+</span><a name="line-29"></a><span class="hs-identifier">We</span><span> </span><span class="hs-identifier">can</span><span> </span><span class="hs-identifier">construct</span><span> </span><span class="hs-identifier">a</span><span> </span><span class="hs-special">`</span><span class="hs-identifier">TimeSeries</span><span class="hs-special">`</span><span> </span><span class="hs-identifier">using</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">constructor</span><span> </span><span class="hs-identifier">directly</span><span> </span><span class="hs-identifier">and</span><span> </span><span class="hs-identifier">specifying</span><span>
+</span><a name="line-30"></a><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">resolution</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">need</span><span> </span><span class="hs-identifier">a</span><span> </span><span class="hs-identifier">better</span><span> </span><span class="hs-identifier">word</span><span> </span><span class="hs-identifier">for</span><span> </span><span class="hs-identifier">this</span><span class="hs-special">)</span><span> </span><span class="hs-identifier">for</span><span> </span><span class="hs-identifier">each</span><span> </span><span class="hs-keyword">of</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">components</span><span class="hs-operator">.</span><span> </span><span class="hs-identifier">This</span><span> </span><span class="hs-identifier">is</span><span>
+</span><a name="line-31"></a><span class="hs-identifier">not</span><span> </span><span class="hs-identifier">how</span><span> </span><span class="hs-identifier">you</span><span> </span><span class="hs-identifier">should</span><span> </span><span class="hs-identifier">construct</span><span> </span><span class="hs-identifier">them</span><span> </span><span class="hs-identifier">when</span><span> </span><span class="hs-identifier">using</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">library</span><span> </span><span class="hs-special">(</span><span class="hs-identifier">we'll</span><span> </span><span class="hs-identifier">get</span><span> </span><span class="hs-identifier">to</span><span> </span><span class="hs-identifier">that</span><span>
+</span><a name="line-32"></a><span class="hs-identifier">soon</span><span class="hs-special">)</span><span> </span><span class="hs-identifier">but</span><span> </span><span class="hs-identifier">it's</span><span> </span><span class="hs-identifier">important</span><span> </span><span class="hs-identifier">to</span><span> </span><span class="hs-identifier">understand</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">structure</span><span> </span><span class="hs-keyword">of</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-special">`</span><span class="hs-identifier">TimeSeries</span><span class="hs-special">`</span><span> </span><span class="hs-keyword">type</span><span class="hs-operator">.</span><span>
+</span><a name="line-33"></a><span>
+</span><a name="line-34"></a><span class="hs-identifier">A</span><span> </span><span class="hs-special">`</span><span class="hs-identifier">TimeSeries</span><span class="hs-special">`</span><span> </span><span class="hs-identifier">has</span><span> </span><span class="hs-number">3</span><span> </span><span class="hs-identifier">main</span><span> </span><span class="hs-identifier">components</span><span class="hs-glyph">:</span><span>
+</span><a name="line-35"></a><span>
+</span><a name="line-36"></a><span>  </span><span class="hs-number">1</span><span class="hs-operator">.</span><span> </span><span class="hs-identifier">The</span><span> </span><span class="hs-identifier">period</span><span> </span><span class="hs-keyword">of</span><span> </span><span class="hs-identifier">time</span><span> </span><span class="hs-identifier">that</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-keyword">data</span><span> </span><span class="hs-identifier">is</span><span> </span><span class="hs-identifier">for</span><span class="hs-operator">.</span><span> </span><span class="hs-identifier">This</span><span> </span><span class="hs-identifier">is</span><span> </span><span class="hs-identifier">expressed</span><span> </span><span class="hs-identifier">using</span><span> </span><span class="hs-identifier">a</span><span>
+</span><a name="line-37"></a><span>  </span><span class="hs-special">`</span><span class="hs-identifier">TsPeriod</span><span class="hs-special">`</span><span> </span><span class="hs-special">(</span><span class="hs-string">&quot;time series period&quot;</span><span class="hs-special">)</span><span> </span><span class="hs-identifier">which</span><span> </span><span class="hs-identifier">is</span><span> </span><span class="hs-identifier">something</span><span> </span><span class="hs-identifier">like</span><span> </span><span class="hs-special">`</span><span class="hs-identifier">Year</span><span class="hs-special">`</span><span class="hs-special">,</span><span> </span><span class="hs-special">`</span><span class="hs-identifier">Quarter</span><span class="hs-special">`</span><span class="hs-special">,</span><span>
+</span><a name="line-38"></a><span>  </span><span class="hs-special">`</span><span class="hs-identifier">Month</span><span class="hs-special">`</span><span class="hs-special">,</span><span> </span><span class="hs-identifier">or</span><span> </span><span class="hs-special">`</span><span class="hs-identifier">Day</span><span class="hs-special">`</span><span class="hs-operator">.</span><span> </span><span class="hs-identifier">This</span><span> </span><span class="hs-identifier">becomes</span><span> </span><span class="hs-identifier">part</span><span> </span><span class="hs-keyword">of</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-keyword">type</span><span> </span><span class="hs-keyword">of</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">time</span><span> </span><span class="hs-identifier">series</span><span> </span><span class="hs-identifier">so</span><span> </span><span class="hs-identifier">you</span><span>
+</span><a name="line-39"></a><span>  </span><span class="hs-identifier">can</span><span> </span><span class="hs-identifier">track</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">_shape_</span><span> </span><span class="hs-keyword">of</span><span> </span><span class="hs-identifier">your</span><span> </span><span class="hs-keyword">data</span><span class="hs-operator">.</span><span>
+</span><a name="line-40"></a><span>
+</span><a name="line-41"></a><span>  </span><span class="hs-number">2</span><span class="hs-operator">.</span><span> </span><span class="hs-identifier">The</span><span> </span><span class="hs-identifier">summary</span><span> </span><span class="hs-keyword">data</span><span> </span><span class="hs-identifier">for</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">time</span><span> </span><span class="hs-identifier">series</span><span class="hs-operator">.</span><span> </span><span class="hs-identifier">This</span><span> </span><span class="hs-identifier">includes</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">total</span><span> </span><span class="hs-keyword">of</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">entire</span><span>
+</span><a name="line-42"></a><span>  </span><span class="hs-identifier">time</span><span> </span><span class="hs-identifier">series</span><span> </span><span class="hs-identifier">and</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">mean</span><span> </span><span class="hs-keyword">of</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">constituent</span><span> </span><span class="hs-identifier">pieces</span><span class="hs-operator">.</span><span>
+</span><a name="line-43"></a><span>
+</span><a name="line-44"></a><span>  </span><span class="hs-number">3</span><span class="hs-operator">.</span><span> </span><span class="hs-identifier">The</span><span> </span><span class="hs-identifier">subparts</span><span> </span><span class="hs-keyword">of</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">time</span><span> </span><span class="hs-identifier">series</span><span class="hs-operator">.</span><span> </span><span class="hs-identifier">If</span><span> </span><span class="hs-identifier">you</span><span> </span><span class="hs-identifier">have</span><span> </span><span class="hs-identifier">a</span><span> </span><span class="hs-identifier">year's</span><span> </span><span class="hs-identifier">worth</span><span> </span><span class="hs-keyword">of</span><span> </span><span class="hs-keyword">data</span><span> </span><span class="hs-identifier">at</span><span> </span><span class="hs-identifier">the</span><span>
+</span><a name="line-45"></a><span>  </span><span class="hs-identifier">resolution</span><span> </span><span class="hs-keyword">of</span><span> </span><span class="hs-identifier">a</span><span> </span><span class="hs-identifier">quarter</span><span> </span><span class="hs-keyword">then</span><span> </span><span class="hs-identifier">your</span><span> </span><span class="hs-identifier">top</span><span> </span><span class="hs-identifier">level</span><span> </span><span class="hs-identifier">time</span><span> </span><span class="hs-identifier">series</span><span> </span><span class="hs-identifier">will</span><span> </span><span class="hs-identifier">be</span><span> </span><span class="hs-identifier">for</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">year</span><span>
+</span><a name="line-46"></a><span>  </span><span class="hs-identifier">and</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">subparts</span><span> </span><span class="hs-identifier">will</span><span> </span><span class="hs-identifier">be</span><span> </span><span class="hs-identifier">timeseries</span><span> </span><span class="hs-identifier">for</span><span> </span><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">quarter</span><span class="hs-operator">.</span><span>
+</span><a name="line-47"></a><span>
+</span><a name="line-48"></a><span class="hs-identifier">Note</span><span class="hs-glyph">:</span><span> </span><span class="hs-identifier">The</span><span> </span><span class="hs-special">`</span><span class="hs-identifier">TsPeriod</span><span class="hs-special">`</span><span> </span><span class="hs-keyword">type</span><span> </span><span class="hs-identifier">is</span><span> </span><span class="hs-identifier">used</span><span> </span><span class="hs-identifier">a</span><span> </span><span class="hs-identifier">bit</span><span> </span><span class="hs-identifier">differently</span><span> </span><span class="hs-keyword">in</span><span> </span><span class="hs-identifier">different</span><span> </span><span class="hs-identifier">contexts</span><span class="hs-operator">.</span><span> </span><span class="hs-identifier">In</span><span>
+</span><a name="line-49"></a><span class="hs-identifier">the</span><span> </span><span class="hs-identifier">constructor</span><span> </span><span class="hs-identifier">below</span><span> </span><span class="hs-identifier">you'll</span><span> </span><span class="hs-identifier">see</span><span> </span><span class="hs-identifier">it</span><span> </span><span class="hs-identifier">used</span><span> </span><span class="hs-identifier">with</span><span> </span><span class="hs-identifier">a</span><span> </span><span class="hs-identifier">prefixed</span><span> </span><span class="hs-identifier">capitol</span><span> </span><span class="hs-special">`</span><span class="hs-identifier">S</span><span class="hs-special">`</span><span> </span><span class="hs-identifier">and</span><span> </span><span class="hs-keyword">in</span><span>
+</span><a name="line-50"></a><span class="hs-keyword">type</span><span> </span><span class="hs-identifier">signatures</span><span> </span><span class="hs-identifier">you'll</span><span> </span><span class="hs-identifier">see</span><span> </span><span class="hs-identifier">it</span><span> </span><span class="hs-identifier">prefixed</span><span> </span><span class="hs-identifier">with</span><span> </span><span class="hs-identifier">a</span><span> </span><span class="hs-identifier">single</span><span> </span><span class="hs-identifier">quote</span><span> </span><span class="hs-special">`</span><span class="hs-char">'`.
+
+So, without further ado let's build a time series for a year's worth of profits.
+
+\begin{code}
+yearByQuarterConstructor :: TimeSeries '[ 'Year, 'Quarter ]
+yearByQuarterConstructor =
+    TimeSeries SYear defaultSummary
+        (Subparts . Just $ [ TimeSeries SQuarter (summaryWithTotal 10) (Subparts Nothing)
+                           , TimeSeries SQuarter (summaryWithTotal 20) (Subparts Nothing)
+                           , TimeSeries SQuarter (summaryWithTotal 30) (Subparts Nothing)
+                           , TimeSeries SQuarter (summaryWithTotal 15) (Subparts Nothing)
+                           ])
+\end{code}
+
+As you can imagine this would get very tedious, especially when you just want to
+provide raw totals for the leaves. To simplify this we provide the `raw`
+function so the above can be replaced with:
+
+\begin{code}
+yearByQuarterRaw :: TimeSeries '[ 'Year, 'Quarter ]
+yearByQuarterRaw =
+    TimeSeries SYear defaultSummary
+        (Subparts . Just $ [ raw 10
+                           , raw 20
+                           , raw 30
+                           , raw 15
+                           ])
+\end{code}
+
+
+This is much better than the original `yearByQuarterConstructor` above, but we
+still have quite a bit of boilerplate when we just want to provide raw leaf
+data. We can eliminate the boilerplate completely by using the `fromParts`
+function:
+
+\begin{code}
+yearByQuarter :: TimeSeries '[ 'Year, 'Quarter ]
+yearByQuarter = fromParts [ raw 10, raw 20, raw 30, raw 15 ]
+\end{code}
+
+Much better! The `fromParts` and `raw` utilities allow you to construct a
+`TimeSeries` of any type, you just need to add the type signature to pin down
+the concrete type of your data.
+
+
+*More Complex Time Series*
+
+We can construct time series with more than two components, for example a years
+worth of data broken down by quarter and again by month. We'll be using the
+`raw` and `fromParts` functions we introduced above.
+
+\begin{code}
+yearByQuarterByMonth :: TimeSeries '[ 'Year, 'Quarter, 'Month ]
+yearByQuarterByMonth =
+    fromParts
+        [ fromParts [ raw 10, raw 15, raw 20 ]
+        , fromParts [ raw 20, raw 40, raw 40 ]
+        , fromParts [ raw 42, raw 50, raw 45 ]
+        , fromParts [ raw 42, raw 42, raw 42 ]
+        ]
+\end{code}
+
+
+Aggregating Time Series
+---------------------
+
+Note: Not much here yet.
+
+Lets aggregate the totals across our first time series:
+
+\begin{code}
+yearByQuarterTotal :: TimeSeries '[ 'Year, 'Quarter ]
+yearByQuarterTotal = computeTotal yearByQuarter
+\end{code}
+
+This will update the top level total in the `SummaryData` of our time series by
+summing the totals of the constituent parts.
+
+
+    &#955;&gt; computeTotal yearByQuarter
+    TimeSeries SYear (SummaryData {sdtotal = Just 75.0, ... }) ...
+
+
+We can do the same thing for our `yearByQuarterByMonth` timeseries. This
+function works for an arbitrarily nested time series.
+
+
+Analyzing Time Series
+---------------------
+
+One of the benefits of representing time series this way is we can ensure that
+only semantically valid analysis can be performed. For example, it makes no
+sense to compare two time series together if their data are different
+shapes. Luckily we can encode these requirements in the type.
+
+Lets look at a function that requires that the shape of both time series is the
+same:
+
+\begin{code}
+analyze :: TimeSeries parts -&gt; TimeSeries parts -&gt; Bool
+analyze _l _r =  True
+\end{code}
+
+Now, this is a trivial function but the important part to note is the type
+signature. Both arguments to the function must have the type `TimeSeries parts`
+which means that the `parts` must be the same. So, the following would be valid:
+
+\begin{code}
+analyzeYearByQuarter :: Bool
+analyzeYearByQuarter = analyze yearByQuarterConstructor yearByQuarter
+\end{code}
+
+But the following will fail to compile:
+
+\begin{code}
+-- Note: `yearByQuarter` defined above.
+-- yearByQuarter :: TimeSeries '[ 'Year, 'Quarter ]
+-- yearByQuarter = fromParts [ raw 10, raw 20, raw 30, raw 15 ]
+
+quarterByMonth :: TimeSeries '[ 'Quarter, 'Month ]
+quarterByMonth = fromParts [ raw 100, raw 200, raw 201, raw 404 ]
+
+-- brokenAnalyzeTwoDifferentTimeSeries = analyze yearByQuarter quarterByMonth
+\end{code}
+
+This will fail to compile with the following warning:
+
+
+    Couldn't match type &#8216;'Quarter&#8217; with &#8216;'Year&#8217;
+    Expected type: TimeSeries '['Year, 'Quarter]
+      Actual type: TimeSeries '['Quarter, 'Month]
+    In the second argument of &#8216;analyze&#8217;, namely &#8216;quarterByMonth&#8217;
+
+
+It very clearly says that it was expecting the second argument to analyze,
+namely `quarterByMonth` to have the type `TimeSeries '[ 'Year, 'Quarter ]` but
+you gave it a timeseries of a different type.
+
+
+*Partial Commonality*
+
+Now, if we were restricted to only analyzing time series of the same type we
+wouldn't be able to do much. Some analysis only requires that the total time
+period be the same. For example, if we wanted to see which year had higher
+profits we could write the following analysis function:
+
+\begin{code}
+hasHigherProfitsThan :: TimeSeries (a ': restl) -&gt; TimeSeries (a ': restr) -&gt; Bool
+hasHigherProfitsThan l r =
+    let
+        lProfits = fromMaybe 0 . sdtotal . getSD . computeTotal $ l
+        rProfits = fromMaybe 0 . sdtotal . getSD . computeTotal $ r
+    in
+        lProfits &gt; rProfits
+\end{code}
+
+Once again the key is the type signature, we say the two arguments to this
+function must both be `TimeSeries` with the condition that their first
+resolution is the same. So we can pass two `Year` time series, or two `Quarter`
+time series, but not a `Year` time series and a `Quarter` time series. This
+means that the following is a valid analysis:
+
+\begin{code}
+yearA :: TimeSeries '[ 'Year ]
+yearA = raw 100
+
+yearB :: TimeSeries '[ 'Year, 'Quarter ]
+yearB = fromParts [ raw 20, raw 20, raw 10, raw 30 ]
+
+aHigherThanB :: Bool
+aHigherThanB = yearA `hasHigherProfitsThan` yearB
+\end{code}
+
+But this one is not:
+
+\begin{code}
+yearC :: TimeSeries '[ 'Year ]
+yearC = raw 1000
+
+quarterA :: TimeSeries '[ 'Quarter ]
+quarterA = raw 500
+
+-- yearAndQuarterComp = yearC `hasHigherProfitsThan` quarterA
+\end{code}
+
+
+We can do the same to ensure the time series match up to any level of resolution.
+
+\begin{code}
+analyzeSeries ::
+    TimeSeries (l ': a ': restl)
+    -&gt; TimeSeries (r ': a ': restr)
+    -&gt; Bool
+analyzeSeries _l _r = True
+\end{code}
+
+</span></pre></body></html>
