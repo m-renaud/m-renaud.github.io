@@ -1,0 +1,697 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Sequences &mdash; containers 0.5.10 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="containers 0.5.10 documentation" href="index.html"/>
+        <link rel="prev" title="Maps" href="map.html"/> 
+
+  
+  <script src="static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> containers
+          
+
+          
+            
+            <img src="static/haskell-logo-black.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="set.html">Sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="map.html">Maps</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sequences</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#importing-sequence">Importing Sequence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#common-api-functions">Common API Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#construction-and-conversion">Construction and Conversion</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-an-empty-sequence">Create an empty sequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-a-sequence-with-one-element-singleton">Create a sequence with one element (singleton)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-a-sequence-with-the-same-element-repeated">Create a sequence with the same element repeated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-a-sequence-from-a-list">Create a sequence from a list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-to-an-existing-sequence">Adding to an existing sequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-a-list-from-a-sequence">Create a list from a sequence</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#querying">Querying</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#check-if-a-sequence-is-empty">Check if a sequence is empty</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-length-size-of-a-sequence">The length/size of a sequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-element-at-a-given-index">The element at a given index</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modification">Modification</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#inserting-an-element">Inserting an element</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#replace-an-element">Replace an element</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adjust-modify-an-element">Adjust/modify an element</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-an-element">Delete an element</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sorting">Sorting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subsequences">Subsequences</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#take">Take</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#drop">Drop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chunks">Chunks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#typeclass-instances">Typeclass Instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#serialization">Serialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance">Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#looking-for-more">Looking for more?</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">containers</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Sequences</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/haskell/containers/blob/master/docs/sequence.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sequences">
+<h1>Sequences<a class="headerlink" href="#sequences" title="Permalink to this headline">¶</a></h1>
+<p>Sequences allow you to store a finite number of sequential elements, they are
+similar to deques (double ended queues) or vectors in other languages. They
+support efficient prepending, appending, and range construction. The relevant
+module from the <code class="docutils literal"><span class="pre">containers</span></code> package is <a class="reference external" href="http://hackage.haskell.org/package/containers/docs/Data-Sequence.html">Data.Sequence</a>.</p>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>The following GHCi session shows some of the basic sequence funcitonality:</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="c1">-- Import the Seq type and operators for combining sequences unqualified.</span>
+<span class="c1">-- Import the rest of the Sequence module qualified.</span>
+<span class="kr">import</span> <span class="nn">Data.Sequence</span> <span class="p">(</span><span class="kt">Seq</span><span class="p">(</span><span class="o">..</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;|</span><span class="p">),</span> <span class="p">(</span><span class="o">|&gt;</span><span class="p">),</span> <span class="p">(</span><span class="o">&gt;&lt;</span><span class="p">))</span>
+<span class="kr">import</span> <span class="k">qualified</span> <span class="nn">Data.Sequence</span> <span class="k">as</span> <span class="n">Seq</span>
+
+<span class="kr">let</span> <span class="n">nums</span> <span class="ow">=</span> <span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+
+<span class="c1">-- Put numbers on the front and back.</span>
+<span class="mi">0</span> <span class="o">&lt;|</span> <span class="n">nums</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="nf">nums</span> <span class="o">|&gt;</span> <span class="mi">4</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+
+
+<span class="c1">-- Put two sequences together.</span>
+<span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;&lt;</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+
+
+<span class="c1">-- Check if a sequence is empty and check the length.</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">null</span> <span class="n">nums</span>
+<span class="o">&gt;</span> <span class="kt">False</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">length</span> <span class="n">nums</span>
+<span class="o">&gt;</span> <span class="mi">3</span>
+
+
+<span class="c1">-- Lookup an element at a certain index (since version 0.4.8).</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">lookup</span> <span class="mi">2</span> <span class="n">nums</span>
+<span class="o">&gt;</span> <span class="kt">Just</span> <span class="mi">3</span>
+
+<span class="c1">-- Or the unsafe version, you MUST check length beforehand.</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">index</span> <span class="mi">2</span> <span class="n">nums</span>
+<span class="o">&gt;</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="importing-sequence">
+<h2>Importing Sequence<a class="headerlink" href="#importing-sequence" title="Permalink to this headline">¶</a></h2>
+<p>When using <code class="docutils literal"><span class="pre">Sequence</span></code> in a Haskell source file you should always use a
+<code class="docutils literal"><span class="pre">qualified</span></code> import becasue it exports names that clash with the standard
+Prelude (you can import the type constructor and some operators on their own
+though!).</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nn">Data.Sequence</span> <span class="p">(</span><span class="kt">Seq</span><span class="p">(</span><span class="o">..</span><span class="p">),</span> <span class="p">(</span><span class="o">&lt;|</span><span class="p">),</span> <span class="p">(</span><span class="o">|&gt;</span><span class="p">),</span> <span class="p">(</span><span class="o">&gt;&lt;</span><span class="p">))</span>
+<span class="kr">import</span> <span class="k">qualified</span> <span class="nn">Data.Sequence</span> <span class="k">as</span> <span class="n">Seq</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="common-api-functions">
+<h2>Common API Functions<a class="headerlink" href="#common-api-functions" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal"><span class="pre">fromList</span> <span class="pre">[some,sequence,elements]</span></code> is how a <code class="docutils literal"><span class="pre">Seq</span></code> is printed.</p>
+</div>
+<div class="section" id="construction-and-conversion">
+<h3>Construction and Conversion<a class="headerlink" href="#construction-and-conversion" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="create-an-empty-sequence">
+<h4>Create an empty sequence<a class="headerlink" href="#create-an-empty-sequence" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">empty</span> <span class="ow">::</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">empty</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Creates a sequence with zero elements.</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">empty</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="kt">[]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-a-sequence-with-one-element-singleton">
+<h4>Create a sequence with one element (singleton)<a class="headerlink" href="#create-a-sequence-with-one-element-singleton" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">singleton</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">singleton</span> <span class="n">x</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Creates a sequence with the single element <code class="docutils literal"><span class="pre">x</span></code> in it.</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">singleton</span> <span class="s">&quot;containers&quot;</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;containers&quot;</span><span class="p">]</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">singleton</span> <span class="mi">1</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-a-sequence-with-the-same-element-repeated">
+<h4>Create a sequence with the same element repeated<a class="headerlink" href="#create-a-sequence-with-the-same-element-repeated" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">replicate</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">replicate</span> <span class="n">n</span> <span class="n">x</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Creates a sequence with same element <code class="docutils literal"><span class="pre">x</span></code> repeated <code class="docutils literal"><span class="pre">n</span></code> times.</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">replicate</span> <span class="mi">0</span> <span class="s">&quot;hi&quot;</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="kt">[]</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">replicate</span> <span class="mi">3</span> <span class="s">&quot;hi&quot;</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;hi&quot;</span><span class="p">,</span><span class="s">&quot;hi&quot;</span><span class="p">,</span><span class="s">&quot;hi&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-a-sequence-from-a-list">
+<h4>Create a sequence from a list<a class="headerlink" href="#create-a-sequence-from-a-list" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="kt">FromList</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Creates a sequence containing the elements of the list <code class="docutils literal"><span class="pre">xs</span></code>. Sequences allow
+duplicate so all elements will be included in the order given.</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;base&quot;</span><span class="p">,</span> <span class="s">&quot;containers&quot;</span><span class="p">,</span> <span class="s">&quot;QuickCheck&quot;</span><span class="p">]</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;base&quot;</span><span class="p">,</span><span class="s">&quot;containers&quot;</span><span class="p">,</span><span class="s">&quot;QuickCheck&quot;</span><span class="p">]</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-to-an-existing-sequence">
+<h4>Adding to an existing sequence<a class="headerlink" href="#adding-to-an-existing-sequence" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="p">(</span><span class="o">&lt;|</span><span class="p">)</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="nf">x</span> <span class="o">&lt;|</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+
+<span class="p">(</span><span class="o">|&gt;</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="nf">xs</span> <span class="o">|&gt;</span> <span class="n">x</span> <span class="ow">=</span> <span class="o">...</span>
+
+<span class="p">(</span><span class="o">&gt;&lt;</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="nf">l</span> <span class="o">&gt;&lt;</span> <span class="n">r</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">x</span> <span class="pre">&lt;|</span> <span class="pre">xs</span></code> places the element <code class="docutils literal"><span class="pre">x</span></code> at the beginning of the sequence <code class="docutils literal"><span class="pre">xs</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">xs</span> <span class="pre">|&gt;</span> <span class="pre">x</span></code> places the element <code class="docutils literal"><span class="pre">x</span></code> at the end of the sequence <code class="docutils literal"><span class="pre">xs</span></code></li>
+<li><code class="docutils literal"><span class="pre">l</span> <span class="pre">&gt;&lt;</span> <span class="pre">r</span></code> combines the two sequences <code class="docutils literal"><span class="pre">l</span></code> and <code class="docutils literal"><span class="pre">r</span></code> together.</li>
+</ul>
+</div>
+<div class="section" id="create-a-list-from-a-sequence">
+<h4>Create a list from a sequence<a class="headerlink" href="#create-a-list-from-a-sequence" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="nf">foldr</span> <span class="p">(</span><span class="kt">:</span><span class="p">)</span> <span class="kt">[]</span> <span class="ow">::</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>There is no <code class="docutils literal"><span class="pre">toList</span></code> function in the Sequence module since it can be
+<a class="reference external" href="https://wiki.haskell.org/Foldable_and_Traversable">easily implemented</a> with a
+fold using <code class="docutils literal"><span class="pre">Seq</span></code>’s <a class="reference external" href="https://wiki.haskell.org/Typeclassopedia#Foldable">Foldable</a> instance.</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="nf">foldr</span> <span class="p">(</span><span class="kt">:</span><span class="p">)</span> <span class="kt">[]</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;base&quot;</span><span class="p">,</span> <span class="s">&quot;containers&quot;</span><span class="p">,</span> <span class="s">&quot;QuickCheck&quot;</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="p">[</span><span class="s">&quot;base&quot;</span><span class="p">,</span><span class="s">&quot;containers&quot;</span><span class="p">,</span><span class="s">&quot;QuickCheck&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="querying">
+<h3>Querying<a class="headerlink" href="#querying" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="check-if-a-sequence-is-empty">
+<h4>Check if a sequence is empty<a class="headerlink" href="#check-if-a-sequence-is-empty" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span> <span class="kt">Seq</span><span class="o">.</span><span class="n">null</span> <span class="ow">::</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
+ <span class="kt">Seq</span><span class="o">.</span><span class="n">null</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+
+<span class="kt">Returns</span> <span class="p">``</span><span class="kt">True</span><span class="p">``</span> <span class="kr">if</span> <span class="n">the</span> <span class="n">sequence</span> <span class="p">``</span><span class="n">xs</span><span class="p">``</span> <span class="n">is</span> <span class="n">empty</span><span class="p">,</span> <span class="p">``</span><span class="kt">False</span><span class="p">``</span> <span class="n">otherwise</span><span class="o">.</span>
+</pre></div>
+</div>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">null</span> <span class="kt">Seq</span><span class="o">.</span><span class="n">empty</span>
+<span class="o">&gt;</span> <span class="kt">True</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">null</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="kt">False</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-length-size-of-a-sequence">
+<h4>The length/size of a sequence<a class="headerlink" href="#the-length-size-of-a-sequence" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">length</span> <span class="ow">::</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Int</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">length</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Returns the length of the sequence <code class="docutils literal"><span class="pre">xs</span></code>.</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">length</span> <span class="kt">Seq</span><span class="o">.</span><span class="n">empty</span>
+<span class="o">&gt;</span> <span class="mi">0</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">size</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-element-at-a-given-index">
+<h4>The element at a given index<a class="headerlink" href="#the-element-at-a-given-index" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">lookup</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">lookup</span> <span class="n">n</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+
+<span class="kt">Seq</span><span class="o">.!?</span> <span class="ow">::</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span>
+<span class="nf">xs</span> <span class="p">`</span><span class="kt">Seq</span><span class="o">.!?</span><span class="p">`</span> <span class="n">n</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Returns the element at the position <code class="docutils literal"><span class="pre">n</span></code>, <code class="docutils literal"><span class="pre">Nothing</span></code> if the index is out of
+bounds. <code class="docutils literal"><span class="pre">!?</span></code> is simply a flipped version of <code class="docutils literal"><span class="pre">lookup</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">Seq.index</span> <span class="pre">::</span> <span class="pre">Seq</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">Int</span> <span class="pre">-&gt;</span> <span class="pre">a</span></code></p>
+<p>Returns the element at the given position, throws a runtime <code class="docutils literal"><span class="pre">error</span></code> if the
+index is out of bounds.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Use <code class="docutils literal"><span class="pre">lookup</span></code>/<code class="docutils literal"><span class="pre">!?</span></code> whenever you can and explicitly deal with the
+<code class="docutils literal"><span class="pre">Nothing</span></code> case.</p>
+</div>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;base&quot;</span><span class="p">,</span> <span class="s">&quot;containers&quot;</span><span class="p">])</span> <span class="kt">Seq</span><span class="o">.!?</span> <span class="mi">0</span>
+<span class="o">&gt;</span> <span class="kt">Just</span> <span class="s">&quot;base&quot;</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">index</span> <span class="mi">0</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;base&quot;</span><span class="p">,</span> <span class="s">&quot;containers&quot;</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="s">&quot;base&quot;</span>
+
+<span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;base&quot;</span><span class="p">,</span> <span class="s">&quot;containers&quot;</span><span class="p">])</span> <span class="kt">Seq</span><span class="o">.!?</span> <span class="mi">2</span>
+<span class="o">&gt;</span> <span class="kt">Nothing</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">index</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;base&quot;</span><span class="p">,</span> <span class="s">&quot;containers&quot;</span><span class="p">])</span> <span class="mi">2</span>
+<span class="o">&gt;</span> <span class="s">&quot;*** Exception: index out of bounds</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="modification">
+<h3>Modification<a class="headerlink" href="#modification" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="inserting-an-element">
+<h4>Inserting an element<a class="headerlink" href="#inserting-an-element" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">insertAt</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">insertAt</span> <span class="n">i</span> <span class="n">x</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Inserts <code class="docutils literal"><span class="pre">x</span></code> into <code class="docutils literal"><span class="pre">xs</span></code> at the index <code class="docutils literal"><span class="pre">i</span></code>, shifting the rest of the sequence
+over.</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">insertAt</span> <span class="mi">0</span> <span class="s">&quot;idris&quot;</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;haskell&quot;</span><span class="p">,</span> <span class="s">&quot;rust&quot;</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;idris&quot;</span><span class="p">,</span><span class="s">&quot;haskell&quot;</span><span class="p">,</span><span class="s">&quot;rust&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>See also <a class="reference internal" href="#adding-to-an-existing-sequence">Adding to an existing sequence</a>.</p>
+</div>
+<div class="section" id="replace-an-element">
+<h4>Replace an element<a class="headerlink" href="#replace-an-element" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">update</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">update</span> <span class="n">i</span> <span class="n">x</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Replaces the element at position <code class="docutils literal"><span class="pre">i</span></code> in the sequence with <code class="docutils literal"><span class="pre">x</span></code>. If the index
+is out of bounds then the original sequence is returned.</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">update</span> <span class="mi">0</span> <span class="s">&quot;hello&quot;</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;hi&quot;</span><span class="p">,</span> <span class="s">&quot;world&quot;</span><span class="p">,</span> <span class="s">&quot;!&quot;</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;hello&quot;</span><span class="p">,</span><span class="s">&quot;world&quot;</span><span class="p">,</span><span class="s">&quot;!&quot;</span><span class="p">]</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">update</span> <span class="mi">3</span> <span class="s">&quot;OUTOFBOUNDS&quot;</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;hi&quot;</span><span class="p">,</span> <span class="s">&quot;world&quot;</span><span class="p">,</span> <span class="s">&quot;!&quot;</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;hi&quot;</span><span class="p">,</span><span class="s">&quot;world&quot;</span><span class="p">,</span><span class="s">&quot;!&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adjust-modify-an-element">
+<h4>Adjust/modify an element<a class="headerlink" href="#adjust-modify-an-element" title="Permalink to this headline">¶</a></h4>
+<p><em>Since version 0.5.8</em></p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="nf">adjust&#39;</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="nf">adjust</span> <span class="n">f</span> <span class="n">i</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Updates the element at position <code class="docutils literal"><span class="pre">i</span></code> in the sequence by applying the function
+<code class="docutils literal"><span class="pre">f</span></code> to the existing element. If the index is out of bounds then the original
+sequence is returned.</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">adjust&#39;</span> <span class="p">(</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span> <span class="mi">0</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">adjust</span> <span class="p">(</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span> <span class="mi">3</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you’re using an older version of containers which only has <code class="docutils literal"><span class="pre">adjust</span></code>, be
+careful because it can lead to <a class="reference external" href="http://hackage.haskell.org/package/containers-0.5.10.2/docs/Data-Sequence.html#v:adjust">poor performance and space leaks</a>.</p>
+</div>
+</div>
+<div class="section" id="delete-an-element">
+<h4>Delete an element<a class="headerlink" href="#delete-an-element" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="nf">deleteAt</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="nf">deleteAt</span> <span class="n">i</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Deletes the element of the sequence at index <code class="docutils literal"><span class="pre">i</span></code>.</p>
+</div>
+</div>
+<div class="section" id="sorting">
+<h3>Sorting<a class="headerlink" href="#sorting" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="nf">sort</span> <span class="ow">::</span> <span class="kt">Ord</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="nf">sort</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Sorts the sequence <code class="docutils literal"><span class="pre">xs</span></code> using the <code class="docutils literal"><span class="pre">Ord</span></code> instance.</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">sort</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="s">&quot;b&quot;</span><span class="p">,</span><span class="s">&quot;c&quot;</span><span class="p">,</span><span class="s">&quot;x&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="subsequences">
+<h3>Subsequences<a class="headerlink" href="#subsequences" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="take">
+<h4>Take<a class="headerlink" href="#take" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">take</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">take</span> <span class="n">n</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Returns the first <code class="docutils literal"><span class="pre">n</span></code> elements of the sequence <code class="docutils literal"><span class="pre">xs</span></code>. If the length of <code class="docutils literal"><span class="pre">xs</span></code>
+is less than <code class="docutils literal"><span class="pre">n</span></code> then all elements are returned.</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">take</span> <span class="mi">0</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="kt">[]</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">take</span> <span class="mi">2</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">take</span> <span class="mi">5</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="drop">
+<h4>Drop<a class="headerlink" href="#drop" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">drop</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">drop</span> <span class="n">n</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Drops the first <code class="docutils literal"><span class="pre">n</span></code> elements of the sequence <code class="docutils literal"><span class="pre">xs</span></code>. If the length of <code class="docutils literal"><span class="pre">xs</span></code>
+is less than <code class="docutils literal"><span class="pre">n</span></code> then an empty sequence is returned.</p>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">drop</span> <span class="mi">0</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">drop</span> <span class="mi">2</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">drop</span> <span class="mi">5</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="kt">[]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="chunks">
+<h4>Chunks<a class="headerlink" href="#chunks" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="kt">Seq</span><span class="o">.</span><span class="n">chunksOf</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Seq</span> <span class="p">(</span><span class="kt">Seq</span> <span class="n">a</span><span class="p">)</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">chunksOf</span> <span class="n">k</span> <span class="n">xs</span> <span class="ow">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>Splits the sequence <code class="docutils literal"><span class="pre">xs</span></code> into chunks of size <code class="docutils literal"><span class="pre">k</span></code>. If the length of the
+sequence is not divisible by <code class="docutils literal"><span class="pre">k</span></code> then the last chunk will have less than <code class="docutils literal"><span class="pre">k</span></code>
+elements.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><code class="docutils literal"><span class="pre">k</span></code> can only be <code class="docutils literal"><span class="pre">0</span></code> when the sequence is empty, otherwise a runtime
+<code class="docutils literal"><span class="pre">error</span></code> is thrown.</p>
+</div>
+<div class="highlight-haskell"><div class="highlight"><pre><span></span><span class="c1">-- A chunk size of 0 can ONLY be given for an empty sequence.</span>
+<span class="kt">Seq</span><span class="o">.</span><span class="n">chunksOf</span> <span class="mi">0</span> <span class="kt">Seq</span><span class="o">.</span><span class="n">empty</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="kt">[]</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">chunksOf</span> <span class="mi">1</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">3</span><span class="p">]]</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">chunksOf</span> <span class="mi">2</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">3</span><span class="p">]]</span>
+
+<span class="kt">Seq</span><span class="o">.</span><span class="n">chunksOf</span> <span class="mi">5</span> <span class="p">(</span><span class="kt">Seq</span><span class="o">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;</span> <span class="n">fromList</span> <span class="p">[</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="typeclass-instances">
+<h2>Typeclass Instances<a class="headerlink" href="#typeclass-instances" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">Seq</span></code> is an instance of a number of common typeclasses, for the full list see
+the <a class="reference external" href="http://hackage.haskell.org/package/containers-0.5.10.2/docs/Data-Sequence.html#t:Seq">docs</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Some constraints have been left out for brevity, and the types given below
+are speciliazed to <code class="docutils literal"><span class="pre">Seq</span></code>; the true types are more general.</p>
+</div>
+<ul class="simple">
+<li><a class="reference external" href="http://hackage.haskell.org/package/base-4.10.1.0/docs/Prelude.html#t:Show">Show</a> -
+conversion to string: <code class="docutils literal"><span class="pre">show</span> <span class="pre">::</span> <span class="pre">Seq</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">String</span></code></li>
+<li><a class="reference external" href="http://hackage.haskell.org/package/base-4.10.1.0/docs/Prelude.html#t:Eq">Eq</a> -
+equality check: <code class="docutils literal"><span class="pre">(==)</span> <span class="pre">::</span> <span class="pre">Seq</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">Seq</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">Bool</span></code></li>
+<li><a class="reference external" href="http://hackage.haskell.org/package/base-4.10.1.0/docs/Prelude.html#t:Ord">Ord</a> -
+comparison: <code class="docutils literal"><span class="pre">(&lt;)</span> <span class="pre">::</span> <span class="pre">Seq</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">Seq</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">Bool</span></code></li>
+<li><a class="reference external" href="https://wiki.haskell.org/Typeclassopedia#Foldable">Foldable</a> - collapse
+into summary value: <code class="docutils literal"><span class="pre">foldr</span> <span class="pre">::</span> <span class="pre">(a</span> <span class="pre">-&gt;</span> <span class="pre">b</span> <span class="pre">-&gt;</span> <span class="pre">b)</span> <span class="pre">-&gt;</span> <span class="pre">b</span> <span class="pre">-&gt;</span> <span class="pre">Seq</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">b</span></code></li>
+<li><a class="reference external" href="https://wiki.haskell.org/Typeclassopedia#Semigroup">Semigroup</a> - combine
+two things together: <code class="docutils literal"><span class="pre">(&lt;&gt;)</span> <span class="pre">::</span> <span class="pre">Seq</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">Seq</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">Seq</span> <span class="pre">a</span></code></li>
+<li><a class="reference external" href="https://wiki.haskell.org/Typeclassopedia#Monoid">Monoid</a>  - a semigroup
+with an identity element: <code class="docutils literal"><span class="pre">mempty</span> <span class="pre">::</span> <span class="pre">Seq</span> <span class="pre">a</span></code></li>
+<li><a class="reference external" href="https://wiki.haskell.org/Typeclassopedia#Functor">Functor</a> - a container
+that can be mapped over: <code class="docutils literal"><span class="pre">fmap</span> <span class="pre">::</span> <span class="pre">(a</span> <span class="pre">-&gt;</span> <span class="pre">b)</span> <span class="pre">-&gt;</span> <span class="pre">Seq</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">Seq</span> <span class="pre">b</span></code></li>
+<li><a class="reference external" href="https://wiki.haskell.org/Typeclassopedia#Traversable">Traversable</a> - a
+functor with effects, follow the link :)</li>
+<li><a class="reference external" href="https://wiki.haskell.org/Typeclassopedia#Applicative">Applicative</a> - follow
+the link :)</li>
+<li><a class="reference external" href="https://wiki.haskell.org/Typeclassopedia#Monad">Monad</a> - follow
+the link :)</li>
+</ul>
+</div>
+<div class="section" id="serialization">
+<h2>Serialization<a class="headerlink" href="#serialization" title="Permalink to this headline">¶</a></h2>
+<p>The best way to serialize and deserialize sequences is to use one of the many
+libraries which already supports serializing sequences. <a class="reference external" href="https://hackage.haskell.org/package/binary">binary</a>, <a class="reference external" href="https://hackage.haskell.org/package/cereal">cereal</a>, and <a class="reference external" href="https://hackage.haskell.org/package/store">store</a> are some common libraries that
+people use.</p>
+</div>
+<div class="section" id="performance">
+<h2>Performance<a class="headerlink" href="#performance" title="Permalink to this headline">¶</a></h2>
+<p>The API docs are annotated with the Big-<em>O</em> complexities of each of the sequence
+operations. For benchmarks see the <a class="reference external" href="https://github.com/haskell-perf/sequences">haskell-perf/sequences</a> page.</p>
+</div>
+<div class="section" id="looking-for-more">
+<h2>Looking for more?<a class="headerlink" href="#looking-for-more" title="Permalink to this headline">¶</a></h2>
+<p>Didn’t find what you’re looking for? This tutorial only covered the most common
+sequence functions, for a full list of functions see the <a class="reference external" href="http://hackage.haskell.org/package/containers/docs/Data-Sequence.html">Sequence</a> API
+documentation.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="map.html" class="btn btn-neutral" title="Maps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Matt Renaud.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.5.10',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="static/jquery.js"></script>
+      <script type="text/javascript" src="static/underscore.js"></script>
+      <script type="text/javascript" src="static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

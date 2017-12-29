@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Introduction &mdash; containers 0.5.10 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="containers 0.5.10 documentation" href="index.html"/>
+        <link rel="next" title="Sets" href="set.html"/>
+        <link rel="prev" title="Haskell containers package" href="index.html"/> 
+
+  
+  <script src="static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> containers
+          
+
+          
+            
+            <img src="static/haskell-logo-black.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#provided-data-structures">Provided Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#related-packages">Related Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-and-using-the-containers-package">Installing and using the <code class="docutils literal"><span class="pre">containers</span></code> package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#version-requirements">Version Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#importing-container-modules">Importing <code class="docutils literal"><span class="pre">container</span></code> modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#in-ghci">In GHCi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#in-a-cabal-project">In a Cabal project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#in-a-stack-project">In a Stack project</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="set.html">Sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="map.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sequence.html">Sequences</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">containers</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Introduction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/haskell/containers/blob/master/docs/intro.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal"><span class="pre">containers</span></code> package provides implementations of various immutable data
+structures.</p>
+<p>Some of the data structures provided by this package have a very large API
+surface (for better or worse). The docs here focus on the most common functions
+which should be more than enough to get you started. Once you know the basics,
+or if you’re looking for a specific function, you can head over to the
+<a class="reference external" href="https://hackage.haskell.org/package/containers">containers hackage page</a> to
+check out the full API documentation!</p>
+<div class="section" id="provided-data-structures">
+<h2>Provided Data Structures<a class="headerlink" href="#provided-data-structures" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="set.html"><span class="doc">Sets</span></a>: ordered, non-duplicated elements</li>
+<li><a class="reference internal" href="map.html"><span class="doc">Maps</span></a>: ordered maps from keys to values (aka. dictionaries)</li>
+<li><a class="reference internal" href="sequence.html"><span class="doc">Sequences</span></a>: finite sequence of elements, an efficient alternative to list</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You’ll need <code class="docutils literal"><span class="pre">containers</span> <span class="pre">&gt;=</span> <span class="pre">0.5.9</span></code> for a few of the examples. See
+<a class="reference internal" href="#version-requirements">Version Requirements</a> for info on how to check which version you have and
+how to upgrade.</p>
+</div>
+</div>
+<div class="section" id="related-packages">
+<h2>Related Packages<a class="headerlink" href="#related-packages" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://hackage.haskell.org/package/unordered-containers">unordered-containers</a> - containers
+using hashing instead of ordering.</li>
+<li><a class="reference external" href="https://hackage.haskell.org/package/array">array</a> - mutable and immutable
+arrays.</li>
+<li><a class="reference external" href="https://hackage.haskell.org/package/bytestring">bytestring</a> - compact,
+immutable bytestrings, useful for binary and 8-bit character data.</li>
+<li><a class="reference external" href="https://hackage.haskell.org/package/dlist">dlist</a> - difference lists with
+<em>O(1)</em> append, useful for efficient logging and pretty printing.</li>
+<li><a class="reference external" href="http://hackage.haskell.org/package/hashtables">hashtables</a> - mutable hash
+tables in the ST monad.</li>
+</ul>
+</div>
+<div class="section" id="installing-and-using-the-containers-package">
+<span id="installing"></span><h2>Installing and using the <code class="docutils literal"><span class="pre">containers</span></code> package<a class="headerlink" href="#installing-and-using-the-containers-package" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="version-requirements">
+<h3>Version Requirements<a class="headerlink" href="#version-requirements" title="Permalink to this headline">¶</a></h3>
+<p>For some of the examples you’ll need <code class="docutils literal"><span class="pre">containers</span> <span class="pre">&gt;=</span> <span class="pre">0.5.9</span></code> which ships with
+<code class="docutils literal"><span class="pre">GHC</span> <span class="pre">&gt;=</span> <span class="pre">8.2</span></code>. You can check to see which version you have installed with:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ghc</span><span class="o">-</span><span class="n">pkg</span> <span class="nb">list</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">containers</span>
+<span class="o">&gt;</span> <span class="n">containers</span><span class="o">-</span><span class="mf">0.5</span><span class="o">.</span><span class="mf">10.2</span>
+</pre></div>
+</div>
+<p>If you have an older version, don’t worry about it, the majority of the code
+works with older versions of the package. If you want, you can get version
+<code class="docutils literal"><span class="pre">0.5.10</span></code> with <a class="reference external" href="https://www.haskellstack.org">Stack</a> using <code class="docutils literal"><span class="pre">stack</span> <span class="pre">--resolver</span>
+<span class="pre">lts-10.0</span> <span class="pre">ghci</span></code>.</p>
+</div>
+<div class="section" id="importing-container-modules">
+<h3>Importing <code class="docutils literal"><span class="pre">container</span></code> modules<a class="headerlink" href="#importing-container-modules" title="Permalink to this headline">¶</a></h3>
+<p>All of the modules in <code class="docutils literal"><span class="pre">containers</span></code> should be imported <code class="docutils literal"><span class="pre">qualified</span></code> since they
+use names that conflict with the standard Prelude. See the instructions for <a class="reference internal" href="#in-ghci">In
+GHCi</a> below for an example.</p>
+</div>
+<div class="section" id="in-ghci">
+<h3>In GHCi<a class="headerlink" href="#in-ghci" title="Permalink to this headline">¶</a></h3>
+<p>Start the GHCi <a class="reference external" href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a> with
+<code class="docutils literal"><span class="pre">ghci</span></code> or <code class="docutils literal"><span class="pre">stack</span> <span class="pre">ghci</span></code>. Once the REPL is loaded all you need to do is import
+the modules you want to use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qualified</span> <span class="n">Data</span><span class="o">.</span><span class="n">Set</span> <span class="k">as</span> <span class="n">Set</span>
+<span class="kn">import</span> <span class="nn">qualified</span> <span class="n">Data</span><span class="o">.</span><span class="n">Map</span><span class="o">.</span><span class="n">Strict</span> <span class="k">as</span> <span class="n">Map</span>
+<span class="kn">import</span> <span class="nn">qualified</span> <span class="n">Data</span><span class="o">.</span><span class="n">Sequence</span> <span class="k">as</span> <span class="n">Seq</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="in-a-cabal-project">
+<h3>In a <a class="reference external" href="http://cabal.readthedocs.io">Cabal</a> project<a class="headerlink" href="#in-a-cabal-project" title="Permalink to this headline">¶</a></h3>
+<p>Add <code class="docutils literal"><span class="pre">containers</span></code> to the <code class="docutils literal"><span class="pre">build-depends:</span></code> stanza for your library,
+executable, or test-suite:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">library</span>
+    <span class="n">build</span><span class="o">-</span><span class="n">depends</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">&gt;=</span> <span class="mf">4.3</span> <span class="o">&amp;&amp;</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">containers</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="o">.</span><span class="mi">7</span> <span class="o">&amp;&amp;</span> <span class="o">&lt;</span> <span class="mf">0.6</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="in-a-stack-project">
+<h3>In a <a class="reference external" href="https://www.haskellstack.org">Stack</a> project<a class="headerlink" href="#in-a-stack-project" title="Permalink to this headline">¶</a></h3>
+<p>Same as a Cabal project, add the dependency to the the <code class="docutils literal"><span class="pre">build-depneds:</span></code>
+stanza.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">library</span>
+    <span class="n">build</span><span class="o">-</span><span class="n">depends</span><span class="p">:</span>
+        <span class="n">base</span><span class="p">,</span>
+        <span class="n">containers</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can omit the version range since Stackage snapshots have pre-defined
+versions.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="set.html" class="btn btn-neutral float-right" title="Sets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Haskell containers package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Matt Renaud.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.5.10',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="static/jquery.js"></script>
+      <script type="text/javascript" src="static/underscore.js"></script>
+      <script type="text/javascript" src="static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
