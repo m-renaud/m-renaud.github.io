@@ -1416,14 +1416,40 @@ tails :: Seq a -> Seq (Seq a)
 --   sharing.
 inits :: Seq a -> Seq (Seq a)
 
--- | &lt;math&gt;. <tt>chunksOf c xs</tt> splits <tt>xs</tt> into chunks of
---   size <tt>c&gt;0</tt>. If <tt>c</tt> does not divide the length of
---   <tt>xs</tt> evenly, then the last element of the result will be short.
+-- | <tt>chunksOf c xs</tt> splits <tt>xs</tt> into chunks of size
+--   <tt>c&gt;0</tt>.
 --   
---   Side note: the given performance bound is missing some messy terms
---   that only really affect edge cases. Performance degrades smoothly from
---   &lt;math&gt; (for &lt;math&gt;) to &lt;math&gt; (for &lt;math&gt;).
---   The true bound is more like &lt;math&gt;
+--   If <tt>c</tt> does not divide the length of <tt>xs</tt> evenly, then
+--   the last element of the result will have less than <tt>c</tt>
+--   elements.
+--   
+--   <i>Warning:</i> <tt>c</tt> can only be 0 when the sequence <tt>xs</tt>
+--   is empty, otherwise a runtime error is thrown.
+--   
+--   <i>Complexity:</i> &lt;math&gt;
+--   
+--   The given performance bound is missing some messy terms that only
+--   really affect edge cases. Performance degrades smoothly from
+--   &lt;math&gt; (for ( c = n )) to &lt;math&gt; (for &lt;math&gt;). The
+--   true bound is more like ( O Bigl( bigl(frac{n}{c} - 1bigr) (log (c +
+--   1)) + 1 Bigr) )
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   <pre>
+--   &gt;&gt;&gt; chunksOf 1 (Seq.fromList [1, 2, 3])
+--   fromList [fromList [1],fromList [2],fromList [3]]
+--   </pre>
+--   
+--   <pre>
+--   &gt;&gt;&gt; chunksOf 2 (Seq.fromList [1, 2, 3])
+--   fromList [fromList [1,2],fromList [3]]
+--   </pre>
+--   
+--   <pre>
+--   &gt;&gt;&gt; chunksOf 5 (Seq.fromList [1, 2, 3])
+--   fromList [fromList [1,2,3]]
+--   </pre>
 chunksOf :: Int -> Seq a -> Seq (Seq a)
 
 -- | &lt;math&gt; where &lt;math&gt; is the prefix length.
@@ -2058,14 +2084,40 @@ tails :: Seq a -> Seq (Seq a)
 --   sharing.
 inits :: Seq a -> Seq (Seq a)
 
--- | &lt;math&gt;. <tt>chunksOf c xs</tt> splits <tt>xs</tt> into chunks of
---   size <tt>c&gt;0</tt>. If <tt>c</tt> does not divide the length of
---   <tt>xs</tt> evenly, then the last element of the result will be short.
+-- | <tt>chunksOf c xs</tt> splits <tt>xs</tt> into chunks of size
+--   <tt>c&gt;0</tt>.
 --   
---   Side note: the given performance bound is missing some messy terms
---   that only really affect edge cases. Performance degrades smoothly from
---   &lt;math&gt; (for &lt;math&gt;) to &lt;math&gt; (for &lt;math&gt;).
---   The true bound is more like &lt;math&gt;
+--   If <tt>c</tt> does not divide the length of <tt>xs</tt> evenly, then
+--   the last element of the result will have less than <tt>c</tt>
+--   elements.
+--   
+--   <i>Warning:</i> <tt>c</tt> can only be 0 when the sequence <tt>xs</tt>
+--   is empty, otherwise a runtime error is thrown.
+--   
+--   <i>Complexity:</i> &lt;math&gt;
+--   
+--   The given performance bound is missing some messy terms that only
+--   really affect edge cases. Performance degrades smoothly from
+--   &lt;math&gt; (for ( c = n )) to &lt;math&gt; (for &lt;math&gt;). The
+--   true bound is more like ( O Bigl( bigl(frac{n}{c} - 1bigr) (log (c +
+--   1)) + 1 Bigr) )
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   <pre>
+--   &gt;&gt;&gt; chunksOf 1 (Seq.fromList [1, 2, 3])
+--   fromList [fromList [1],fromList [2],fromList [3]]
+--   </pre>
+--   
+--   <pre>
+--   &gt;&gt;&gt; chunksOf 2 (Seq.fromList [1, 2, 3])
+--   fromList [fromList [1,2],fromList [3]]
+--   </pre>
+--   
+--   <pre>
+--   &gt;&gt;&gt; chunksOf 5 (Seq.fromList [1, 2, 3])
+--   fromList [fromList [1,2,3]]
+--   </pre>
 chunksOf :: Int -> Seq a -> Seq (Seq a)
 
 -- | &lt;math&gt; where &lt;math&gt; is the prefix length.
@@ -2640,7 +2692,9 @@ infixl 9 !?
 (\\) :: Ord k => Map k a -> Map k b -> Map k a
 infixl 9 \\
 
--- | <i>O(1)</i>. Is the map empty?
+-- | Returns <tt>True</tt> if the map is empty, <tt>False</tt> otherwise.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   Data.Map.null (empty)           == True
@@ -2648,7 +2702,9 @@ infixl 9 \\
 --   </pre>
 null :: Map k a -> Bool
 
--- | <i>O(1)</i>. The number of elements in the map.
+-- | Returns the number of elements in the map.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   size empty                                   == 0
@@ -2657,8 +2713,12 @@ null :: Map k a -> Bool
 --   </pre>
 size :: Map k a -> Int
 
--- | <i>O(log n)</i>. Is the key a member of the map? See also
---   <a>notMember</a>.
+-- | Returns <tt>True</tt> if the key is a member of the map,
+--   <tt>False</tt> otherwise.
+--   
+--   See also: <a>notMember</a>
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   member 5 (fromList [(5,'a'), (3,'b')]) == True
@@ -2666,8 +2726,12 @@ size :: Map k a -> Int
 --   </pre>
 member :: Ord k => k -> Map k a -> Bool
 
--- | <i>O(log n)</i>. Is the key not a member of the map? See also
---   <a>member</a>.
+-- | Returns <tt>True</tt> if the key not present in the map,
+--   <tt>False</tt> otherwise.
+--   
+--   See also: <a>member</a>
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   notMember 5 (fromList [(5,'a'), (3,'b')]) == False
@@ -2675,26 +2739,25 @@ member :: Ord k => k -> Map k a -> Bool
 --   </pre>
 notMember :: Ord k => k -> Map k a -> Bool
 
--- | <i>O(log n)</i>. Lookup the value at a key in the map.
+-- | Returns the value indexed by the key in the map, returns
+--   <tt>Nothing</tt> if the key is not present.
 --   
---   The function will return the corresponding value as <tt>(<a>Just</a>
---   value)</tt>, or <a>Nothing</a> if the key isn't in the map.
+--   <i>Complexity: O(log n)</i>
 --   
 --   An example of using <tt>lookup</tt>:
 --   
 --   <pre>
---   import Prelude hiding (lookup)
---   import Data.Map
+--   import qualified Data.Map as Map
 --   
---   employeeDept = fromList([("John","Sales"), ("Bob","IT")])
---   deptCountry = fromList([("IT","USA"), ("Sales","France")])
---   countryCurrency = fromList([("USA", "Dollar"), ("France", "Euro")])
+--   employeeDept = Map.fromList [("John","Sales"), ("Bob","IT")]
+--   deptCountry = Map.fromList [("IT","USA"), ("Sales","France")]
+--   countryCurrency = fMap.romList [("USA", "Dollar"), ("France", "Euro")]
 --   
 --   employeeCurrency :: String -&gt; Maybe String
 --   employeeCurrency name = do
---       dept &lt;- lookup name employeeDept
---       country &lt;- lookup dept deptCountry
---       lookup country countryCurrency
+--       dept &lt;- Map.lookup name employeeDept
+--       country &lt;- Map.lookup dept deptCountry
+--       Map.lookup country countryCurrency
 --   
 --   main = do
 --       putStrLn $ "John's currency: " ++ (show (employeeCurrency "John"))
@@ -2709,9 +2772,11 @@ notMember :: Ord k => k -> Map k a -> Bool
 --   </pre>
 lookup :: Ord k => k -> Map k a -> Maybe a
 
--- | <i>O(log n)</i>. The expression <tt>(<a>findWithDefault</a> def k
---   map)</tt> returns the value at key <tt>k</tt> or returns default value
---   <tt>def</tt> when the key is not in the map.
+-- | The expression <tt>(<a>findWithDefault</a> def k map)</tt> returns the
+--   value at key <tt>k</tt> or returns default value <tt>def</tt> when the
+--   key is not in the map.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   findWithDefault 'x' 1 (fromList [(5,'a'), (3,'b')]) == 'x'
@@ -2719,8 +2784,11 @@ lookup :: Ord k => k -> Map k a -> Maybe a
 --   </pre>
 findWithDefault :: Ord k => a -> k -> Map k a -> a
 
--- | <i>O(log n)</i>. Find largest key smaller than the given one and
---   return the corresponding (key, value) pair.
+-- | Finds the largest key smaller than the given one and returns the
+--   corresponding (key, value) pair. If there is no smaller key then
+--   <tt>Nothing</tt> is returned.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupLT 3 (fromList [(3,'a'), (5,'b')]) == Nothing
@@ -2728,8 +2796,10 @@ findWithDefault :: Ord k => a -> k -> Map k a -> a
 --   </pre>
 lookupLT :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(log n)</i>. Find smallest key greater than the given one and
---   return the corresponding (key, value) pair.
+-- | Finds the smallest key greater than the given one and returns the
+--   corresponding (key, value) pair.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupGT 4 (fromList [(3,'a'), (5,'b')]) == Just (5, 'b')
@@ -2737,8 +2807,10 @@ lookupLT :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 lookupGT :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(log n)</i>. Find largest key smaller or equal to the given one
---   and return the corresponding (key, value) pair.
+-- | Finds the largest key smaller or equal to the given one and returns
+--   the corresponding (key, value) pair.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupLE 2 (fromList [(3,'a'), (5,'b')]) == Nothing
@@ -2747,8 +2819,10 @@ lookupGT :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 lookupLE :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(log n)</i>. Find smallest key greater or equal to the given one
---   and return the corresponding (key, value) pair.
+-- | Finds the smallest key greater or equal to the given one and returns
+--   the corresponding (key, value) pair.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupGE 3 (fromList [(3,'a'), (5,'b')]) == Just (3, 'a')
@@ -2757,7 +2831,9 @@ lookupLE :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 lookupGE :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(1)</i>. The empty map.
+-- | Creates a map with zero entries.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   empty      == fromList []
@@ -2765,7 +2841,9 @@ lookupGE :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 empty :: Map k a
 
--- | <i>O(1)</i>. A map with a single element.
+-- | Creates a map with a single element.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   singleton 1 'a'        == fromList [(1, 'a')]
@@ -2773,10 +2851,13 @@ empty :: Map k a
 --   </pre>
 singleton :: k -> a -> Map k a
 
--- | <i>O(log n)</i>. Insert a new key and value in the map. If the key is
---   already present in the map, the associated value is replaced with the
---   supplied value. <a>insert</a> is equivalent to <tt><a>insertWith</a>
---   <a>const</a></tt>.
+-- | Inserts a new key and value into the map.
+--   
+--   If the key is already present in the map, the associated value is
+--   replaced with the supplied value. <a>insert</a> is equivalent to
+--   <tt><a>insertWith</a> <a>const</a></tt>.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   insert 5 'x' (fromList [(5,'a'), (3,'b')]) == fromList [(3, 'b'), (5, 'x')]
@@ -2785,11 +2866,14 @@ singleton :: k -> a -> Map k a
 --   </pre>
 insert :: Ord k => k -> a -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. Insert with a function, combining new value and old
---   value. <tt><a>insertWith</a> f key value mp</tt> will insert the pair
---   (key, value) into <tt>mp</tt> if key does not exist in the map. If the
---   key does exist, the function will insert the pair <tt>(key, f
---   new_value old_value)</tt>.
+-- | Insert with a function, combining new value and old value.
+--   
+--   <tt><a>insertWith</a> f key value mp</tt> will insert the pair (key,
+--   value) into <tt>mp</tt> if key does not exist in the map. If the key
+--   does exist, the function will insert the pair <tt>(key, f new_value
+--   old_value)</tt>.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   insertWith (++) 5 "xxx" (fromList [(5,"a"), (3,"b")]) == fromList [(3, "b"), (5, "xxxa")]
@@ -2798,12 +2882,15 @@ insert :: Ord k => k -> a -> Map k a -> Map k a
 --   </pre>
 insertWith :: Ord k => (a -> a -> a) -> k -> a -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. Insert with a function, combining key, new value and
---   old value. <tt><a>insertWithKey</a> f key value mp</tt> will insert
---   the pair (key, value) into <tt>mp</tt> if key does not exist in the
---   map. If the key does exist, the function will insert the pair
---   <tt>(key,f key new_value old_value)</tt>. Note that the key passed to
---   f is the same key passed to <a>insertWithKey</a>.
+-- | Insert with a function, combining key, new value and old value.
+--   
+--   <tt><a>insertWithKey</a> f key value mp</tt> will insert the pair
+--   (key, value) into <tt>mp</tt> if key does not exist in the map. If the
+--   key does exist, the function will insert the pair <tt>(key,f key
+--   new_value old_value)</tt>. Note that the key passed to f is the same
+--   key passed to <a>insertWithKey</a>.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f key new_value old_value = (show key) ++ ":" ++ new_value ++ "|" ++ old_value
@@ -2813,11 +2900,14 @@ insertWith :: Ord k => (a -> a -> a) -> k -> a -> Map k a -> Map k a
 --   </pre>
 insertWithKey :: Ord k => (k -> a -> a -> a) -> k -> a -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. Combines insert operation with old value retrieval.
+-- | Combines insert operation with old value retrieval.
+--   
 --   The expression (<tt><a>insertLookupWithKey</a> f k x map</tt>) is a
 --   pair where the first element is equal to (<tt><a>lookup</a> k
 --   map</tt>) and the second element equal to (<tt><a>insertWithKey</a> f
 --   k x map</tt>).
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f key new_value old_value = (show key) ++ ":" ++ new_value ++ "|" ++ old_value
@@ -2836,8 +2926,10 @@ insertWithKey :: Ord k => (k -> a -> a -> a) -> k -> a -> Map k a -> Map k a
 --   </pre>
 insertLookupWithKey :: Ord k => (k -> a -> a -> a) -> k -> a -> Map k a -> (Maybe a, Map k a)
 
--- | <i>O(log n)</i>. Delete a key and its value from the map. When the key
---   is not a member of the map, the original map is returned.
+-- | Deletes a key and its value from the map. When the key is not a member
+--   of the map, the original map is returned.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   delete 5 (fromList [(5,"a"), (3,"b")]) == singleton 3 "b"
@@ -2846,9 +2938,12 @@ insertLookupWithKey :: Ord k => (k -> a -> a -> a) -> k -> a -> Map k a -> (Mayb
 --   </pre>
 delete :: Ord k => k -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. Update a value at a specific key with the result of
---   the provided function. When the key is not a member of the map, the
---   original map is returned.
+-- | Updates a value at a specific key with the result of the provided
+--   function.
+--   
+--   When the key is not a member of the map, the original map is returned.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   adjust ("new " ++) 5 (fromList [(5,"a"), (3,"b")]) == fromList [(3, "b"), (5, "new a")]
@@ -2857,8 +2952,10 @@ delete :: Ord k => k -> Map k a -> Map k a
 --   </pre>
 adjust :: Ord k => (a -> a) -> k -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. Adjust a value at a specific key. When the key is not
---   a member of the map, the original map is returned.
+-- | Adjust a value at a specific key. When the key is not a member of the
+--   map, the original map is returned.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f key x = (show key) ++ ":new " ++ x
@@ -2868,11 +2965,12 @@ adjust :: Ord k => (a -> a) -> k -> Map k a -> Map k a
 --   </pre>
 adjustWithKey :: Ord k => (k -> a -> a) -> k -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. The expression (<tt><a>update</a> f k map</tt>)
---   updates the value <tt>x</tt> at <tt>k</tt> (if it is in the map). If
---   (<tt>f x</tt>) is <a>Nothing</a>, the element is deleted. If it is
---   (<tt><a>Just</a> y</tt>), the key <tt>k</tt> is bound to the new value
---   <tt>y</tt>.
+-- | The expression (<tt><a>update</a> f k map</tt>) updates the value
+--   <tt>x</tt> at <tt>k</tt> (if it is in the map). If (<tt>f x</tt>) is
+--   <a>Nothing</a>, the element is deleted. If it is (<tt><a>Just</a>
+--   y</tt>), the key <tt>k</tt> is bound to the new value <tt>y</tt>.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f x = if x == "a" then Just "new a" else Nothing
@@ -2882,11 +2980,13 @@ adjustWithKey :: Ord k => (k -> a -> a) -> k -> Map k a -> Map k a
 --   </pre>
 update :: Ord k => (a -> Maybe a) -> k -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. The expression (<tt><a>updateWithKey</a> f k
---   map</tt>) updates the value <tt>x</tt> at <tt>k</tt> (if it is in the
---   map). If (<tt>f k x</tt>) is <a>Nothing</a>, the element is deleted.
---   If it is (<tt><a>Just</a> y</tt>), the key <tt>k</tt> is bound to the
---   new value <tt>y</tt>.
+-- | The expression (<tt><a>updateWithKey</a> f k map</tt>) updates the
+--   value <tt>x</tt> at <tt>k</tt> (if it is in the map). If (<tt>f k
+--   x</tt>) is <a>Nothing</a>, the element is deleted. If it is
+--   (<tt><a>Just</a> y</tt>), the key <tt>k</tt> is bound to the new value
+--   <tt>y</tt>.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f k x = if x == "a" then Just ((show k) ++ ":new a") else Nothing
@@ -2894,11 +2994,20 @@ update :: Ord k => (a -> Maybe a) -> k -> Map k a -> Map k a
 --   updateWithKey f 7 (fromList [(5,"a"), (3,"b")]) == fromList [(3, "b"), (5, "a")]
 --   updateWithKey f 3 (fromList [(5,"a"), (3,"b")]) == singleton 5 "a"
 --   </pre>
+--   
+--   See Note: Type of local <tt>go</tt> function
 updateWithKey :: Ord k => (k -> a -> Maybe a) -> k -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. Lookup and update. See also <a>updateWithKey</a>. The
---   function returns changed value, if it is updated. Returns the original
---   key value if the map entry is deleted.
+-- | Lookup and update.
+--   
+--   <ul>
+--   <li>If the value is updated, the new value is returned.</li>
+--   <li>If the entry is deleted, the original value is returned.</li>
+--   </ul>
+--   
+--   See also: <a>updateWithKey</a>
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f k x = if x == "a" then Just ((show k) ++ ":new a") else Nothing
@@ -2906,13 +3015,16 @@ updateWithKey :: Ord k => (k -> a -> Maybe a) -> k -> Map k a -> Map k a
 --   updateLookupWithKey f 7 (fromList [(5,"a"), (3,"b")]) == (Nothing,  fromList [(3, "b"), (5, "a")])
 --   updateLookupWithKey f 3 (fromList [(5,"a"), (3,"b")]) == (Just "b", singleton 5 "a")
 --   </pre>
+--   
+--   See Note: Type of local <tt>go</tt> function
 updateLookupWithKey :: Ord k => (k -> a -> Maybe a) -> k -> Map k a -> (Maybe a, Map k a)
 
--- | <i>O(log n)</i>. The expression (<tt><a>alter</a> f k map</tt>) alters
---   the value <tt>x</tt> at <tt>k</tt>, or absence thereof. <a>alter</a>
---   can be used to insert, delete, or update a value in a <a>Map</a>. In
---   short : <tt><a>lookup</a> k (<a>alter</a> f k m) = f (<a>lookup</a> k
---   m)</tt>.
+-- | The expression (<tt><a>alter</a> f k map</tt>) alters the value
+--   <tt>x</tt> at <tt>k</tt>, or absence thereof. <a>alter</a> can be used
+--   to insert, delete, or update a value in a <a>Map</a>. In short :
+--   <tt><a>lookup</a> k (<a>alter</a> f k m) = f (<a>lookup</a> k m)</tt>.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f _ = Nothing
@@ -3674,12 +3786,23 @@ keysSet :: Map k a -> Set k
 --   </pre>
 fromSet :: (k -> a) -> Set k -> Map k a
 
--- | <i>O(n)</i>. Convert the map to a list of key/value pairs. Subject to
---   list fusion.
+-- | Convert the map to a list of key/value pairs. Subject to list fusion.
+--   
+--   <i>Complexity:</i> &lt;math&gt;
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   Converting an empty map to a list yields an empty list.
 --   
 --   <pre>
---   toList (fromList [(5,"a"), (3,"b")]) == [(3,"b"), (5,"a")]
---   toList empty == []
+--   &gt;&gt;&gt; toList empty == []
+--   </pre>
+--   
+--   Converting a non-empty map to a list returns the list of key/value
+--   pairs in key order.
+--   
+--   <pre>
+--   &gt;&gt;&gt; toList (fromList [(5,"a"), (3,"b")]) == [(3,"b"), (5,"a")]
 --   </pre>
 toList :: Map k a -> [(k, a)]
 
@@ -3697,12 +3820,36 @@ toList :: Map k a -> [(k, a)]
 --   </pre>
 fromList :: Ord k => [(k, a)] -> Map k a
 
--- | <i>O(n*log n)</i>. Build a map from a list of key/value pairs with a
---   combining function. See also <a>fromAscListWith</a>.
+-- | Build a map from a list of key/value pairs with a combining function.
+--   
+--   The combining (or "choosing") function is used to combine (or choose)
+--   values if the same key is present multiple times.
+--   
+--   <i>See also:</i> <a>fromAscListWith</a>
+--   
+--   <i>Complexity:</i> &lt;math&gt;
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   Build a map from a list, but only keep the largest value for each key.
 --   
 --   <pre>
---   fromListWith (++) [(5,"a"), (5,"b"), (3,"b"), (3,"a"), (5,"a")] == fromList [(3, "ab"), (5, "aba")]
---   fromListWith (++) [] == empty
+--   &gt;&gt;&gt; Map.fromListWith max [("a", 2), ("a", 1), ("b", 2)]
+--   fromList [("a",2),("b",2)]
+--   </pre>
+--   
+--   Build a histogram from a list of elements.
+--   
+--   <pre>
+--   &gt;&gt;&gt; Map.fromListWith (+) (map (\x -&gt; (x, 1)) ["a", "a", "b", "c", "c", "c"])
+--   fromList [("a",2),("b",1),("c",3)]
+--   </pre>
+--   
+--   Build a map from a list, combining the string values for the same key.
+--   
+--   <pre>
+--   &gt;&gt;&gt; Map.fromListWith (++) [(1, "a"), (1, "b"), (2, "x"), (2, "y")]
+--   fromList [(1,"ba"),(2,"yx")]
 --   </pre>
 fromListWith :: Ord k => (a -> a -> a) -> [(k, a)] -> Map k a
 
@@ -4873,7 +5020,9 @@ infixl 9 !?
 (\\) :: Ord k => Map k a -> Map k b -> Map k a
 infixl 9 \\
 
--- | <i>O(1)</i>. Is the map empty?
+-- | Returns <tt>True</tt> if the map is empty, <tt>False</tt> otherwise.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   Data.Map.null (empty)           == True
@@ -4881,7 +5030,9 @@ infixl 9 \\
 --   </pre>
 null :: Map k a -> Bool
 
--- | <i>O(1)</i>. The number of elements in the map.
+-- | Returns the number of elements in the map.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   size empty                                   == 0
@@ -4890,8 +5041,12 @@ null :: Map k a -> Bool
 --   </pre>
 size :: Map k a -> Int
 
--- | <i>O(log n)</i>. Is the key a member of the map? See also
---   <a>notMember</a>.
+-- | Returns <tt>True</tt> if the key is a member of the map,
+--   <tt>False</tt> otherwise.
+--   
+--   See also: <a>notMember</a>
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   member 5 (fromList [(5,'a'), (3,'b')]) == True
@@ -4899,8 +5054,12 @@ size :: Map k a -> Int
 --   </pre>
 member :: Ord k => k -> Map k a -> Bool
 
--- | <i>O(log n)</i>. Is the key not a member of the map? See also
---   <a>member</a>.
+-- | Returns <tt>True</tt> if the key not present in the map,
+--   <tt>False</tt> otherwise.
+--   
+--   See also: <a>member</a>
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   notMember 5 (fromList [(5,'a'), (3,'b')]) == False
@@ -4908,26 +5067,25 @@ member :: Ord k => k -> Map k a -> Bool
 --   </pre>
 notMember :: Ord k => k -> Map k a -> Bool
 
--- | <i>O(log n)</i>. Lookup the value at a key in the map.
+-- | Returns the value indexed by the key in the map, returns
+--   <tt>Nothing</tt> if the key is not present.
 --   
---   The function will return the corresponding value as <tt>(<a>Just</a>
---   value)</tt>, or <a>Nothing</a> if the key isn't in the map.
+--   <i>Complexity: O(log n)</i>
 --   
 --   An example of using <tt>lookup</tt>:
 --   
 --   <pre>
---   import Prelude hiding (lookup)
---   import Data.Map
+--   import qualified Data.Map as Map
 --   
---   employeeDept = fromList([("John","Sales"), ("Bob","IT")])
---   deptCountry = fromList([("IT","USA"), ("Sales","France")])
---   countryCurrency = fromList([("USA", "Dollar"), ("France", "Euro")])
+--   employeeDept = Map.fromList [("John","Sales"), ("Bob","IT")]
+--   deptCountry = Map.fromList [("IT","USA"), ("Sales","France")]
+--   countryCurrency = fMap.romList [("USA", "Dollar"), ("France", "Euro")]
 --   
 --   employeeCurrency :: String -&gt; Maybe String
 --   employeeCurrency name = do
---       dept &lt;- lookup name employeeDept
---       country &lt;- lookup dept deptCountry
---       lookup country countryCurrency
+--       dept &lt;- Map.lookup name employeeDept
+--       country &lt;- Map.lookup dept deptCountry
+--       Map.lookup country countryCurrency
 --   
 --   main = do
 --       putStrLn $ "John's currency: " ++ (show (employeeCurrency "John"))
@@ -4952,8 +5110,11 @@ lookup :: Ord k => k -> Map k a -> Maybe a
 --   </pre>
 findWithDefault :: Ord k => a -> k -> Map k a -> a
 
--- | <i>O(log n)</i>. Find largest key smaller than the given one and
---   return the corresponding (key, value) pair.
+-- | Finds the largest key smaller than the given one and returns the
+--   corresponding (key, value) pair. If there is no smaller key then
+--   <tt>Nothing</tt> is returned.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupLT 3 (fromList [(3,'a'), (5,'b')]) == Nothing
@@ -4961,8 +5122,10 @@ findWithDefault :: Ord k => a -> k -> Map k a -> a
 --   </pre>
 lookupLT :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(log n)</i>. Find smallest key greater than the given one and
---   return the corresponding (key, value) pair.
+-- | Finds the smallest key greater than the given one and returns the
+--   corresponding (key, value) pair.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupGT 4 (fromList [(3,'a'), (5,'b')]) == Just (5, 'b')
@@ -4970,8 +5133,10 @@ lookupLT :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 lookupGT :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(log n)</i>. Find largest key smaller or equal to the given one
---   and return the corresponding (key, value) pair.
+-- | Finds the largest key smaller or equal to the given one and returns
+--   the corresponding (key, value) pair.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupLE 2 (fromList [(3,'a'), (5,'b')]) == Nothing
@@ -4980,8 +5145,10 @@ lookupGT :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 lookupLE :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(log n)</i>. Find smallest key greater or equal to the given one
---   and return the corresponding (key, value) pair.
+-- | Finds the smallest key greater or equal to the given one and returns
+--   the corresponding (key, value) pair.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupGE 3 (fromList [(3,'a'), (5,'b')]) == Just (3, 'a')
@@ -4990,7 +5157,9 @@ lookupLE :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 lookupGE :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(1)</i>. The empty map.
+-- | Creates a map with zero entries.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   empty      == fromList []
@@ -5069,8 +5238,10 @@ insertWithKey :: Ord k => (k -> a -> a -> a) -> k -> a -> Map k a -> Map k a
 --   </pre>
 insertLookupWithKey :: Ord k => (k -> a -> a -> a) -> k -> a -> Map k a -> (Maybe a, Map k a)
 
--- | <i>O(log n)</i>. Delete a key and its value from the map. When the key
---   is not a member of the map, the original map is returned.
+-- | Deletes a key and its value from the map. When the key is not a member
+--   of the map, the original map is returned.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   delete 5 (fromList [(5,"a"), (3,"b")]) == singleton 3 "b"
@@ -5913,35 +6084,93 @@ keysSet :: Map k a -> Set k
 --   </pre>
 fromSet :: (k -> a) -> Set k -> Map k a
 
--- | <i>O(n)</i>. Convert the map to a list of key/value pairs. Subject to
---   list fusion.
+-- | Convert the map to a list of key/value pairs. Subject to list fusion.
+--   
+--   <i>Complexity:</i> &lt;math&gt;
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   Converting an empty map to a list yields an empty list.
 --   
 --   <pre>
---   toList (fromList [(5,"a"), (3,"b")]) == [(3,"b"), (5,"a")]
---   toList empty == []
+--   &gt;&gt;&gt; toList empty == []
+--   </pre>
+--   
+--   Converting a non-empty map to a list returns the list of key/value
+--   pairs in key order.
+--   
+--   <pre>
+--   &gt;&gt;&gt; toList (fromList [(5,"a"), (3,"b")]) == [(3,"b"), (5,"a")]
 --   </pre>
 toList :: Map k a -> [(k, a)]
 
--- | <i>O(n*log n)</i>. Build a map from a list of key/value pairs. See
---   also <a>fromAscList</a>. If the list contains more than one value for
---   the same key, the last value for the key is retained.
+-- | <tt>fromList xs</tt> builds a map from the list <tt>xs</tt> of
+--   key/value pairs. .
+--   
+--   If the list contains more than one value for the same key, the last
+--   value for the key is retained.
 --   
 --   If the keys of the list are ordered, linear-time implementation is
 --   used, with the performance equal to <a>fromDistinctAscList</a>.
 --   
+--   <i>Complexity:</i> &lt;math&gt;
+--   
+--   <i>See also:</i> <a>fromAscList</a>, <a>fromListWith</a>
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   Constructing a map from an empty list yields an empty map.
+--   
 --   <pre>
---   fromList [] == empty
---   fromList [(5,"a"), (3,"b"), (5, "c")] == fromList [(5,"c"), (3,"b")]
---   fromList [(5,"c"), (3,"b"), (5, "a")] == fromList [(5,"a"), (3,"b")]
+--   &gt;&gt;&gt; fromList [] == empty
+--   </pre>
+--   
+--   Constructing a map from a list with duplicate keys keeps the value
+--   from the rightmost entry in the list.
+--   
+--   <pre>
+--   &gt;&gt;&gt; fromList [(5,"a"), (3,"b"), (5, "c")] == fromList [(5,"c"), (3,"b")]
+--   
+--   &gt;&gt;&gt; fromList [(5,"c"), (3,"b"), (5, "a")] == fromList [(5,"a"), (3,"b")]
 --   </pre>
 fromList :: Ord k => [(k, a)] -> Map k a
 
--- | <i>O(n*log n)</i>. Build a map from a list of key/value pairs with a
---   combining function. See also <a>fromAscListWith</a>.
+-- | <tt>fromListWith f xs</tt> builds a map from the list <tt>xs</tt> of
+--   key/value pairs using the combining function <tt>f</tt> when a key is
+--   repeated.
+--   
+--   The combining (or "choosing") function <tt>f</tt> is used to combine
+--   (or choose) values if the same key is present multiple times. In other
+--   words, given the list <tt>[(Key1, Val1), (Key1, Val2)]</tt>, the value
+--   in the constructed map for key <tt>Key1</tt> will be <tt>Val2 `f`
+--   Val1</tt>. Notice how the order of <tt>Val1</tt> and <tt>Val2</tt> are
+--   reversed.
+--   
+--   <i>Complexity:</i> &lt;math&gt;
+--   
+--   <i>See also:</i> <a>fromAscListWith</a>
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   Build a map from a list, but only keep the largest value for each key.
 --   
 --   <pre>
---   fromListWith (++) [(5,"a"), (5,"b"), (3,"b"), (3,"a"), (5,"a")] == fromList [(3, "ab"), (5, "aba")]
---   fromListWith (++) [] == empty
+--   &gt;&gt;&gt; Map.fromListWith max [("a", 2), ("a", 1), ("b", 2)]
+--   fromList [("a",2),("b",2)]
+--   </pre>
+--   
+--   Build a histogram from a list of elements.
+--   
+--   <pre>
+--   &gt;&gt;&gt; Map.fromListWith (+) (map (\x -&gt; (x, 1)) ["a", "a", "b", "c", "c", "c"])
+--   fromList [("a",2),("b",1),("c",3)]
+--   </pre>
+--   
+--   Build a map from a list, combining the string values for the same key.
+--   
+--   <pre>
+--   &gt;&gt;&gt; Map.fromListWith (++) [(1, "a"), (1, "b"), (2, "x"), (2, "y")]
+--   fromList [(1,"ba"),(2,"yx")]
 --   </pre>
 fromListWith :: Ord k => (a -> a -> a) -> [(k, a)] -> Map k a
 
@@ -6664,7 +6893,9 @@ infixl 9 !?
 (\\) :: Ord k => Map k a -> Map k b -> Map k a
 infixl 9 \\
 
--- | <i>O(1)</i>. Is the map empty?
+-- | Returns <tt>True</tt> if the map is empty, <tt>False</tt> otherwise.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   Data.Map.null (empty)           == True
@@ -6672,7 +6903,9 @@ infixl 9 \\
 --   </pre>
 null :: Map k a -> Bool
 
--- | <i>O(1)</i>. The number of elements in the map.
+-- | Returns the number of elements in the map.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   size empty                                   == 0
@@ -6681,8 +6914,12 @@ null :: Map k a -> Bool
 --   </pre>
 size :: Map k a -> Int
 
--- | <i>O(log n)</i>. Is the key a member of the map? See also
---   <a>notMember</a>.
+-- | Returns <tt>True</tt> if the key is a member of the map,
+--   <tt>False</tt> otherwise.
+--   
+--   See also: <a>notMember</a>
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   member 5 (fromList [(5,'a'), (3,'b')]) == True
@@ -6690,8 +6927,12 @@ size :: Map k a -> Int
 --   </pre>
 member :: Ord k => k -> Map k a -> Bool
 
--- | <i>O(log n)</i>. Is the key not a member of the map? See also
---   <a>member</a>.
+-- | Returns <tt>True</tt> if the key not present in the map,
+--   <tt>False</tt> otherwise.
+--   
+--   See also: <a>member</a>
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   notMember 5 (fromList [(5,'a'), (3,'b')]) == False
@@ -6699,26 +6940,25 @@ member :: Ord k => k -> Map k a -> Bool
 --   </pre>
 notMember :: Ord k => k -> Map k a -> Bool
 
--- | <i>O(log n)</i>. Lookup the value at a key in the map.
+-- | Returns the value indexed by the key in the map, returns
+--   <tt>Nothing</tt> if the key is not present.
 --   
---   The function will return the corresponding value as <tt>(<a>Just</a>
---   value)</tt>, or <a>Nothing</a> if the key isn't in the map.
+--   <i>Complexity: O(log n)</i>
 --   
 --   An example of using <tt>lookup</tt>:
 --   
 --   <pre>
---   import Prelude hiding (lookup)
---   import Data.Map
+--   import qualified Data.Map as Map
 --   
---   employeeDept = fromList([("John","Sales"), ("Bob","IT")])
---   deptCountry = fromList([("IT","USA"), ("Sales","France")])
---   countryCurrency = fromList([("USA", "Dollar"), ("France", "Euro")])
+--   employeeDept = Map.fromList [("John","Sales"), ("Bob","IT")]
+--   deptCountry = Map.fromList [("IT","USA"), ("Sales","France")]
+--   countryCurrency = fMap.romList [("USA", "Dollar"), ("France", "Euro")]
 --   
 --   employeeCurrency :: String -&gt; Maybe String
 --   employeeCurrency name = do
---       dept &lt;- lookup name employeeDept
---       country &lt;- lookup dept deptCountry
---       lookup country countryCurrency
+--       dept &lt;- Map.lookup name employeeDept
+--       country &lt;- Map.lookup dept deptCountry
+--       Map.lookup country countryCurrency
 --   
 --   main = do
 --       putStrLn $ "John's currency: " ++ (show (employeeCurrency "John"))
@@ -6743,8 +6983,11 @@ lookup :: Ord k => k -> Map k a -> Maybe a
 --   </pre>
 findWithDefault :: Ord k => a -> k -> Map k a -> a
 
--- | <i>O(log n)</i>. Find largest key smaller than the given one and
---   return the corresponding (key, value) pair.
+-- | Finds the largest key smaller than the given one and returns the
+--   corresponding (key, value) pair. If there is no smaller key then
+--   <tt>Nothing</tt> is returned.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupLT 3 (fromList [(3,'a'), (5,'b')]) == Nothing
@@ -6752,8 +6995,10 @@ findWithDefault :: Ord k => a -> k -> Map k a -> a
 --   </pre>
 lookupLT :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(log n)</i>. Find smallest key greater than the given one and
---   return the corresponding (key, value) pair.
+-- | Finds the smallest key greater than the given one and returns the
+--   corresponding (key, value) pair.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupGT 4 (fromList [(3,'a'), (5,'b')]) == Just (5, 'b')
@@ -6761,8 +7006,10 @@ lookupLT :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 lookupGT :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(log n)</i>. Find largest key smaller or equal to the given one
---   and return the corresponding (key, value) pair.
+-- | Finds the largest key smaller or equal to the given one and returns
+--   the corresponding (key, value) pair.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupLE 2 (fromList [(3,'a'), (5,'b')]) == Nothing
@@ -6771,8 +7018,10 @@ lookupGT :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 lookupLE :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(log n)</i>. Find smallest key greater or equal to the given one
---   and return the corresponding (key, value) pair.
+-- | Finds the smallest key greater or equal to the given one and returns
+--   the corresponding (key, value) pair.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupGE 3 (fromList [(3,'a'), (5,'b')]) == Just (3, 'a')
@@ -6781,7 +7030,9 @@ lookupLE :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 lookupGE :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(1)</i>. The empty map.
+-- | Creates a map with zero entries.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   empty      == fromList []
@@ -6860,8 +7111,10 @@ insertWithKey :: Ord k => (k -> a -> a -> a) -> k -> a -> Map k a -> Map k a
 --   </pre>
 insertLookupWithKey :: Ord k => (k -> a -> a -> a) -> k -> a -> Map k a -> (Maybe a, Map k a)
 
--- | <i>O(log n)</i>. Delete a key and its value from the map. When the key
---   is not a member of the map, the original map is returned.
+-- | Deletes a key and its value from the map. When the key is not a member
+--   of the map, the original map is returned.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   delete 5 (fromList [(5,"a"), (3,"b")]) == singleton 3 "b"
@@ -7383,35 +7636,93 @@ keysSet :: Map k a -> Set k
 --   </pre>
 fromSet :: (k -> a) -> Set k -> Map k a
 
--- | <i>O(n)</i>. Convert the map to a list of key/value pairs. Subject to
---   list fusion.
+-- | Convert the map to a list of key/value pairs. Subject to list fusion.
+--   
+--   <i>Complexity:</i> &lt;math&gt;
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   Converting an empty map to a list yields an empty list.
 --   
 --   <pre>
---   toList (fromList [(5,"a"), (3,"b")]) == [(3,"b"), (5,"a")]
---   toList empty == []
+--   &gt;&gt;&gt; toList empty == []
+--   </pre>
+--   
+--   Converting a non-empty map to a list returns the list of key/value
+--   pairs in key order.
+--   
+--   <pre>
+--   &gt;&gt;&gt; toList (fromList [(5,"a"), (3,"b")]) == [(3,"b"), (5,"a")]
 --   </pre>
 toList :: Map k a -> [(k, a)]
 
--- | <i>O(n*log n)</i>. Build a map from a list of key/value pairs. See
---   also <a>fromAscList</a>. If the list contains more than one value for
---   the same key, the last value for the key is retained.
+-- | <tt>fromList xs</tt> builds a map from the list <tt>xs</tt> of
+--   key/value pairs. .
+--   
+--   If the list contains more than one value for the same key, the last
+--   value for the key is retained.
 --   
 --   If the keys of the list are ordered, linear-time implementation is
 --   used, with the performance equal to <a>fromDistinctAscList</a>.
 --   
+--   <i>Complexity:</i> &lt;math&gt;
+--   
+--   <i>See also:</i> <a>fromAscList</a>, <a>fromListWith</a>
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   Constructing a map from an empty list yields an empty map.
+--   
 --   <pre>
---   fromList [] == empty
---   fromList [(5,"a"), (3,"b"), (5, "c")] == fromList [(5,"c"), (3,"b")]
---   fromList [(5,"c"), (3,"b"), (5, "a")] == fromList [(5,"a"), (3,"b")]
+--   &gt;&gt;&gt; fromList [] == empty
+--   </pre>
+--   
+--   Constructing a map from a list with duplicate keys keeps the value
+--   from the rightmost entry in the list.
+--   
+--   <pre>
+--   &gt;&gt;&gt; fromList [(5,"a"), (3,"b"), (5, "c")] == fromList [(5,"c"), (3,"b")]
+--   
+--   &gt;&gt;&gt; fromList [(5,"c"), (3,"b"), (5, "a")] == fromList [(5,"a"), (3,"b")]
 --   </pre>
 fromList :: Ord k => [(k, a)] -> Map k a
 
--- | <i>O(n*log n)</i>. Build a map from a list of key/value pairs with a
---   combining function. See also <a>fromAscListWith</a>.
+-- | <tt>fromListWith f xs</tt> builds a map from the list <tt>xs</tt> of
+--   key/value pairs using the combining function <tt>f</tt> when a key is
+--   repeated.
+--   
+--   The combining (or "choosing") function <tt>f</tt> is used to combine
+--   (or choose) values if the same key is present multiple times. In other
+--   words, given the list <tt>[(Key1, Val1), (Key1, Val2)]</tt>, the value
+--   in the constructed map for key <tt>Key1</tt> will be <tt>Val2 `f`
+--   Val1</tt>. Notice how the order of <tt>Val1</tt> and <tt>Val2</tt> are
+--   reversed.
+--   
+--   <i>Complexity:</i> &lt;math&gt;
+--   
+--   <i>See also:</i> <a>fromAscListWith</a>
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   Build a map from a list, but only keep the largest value for each key.
 --   
 --   <pre>
---   fromListWith (++) [(5,"a"), (5,"b"), (3,"b"), (3,"a"), (5,"a")] == fromList [(3, "ab"), (5, "aba")]
---   fromListWith (++) [] == empty
+--   &gt;&gt;&gt; Map.fromListWith max [("a", 2), ("a", 1), ("b", 2)]
+--   fromList [("a",2),("b",2)]
+--   </pre>
+--   
+--   Build a histogram from a list of elements.
+--   
+--   <pre>
+--   &gt;&gt;&gt; Map.fromListWith (+) (map (\x -&gt; (x, 1)) ["a", "a", "b", "c", "c", "c"])
+--   fromList [("a",2),("b",1),("c",3)]
+--   </pre>
+--   
+--   Build a map from a list, combining the string values for the same key.
+--   
+--   <pre>
+--   &gt;&gt;&gt; Map.fromListWith (++) [(1, "a"), (1, "b"), (2, "x"), (2, "y")]
+--   fromList [(1,"ba"),(2,"yx")]
 --   </pre>
 fromListWith :: Ord k => (a -> a -> a) -> [(k, a)] -> Map k a
 
@@ -8465,7 +8776,9 @@ infixl 9 !?
 (\\) :: Ord k => Map k a -> Map k b -> Map k a
 infixl 9 \\
 
--- | <i>O(1)</i>. Is the map empty?
+-- | Returns <tt>True</tt> if the map is empty, <tt>False</tt> otherwise.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   Data.Map.null (empty)           == True
@@ -8473,7 +8786,9 @@ infixl 9 \\
 --   </pre>
 null :: Map k a -> Bool
 
--- | <i>O(1)</i>. The number of elements in the map.
+-- | Returns the number of elements in the map.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   size empty                                   == 0
@@ -8482,8 +8797,12 @@ null :: Map k a -> Bool
 --   </pre>
 size :: Map k a -> Int
 
--- | <i>O(log n)</i>. Is the key a member of the map? See also
---   <a>notMember</a>.
+-- | Returns <tt>True</tt> if the key is a member of the map,
+--   <tt>False</tt> otherwise.
+--   
+--   See also: <a>notMember</a>
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   member 5 (fromList [(5,'a'), (3,'b')]) == True
@@ -8491,8 +8810,12 @@ size :: Map k a -> Int
 --   </pre>
 member :: Ord k => k -> Map k a -> Bool
 
--- | <i>O(log n)</i>. Is the key not a member of the map? See also
---   <a>member</a>.
+-- | Returns <tt>True</tt> if the key not present in the map,
+--   <tt>False</tt> otherwise.
+--   
+--   See also: <a>member</a>
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   notMember 5 (fromList [(5,'a'), (3,'b')]) == False
@@ -8500,26 +8823,25 @@ member :: Ord k => k -> Map k a -> Bool
 --   </pre>
 notMember :: Ord k => k -> Map k a -> Bool
 
--- | <i>O(log n)</i>. Lookup the value at a key in the map.
+-- | Returns the value indexed by the key in the map, returns
+--   <tt>Nothing</tt> if the key is not present.
 --   
---   The function will return the corresponding value as <tt>(<a>Just</a>
---   value)</tt>, or <a>Nothing</a> if the key isn't in the map.
+--   <i>Complexity: O(log n)</i>
 --   
 --   An example of using <tt>lookup</tt>:
 --   
 --   <pre>
---   import Prelude hiding (lookup)
---   import Data.Map
+--   import qualified Data.Map as Map
 --   
---   employeeDept = fromList([("John","Sales"), ("Bob","IT")])
---   deptCountry = fromList([("IT","USA"), ("Sales","France")])
---   countryCurrency = fromList([("USA", "Dollar"), ("France", "Euro")])
+--   employeeDept = Map.fromList [("John","Sales"), ("Bob","IT")]
+--   deptCountry = Map.fromList [("IT","USA"), ("Sales","France")]
+--   countryCurrency = fMap.romList [("USA", "Dollar"), ("France", "Euro")]
 --   
 --   employeeCurrency :: String -&gt; Maybe String
 --   employeeCurrency name = do
---       dept &lt;- lookup name employeeDept
---       country &lt;- lookup dept deptCountry
---       lookup country countryCurrency
+--       dept &lt;- Map.lookup name employeeDept
+--       country &lt;- Map.lookup dept deptCountry
+--       Map.lookup country countryCurrency
 --   
 --   main = do
 --       putStrLn $ "John's currency: " ++ (show (employeeCurrency "John"))
@@ -8534,9 +8856,11 @@ notMember :: Ord k => k -> Map k a -> Bool
 --   </pre>
 lookup :: Ord k => k -> Map k a -> Maybe a
 
--- | <i>O(log n)</i>. The expression <tt>(<a>findWithDefault</a> def k
---   map)</tt> returns the value at key <tt>k</tt> or returns default value
---   <tt>def</tt> when the key is not in the map.
+-- | The expression <tt>(<a>findWithDefault</a> def k map)</tt> returns the
+--   value at key <tt>k</tt> or returns default value <tt>def</tt> when the
+--   key is not in the map.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   findWithDefault 'x' 1 (fromList [(5,'a'), (3,'b')]) == 'x'
@@ -8544,8 +8868,11 @@ lookup :: Ord k => k -> Map k a -> Maybe a
 --   </pre>
 findWithDefault :: Ord k => a -> k -> Map k a -> a
 
--- | <i>O(log n)</i>. Find largest key smaller than the given one and
---   return the corresponding (key, value) pair.
+-- | Finds the largest key smaller than the given one and returns the
+--   corresponding (key, value) pair. If there is no smaller key then
+--   <tt>Nothing</tt> is returned.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupLT 3 (fromList [(3,'a'), (5,'b')]) == Nothing
@@ -8553,8 +8880,10 @@ findWithDefault :: Ord k => a -> k -> Map k a -> a
 --   </pre>
 lookupLT :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(log n)</i>. Find smallest key greater than the given one and
---   return the corresponding (key, value) pair.
+-- | Finds the smallest key greater than the given one and returns the
+--   corresponding (key, value) pair.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupGT 4 (fromList [(3,'a'), (5,'b')]) == Just (5, 'b')
@@ -8562,8 +8891,10 @@ lookupLT :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 lookupGT :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(log n)</i>. Find largest key smaller or equal to the given one
---   and return the corresponding (key, value) pair.
+-- | Finds the largest key smaller or equal to the given one and returns
+--   the corresponding (key, value) pair.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupLE 2 (fromList [(3,'a'), (5,'b')]) == Nothing
@@ -8572,8 +8903,10 @@ lookupGT :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 lookupLE :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(log n)</i>. Find smallest key greater or equal to the given one
---   and return the corresponding (key, value) pair.
+-- | Finds the smallest key greater or equal to the given one and returns
+--   the corresponding (key, value) pair.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   lookupGE 3 (fromList [(3,'a'), (5,'b')]) == Just (3, 'a')
@@ -8582,7 +8915,9 @@ lookupLE :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 lookupGE :: Ord k => k -> Map k v -> Maybe (k, v)
 
--- | <i>O(1)</i>. The empty map.
+-- | Creates a map with zero entries.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   empty      == fromList []
@@ -8590,7 +8925,9 @@ lookupGE :: Ord k => k -> Map k v -> Maybe (k, v)
 --   </pre>
 empty :: Map k a
 
--- | <i>O(1)</i>. A map with a single element.
+-- | Creates a map with a single element.
+--   
+--   <i>Complexity: O(1)</i>
 --   
 --   <pre>
 --   singleton 1 'a'        == fromList [(1, 'a')]
@@ -8598,10 +8935,13 @@ empty :: Map k a
 --   </pre>
 singleton :: k -> a -> Map k a
 
--- | <i>O(log n)</i>. Insert a new key and value in the map. If the key is
---   already present in the map, the associated value is replaced with the
---   supplied value. <a>insert</a> is equivalent to <tt><a>insertWith</a>
---   <a>const</a></tt>.
+-- | Inserts a new key and value into the map.
+--   
+--   If the key is already present in the map, the associated value is
+--   replaced with the supplied value. <a>insert</a> is equivalent to
+--   <tt><a>insertWith</a> <a>const</a></tt>.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   insert 5 'x' (fromList [(5,'a'), (3,'b')]) == fromList [(3, 'b'), (5, 'x')]
@@ -8610,11 +8950,14 @@ singleton :: k -> a -> Map k a
 --   </pre>
 insert :: Ord k => k -> a -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. Insert with a function, combining new value and old
---   value. <tt><a>insertWith</a> f key value mp</tt> will insert the pair
---   (key, value) into <tt>mp</tt> if key does not exist in the map. If the
---   key does exist, the function will insert the pair <tt>(key, f
---   new_value old_value)</tt>.
+-- | Insert with a function, combining new value and old value.
+--   
+--   <tt><a>insertWith</a> f key value mp</tt> will insert the pair (key,
+--   value) into <tt>mp</tt> if key does not exist in the map. If the key
+--   does exist, the function will insert the pair <tt>(key, f new_value
+--   old_value)</tt>.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   insertWith (++) 5 "xxx" (fromList [(5,"a"), (3,"b")]) == fromList [(3, "b"), (5, "xxxa")]
@@ -8623,12 +8966,15 @@ insert :: Ord k => k -> a -> Map k a -> Map k a
 --   </pre>
 insertWith :: Ord k => (a -> a -> a) -> k -> a -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. Insert with a function, combining key, new value and
---   old value. <tt><a>insertWithKey</a> f key value mp</tt> will insert
---   the pair (key, value) into <tt>mp</tt> if key does not exist in the
---   map. If the key does exist, the function will insert the pair
---   <tt>(key,f key new_value old_value)</tt>. Note that the key passed to
---   f is the same key passed to <a>insertWithKey</a>.
+-- | Insert with a function, combining key, new value and old value.
+--   
+--   <tt><a>insertWithKey</a> f key value mp</tt> will insert the pair
+--   (key, value) into <tt>mp</tt> if key does not exist in the map. If the
+--   key does exist, the function will insert the pair <tt>(key,f key
+--   new_value old_value)</tt>. Note that the key passed to f is the same
+--   key passed to <a>insertWithKey</a>.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f key new_value old_value = (show key) ++ ":" ++ new_value ++ "|" ++ old_value
@@ -8638,11 +8984,14 @@ insertWith :: Ord k => (a -> a -> a) -> k -> a -> Map k a -> Map k a
 --   </pre>
 insertWithKey :: Ord k => (k -> a -> a -> a) -> k -> a -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. Combines insert operation with old value retrieval.
+-- | Combines insert operation with old value retrieval.
+--   
 --   The expression (<tt><a>insertLookupWithKey</a> f k x map</tt>) is a
 --   pair where the first element is equal to (<tt><a>lookup</a> k
 --   map</tt>) and the second element equal to (<tt><a>insertWithKey</a> f
 --   k x map</tt>).
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f key new_value old_value = (show key) ++ ":" ++ new_value ++ "|" ++ old_value
@@ -8661,8 +9010,10 @@ insertWithKey :: Ord k => (k -> a -> a -> a) -> k -> a -> Map k a -> Map k a
 --   </pre>
 insertLookupWithKey :: Ord k => (k -> a -> a -> a) -> k -> a -> Map k a -> (Maybe a, Map k a)
 
--- | <i>O(log n)</i>. Delete a key and its value from the map. When the key
---   is not a member of the map, the original map is returned.
+-- | Deletes a key and its value from the map. When the key is not a member
+--   of the map, the original map is returned.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   delete 5 (fromList [(5,"a"), (3,"b")]) == singleton 3 "b"
@@ -8671,9 +9022,12 @@ insertLookupWithKey :: Ord k => (k -> a -> a -> a) -> k -> a -> Map k a -> (Mayb
 --   </pre>
 delete :: Ord k => k -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. Update a value at a specific key with the result of
---   the provided function. When the key is not a member of the map, the
---   original map is returned.
+-- | Updates a value at a specific key with the result of the provided
+--   function.
+--   
+--   When the key is not a member of the map, the original map is returned.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   adjust ("new " ++) 5 (fromList [(5,"a"), (3,"b")]) == fromList [(3, "b"), (5, "new a")]
@@ -8682,8 +9036,10 @@ delete :: Ord k => k -> Map k a -> Map k a
 --   </pre>
 adjust :: Ord k => (a -> a) -> k -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. Adjust a value at a specific key. When the key is not
---   a member of the map, the original map is returned.
+-- | Adjust a value at a specific key. When the key is not a member of the
+--   map, the original map is returned.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f key x = (show key) ++ ":new " ++ x
@@ -8693,11 +9049,12 @@ adjust :: Ord k => (a -> a) -> k -> Map k a -> Map k a
 --   </pre>
 adjustWithKey :: Ord k => (k -> a -> a) -> k -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. The expression (<tt><a>update</a> f k map</tt>)
---   updates the value <tt>x</tt> at <tt>k</tt> (if it is in the map). If
---   (<tt>f x</tt>) is <a>Nothing</a>, the element is deleted. If it is
---   (<tt><a>Just</a> y</tt>), the key <tt>k</tt> is bound to the new value
---   <tt>y</tt>.
+-- | The expression (<tt><a>update</a> f k map</tt>) updates the value
+--   <tt>x</tt> at <tt>k</tt> (if it is in the map). If (<tt>f x</tt>) is
+--   <a>Nothing</a>, the element is deleted. If it is (<tt><a>Just</a>
+--   y</tt>), the key <tt>k</tt> is bound to the new value <tt>y</tt>.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f x = if x == "a" then Just "new a" else Nothing
@@ -8707,11 +9064,13 @@ adjustWithKey :: Ord k => (k -> a -> a) -> k -> Map k a -> Map k a
 --   </pre>
 update :: Ord k => (a -> Maybe a) -> k -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. The expression (<tt><a>updateWithKey</a> f k
---   map</tt>) updates the value <tt>x</tt> at <tt>k</tt> (if it is in the
---   map). If (<tt>f k x</tt>) is <a>Nothing</a>, the element is deleted.
---   If it is (<tt><a>Just</a> y</tt>), the key <tt>k</tt> is bound to the
---   new value <tt>y</tt>.
+-- | The expression (<tt><a>updateWithKey</a> f k map</tt>) updates the
+--   value <tt>x</tt> at <tt>k</tt> (if it is in the map). If (<tt>f k
+--   x</tt>) is <a>Nothing</a>, the element is deleted. If it is
+--   (<tt><a>Just</a> y</tt>), the key <tt>k</tt> is bound to the new value
+--   <tt>y</tt>.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f k x = if x == "a" then Just ((show k) ++ ":new a") else Nothing
@@ -8719,11 +9078,20 @@ update :: Ord k => (a -> Maybe a) -> k -> Map k a -> Map k a
 --   updateWithKey f 7 (fromList [(5,"a"), (3,"b")]) == fromList [(3, "b"), (5, "a")]
 --   updateWithKey f 3 (fromList [(5,"a"), (3,"b")]) == singleton 5 "a"
 --   </pre>
+--   
+--   See Note: Type of local <tt>go</tt> function
 updateWithKey :: Ord k => (k -> a -> Maybe a) -> k -> Map k a -> Map k a
 
--- | <i>O(log n)</i>. Lookup and update. See also <a>updateWithKey</a>. The
---   function returns changed value, if it is updated. Returns the original
---   key value if the map entry is deleted.
+-- | Lookup and update.
+--   
+--   <ul>
+--   <li>If the value is updated, the new value is returned.</li>
+--   <li>If the entry is deleted, the original value is returned.</li>
+--   </ul>
+--   
+--   See also: <a>updateWithKey</a>
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f k x = if x == "a" then Just ((show k) ++ ":new a") else Nothing
@@ -8731,13 +9099,16 @@ updateWithKey :: Ord k => (k -> a -> Maybe a) -> k -> Map k a -> Map k a
 --   updateLookupWithKey f 7 (fromList [(5,"a"), (3,"b")]) == (Nothing,  fromList [(3, "b"), (5, "a")])
 --   updateLookupWithKey f 3 (fromList [(5,"a"), (3,"b")]) == (Just "b", singleton 5 "a")
 --   </pre>
+--   
+--   See Note: Type of local <tt>go</tt> function
 updateLookupWithKey :: Ord k => (k -> a -> Maybe a) -> k -> Map k a -> (Maybe a, Map k a)
 
--- | <i>O(log n)</i>. The expression (<tt><a>alter</a> f k map</tt>) alters
---   the value <tt>x</tt> at <tt>k</tt>, or absence thereof. <a>alter</a>
---   can be used to insert, delete, or update a value in a <a>Map</a>. In
---   short : <tt><a>lookup</a> k (<a>alter</a> f k m) = f (<a>lookup</a> k
---   m)</tt>.
+-- | The expression (<tt><a>alter</a> f k map</tt>) alters the value
+--   <tt>x</tt> at <tt>k</tt>, or absence thereof. <a>alter</a> can be used
+--   to insert, delete, or update a value in a <a>Map</a>. In short :
+--   <tt><a>lookup</a> k (<a>alter</a> f k m) = f (<a>lookup</a> k m)</tt>.
+--   
+--   <i>Complexity: O(log n)</i>
 --   
 --   <pre>
 --   let f _ = Nothing
@@ -9184,12 +9555,23 @@ keysSet :: Map k a -> Set k
 --   </pre>
 fromSet :: (k -> a) -> Set k -> Map k a
 
--- | <i>O(n)</i>. Convert the map to a list of key/value pairs. Subject to
---   list fusion.
+-- | Convert the map to a list of key/value pairs. Subject to list fusion.
+--   
+--   <i>Complexity:</i> &lt;math&gt;
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   Converting an empty map to a list yields an empty list.
 --   
 --   <pre>
---   toList (fromList [(5,"a"), (3,"b")]) == [(3,"b"), (5,"a")]
---   toList empty == []
+--   &gt;&gt;&gt; toList empty == []
+--   </pre>
+--   
+--   Converting a non-empty map to a list returns the list of key/value
+--   pairs in key order.
+--   
+--   <pre>
+--   &gt;&gt;&gt; toList (fromList [(5,"a"), (3,"b")]) == [(3,"b"), (5,"a")]
 --   </pre>
 toList :: Map k a -> [(k, a)]
 
@@ -9207,12 +9589,36 @@ toList :: Map k a -> [(k, a)]
 --   </pre>
 fromList :: Ord k => [(k, a)] -> Map k a
 
--- | <i>O(n*log n)</i>. Build a map from a list of key/value pairs with a
---   combining function. See also <a>fromAscListWith</a>.
+-- | Build a map from a list of key/value pairs with a combining function.
+--   
+--   The combining (or "choosing") function is used to combine (or choose)
+--   values if the same key is present multiple times.
+--   
+--   <i>See also:</i> <a>fromAscListWith</a>
+--   
+--   <i>Complexity:</i> &lt;math&gt;
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   Build a map from a list, but only keep the largest value for each key.
 --   
 --   <pre>
---   fromListWith (++) [(5,"a"), (5,"b"), (3,"b"), (3,"a"), (5,"a")] == fromList [(3, "ab"), (5, "aba")]
---   fromListWith (++) [] == empty
+--   &gt;&gt;&gt; Map.fromListWith max [("a", 2), ("a", 1), ("b", 2)]
+--   fromList [("a",2),("b",2)]
+--   </pre>
+--   
+--   Build a histogram from a list of elements.
+--   
+--   <pre>
+--   &gt;&gt;&gt; Map.fromListWith (+) (map (\x -&gt; (x, 1)) ["a", "a", "b", "c", "c", "c"])
+--   fromList [("a",2),("b",1),("c",3)]
+--   </pre>
+--   
+--   Build a map from a list, combining the string values for the same key.
+--   
+--   <pre>
+--   &gt;&gt;&gt; Map.fromListWith (++) [(1, "a"), (1, "b"), (2, "x"), (2, "y")]
+--   fromList [(1,"ba"),(2,"yx")]
 --   </pre>
 fromListWith :: Ord k => (a -> a -> a) -> [(k, a)] -> Map k a
 
