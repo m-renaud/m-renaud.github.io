@@ -1392,35 +1392,42 @@ scanr :: (a -> b -> b) -> b -> Seq a -> Seq b
 --   argument.
 scanr1 :: (a -> a -> a) -> Seq a -> Seq a
 
--- | &lt;math&gt;. Returns a sequence of all suffixes of this sequence,
---   longest first. For example,
+-- | Returns a sequence of all suffixes of this sequence, longest first.
 --   
---   <pre>
---   tails (fromList "abc") = fromList [fromList "abc", fromList "bc", fromList "c", fromList ""]
---   </pre>
+--   <i>Complexity:</i> &lt;math&gt;
 --   
 --   Evaluating the &lt;math&gt;th suffix takes &lt;math&gt;, but
 --   evaluating every suffix in the sequence takes &lt;math&gt; due to
 --   sharing.
-tails :: Seq a -> Seq (Seq a)
-
--- | &lt;math&gt;. Returns a sequence of all prefixes of this sequence,
---   shortest first. For example,
+--   
+--   <h4><b>Examples</b></h4>
 --   
 --   <pre>
---   inits (fromList "abc") = fromList [fromList "", fromList "a", fromList "ab", fromList "abc"]
+--   tails (fromList "abc") = fromList [fromList "abc", fromList "bc", fromList "c", fromList ""]
 --   </pre>
+tails :: Seq a -> Seq (Seq a)
+
+-- | Returns a sequence of all prefixes of this sequence, shortest first.
+--   For example,
+--   
+--   <i>Complexity:</i> &lt;math&gt;
 --   
 --   Evaluating the &lt;math&gt;th prefix takes &lt;math&gt;, but
 --   evaluating every prefix in the sequence takes &lt;math&gt; due to
 --   sharing.
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   <pre>
+--   inits (fromList "abc") = fromList [fromList "", fromList "a", fromList "ab", fromList "abc"]
+--   </pre>
 inits :: Seq a -> Seq (Seq a)
 
--- | <tt>chunksOf c xs</tt> splits <tt>xs</tt> into chunks of size
---   <tt>c&gt;0</tt>.
+-- | <tt>chunksOf c xs</tt> splits the sequence <tt>xs</tt> into chunks of
+--   size <tt>c&gt;0</tt>.
 --   
 --   If <tt>c</tt> does not divide the length of <tt>xs</tt> evenly, then
---   the last element of the result will have less than <tt>c</tt>
+--   the last element of the result will have fewer than <tt>c</tt>
 --   elements.
 --   
 --   <i>Warning:</i> <tt>c</tt> can only be 0 when the sequence <tt>xs</tt>
@@ -1430,9 +1437,8 @@ inits :: Seq a -> Seq (Seq a)
 --   
 --   The given performance bound is missing some messy terms that only
 --   really affect edge cases. Performance degrades smoothly from
---   &lt;math&gt; (for ( c = n )) to &lt;math&gt; (for &lt;math&gt;). The
---   true bound is more like ( O Bigl( bigl(frac{n}{c} - 1bigr) (log (c +
---   1)) + 1 Bigr) )
+--   &lt;math&gt; (for &lt;math&gt;) to &lt;math&gt; (for &lt;math&gt;).
+--   The true bound is more like &lt;math&gt;
 --   
 --   <h4><b>Examples</b></h4>
 --   
@@ -1741,6 +1747,40 @@ zip4 :: Seq a -> Seq b -> Seq c -> Seq d -> Seq (a, b, c, d)
 --   elements, as well as four sequences and returns a sequence of their
 --   point-wise combinations, analogous to <a>zipWith</a>.
 zipWith4 :: (a -> b -> c -> d -> e) -> Seq a -> Seq b -> Seq c -> Seq d -> Seq e
+
+-- | Unzip a sequence of pairs.
+--   
+--   <pre>
+--   unzip ps = ps `<tt>seq'</tt> (<a>fmap</a> <a>fst</a> ps) (<a>fmap</a> <a>snd</a> ps)
+--   </pre>
+--   
+--   Example:
+--   
+--   <pre>
+--   unzip $ fromList [(1,"a"), (2,"b"), (3,"c")] =
+--     (fromList [1,2,3], fromList ["a", "b", "c"])
+--   </pre>
+--   
+--   See the note about efficiency at <a>unzipWith</a>.
+unzip :: Seq (a, b) -> (Seq a, Seq b)
+
+-- | &lt;math&gt;. Unzip a sequence using a function to divide elements.
+--   
+--   <pre>
+--   unzipWith f xs == <a>unzip</a> (<a>fmap</a> f xs)
+--   </pre>
+--   
+--   Efficiency note:
+--   
+--   <tt>unzipWith</tt> produces its two results in lockstep. If you
+--   calculate <tt> unzipWith f xs </tt> and fully force <i>either</i> of
+--   the results, then the entire structure of the <i>other</i> one will be
+--   built as well. This behavior allows the garbage collector to collect
+--   each calculated pair component as soon as it dies, without having to
+--   wait for its mate to die. If you do not need this behavior, you may be
+--   better off simply calculating the sequence of pairs and using
+--   <a>fmap</a> to extract each component sequence.
+unzipWith :: (a -> (b, c)) -> Seq a -> (Seq b, Seq c)
 instance GHC.Read.Read a => GHC.Read.Read (Data.Sequence.Internal.ViewR a)
 instance GHC.Show.Show a => GHC.Show.Show (Data.Sequence.Internal.ViewR a)
 instance GHC.Classes.Ord a => GHC.Classes.Ord (Data.Sequence.Internal.ViewR a)
@@ -1755,7 +1795,6 @@ instance GHC.Generics.Generic (Data.Sequence.Internal.ViewL a)
 instance Data.Data.Data a => Data.Data.Data (Data.Sequence.Internal.ViewR a)
 instance GHC.Generics.Generic1 Data.Sequence.Internal.ViewR
 instance GHC.Generics.Generic (Data.Sequence.Internal.ViewR a)
-instance Control.Monad.Zip.MonadZip Data.Sequence.Internal.Seq
 instance Data.Sequence.Internal.UnzipWith Data.Sequence.Internal.Elem
 instance Data.Sequence.Internal.UnzipWith Data.Sequence.Internal.Node
 instance Data.Sequence.Internal.UnzipWith Data.Sequence.Internal.Digit
@@ -1792,6 +1831,7 @@ instance GHC.Base.Monoid (Data.Sequence.Internal.Seq a)
 instance Data.Semigroup.Semigroup (Data.Sequence.Internal.Seq a)
 instance GHC.Exts.IsList (Data.Sequence.Internal.Seq a)
 instance a ~ GHC.Types.Char => Data.String.IsString (Data.Sequence.Internal.Seq a)
+instance Control.Monad.Zip.MonadZip Data.Sequence.Internal.Seq
 instance Data.Sequence.Internal.MaybeForce (Data.Sequence.Internal.Elem a)
 instance Data.Sequence.Internal.Sized a => Data.Sequence.Internal.Sized (Data.Sequence.Internal.FingerTree a)
 instance Data.Sequence.Internal.Sized (Data.Sequence.Internal.Elem a)
@@ -2060,35 +2100,42 @@ scanr :: (a -> b -> b) -> b -> Seq a -> Seq b
 --   argument.
 scanr1 :: (a -> a -> a) -> Seq a -> Seq a
 
--- | &lt;math&gt;. Returns a sequence of all suffixes of this sequence,
---   longest first. For example,
+-- | Returns a sequence of all suffixes of this sequence, longest first.
 --   
---   <pre>
---   tails (fromList "abc") = fromList [fromList "abc", fromList "bc", fromList "c", fromList ""]
---   </pre>
+--   <i>Complexity:</i> &lt;math&gt;
 --   
 --   Evaluating the &lt;math&gt;th suffix takes &lt;math&gt;, but
 --   evaluating every suffix in the sequence takes &lt;math&gt; due to
 --   sharing.
-tails :: Seq a -> Seq (Seq a)
-
--- | &lt;math&gt;. Returns a sequence of all prefixes of this sequence,
---   shortest first. For example,
+--   
+--   <h4><b>Examples</b></h4>
 --   
 --   <pre>
---   inits (fromList "abc") = fromList [fromList "", fromList "a", fromList "ab", fromList "abc"]
+--   tails (fromList "abc") = fromList [fromList "abc", fromList "bc", fromList "c", fromList ""]
 --   </pre>
+tails :: Seq a -> Seq (Seq a)
+
+-- | Returns a sequence of all prefixes of this sequence, shortest first.
+--   For example,
+--   
+--   <i>Complexity:</i> &lt;math&gt;
 --   
 --   Evaluating the &lt;math&gt;th prefix takes &lt;math&gt;, but
 --   evaluating every prefix in the sequence takes &lt;math&gt; due to
 --   sharing.
+--   
+--   <h4><b>Examples</b></h4>
+--   
+--   <pre>
+--   inits (fromList "abc") = fromList [fromList "", fromList "a", fromList "ab", fromList "abc"]
+--   </pre>
 inits :: Seq a -> Seq (Seq a)
 
--- | <tt>chunksOf c xs</tt> splits <tt>xs</tt> into chunks of size
---   <tt>c&gt;0</tt>.
+-- | <tt>chunksOf c xs</tt> splits the sequence <tt>xs</tt> into chunks of
+--   size <tt>c&gt;0</tt>.
 --   
 --   If <tt>c</tt> does not divide the length of <tt>xs</tt> evenly, then
---   the last element of the result will have less than <tt>c</tt>
+--   the last element of the result will have fewer than <tt>c</tt>
 --   elements.
 --   
 --   <i>Warning:</i> <tt>c</tt> can only be 0 when the sequence <tt>xs</tt>
@@ -2098,9 +2145,8 @@ inits :: Seq a -> Seq (Seq a)
 --   
 --   The given performance bound is missing some messy terms that only
 --   really affect edge cases. Performance degrades smoothly from
---   &lt;math&gt; (for ( c = n )) to &lt;math&gt; (for &lt;math&gt;). The
---   true bound is more like ( O Bigl( bigl(frac{n}{c} - 1bigr) (log (c +
---   1)) + 1 Bigr) )
+--   &lt;math&gt; (for &lt;math&gt;) to &lt;math&gt; (for &lt;math&gt;).
+--   The true bound is more like &lt;math&gt;
 --   
 --   <h4><b>Examples</b></h4>
 --   
@@ -2408,6 +2454,40 @@ zip4 :: Seq a -> Seq b -> Seq c -> Seq d -> Seq (a, b, c, d)
 --   elements, as well as four sequences and returns a sequence of their
 --   point-wise combinations, analogous to <a>zipWith</a>.
 zipWith4 :: (a -> b -> c -> d -> e) -> Seq a -> Seq b -> Seq c -> Seq d -> Seq e
+
+-- | Unzip a sequence of pairs.
+--   
+--   <pre>
+--   unzip ps = ps `<tt>seq'</tt> (<a>fmap</a> <a>fst</a> ps) (<a>fmap</a> <a>snd</a> ps)
+--   </pre>
+--   
+--   Example:
+--   
+--   <pre>
+--   unzip $ fromList [(1,"a"), (2,"b"), (3,"c")] =
+--     (fromList [1,2,3], fromList ["a", "b", "c"])
+--   </pre>
+--   
+--   See the note about efficiency at <a>unzipWith</a>.
+unzip :: Seq (a, b) -> (Seq a, Seq b)
+
+-- | &lt;math&gt;. Unzip a sequence using a function to divide elements.
+--   
+--   <pre>
+--   unzipWith f xs == <a>unzip</a> (<a>fmap</a> f xs)
+--   </pre>
+--   
+--   Efficiency note:
+--   
+--   <tt>unzipWith</tt> produces its two results in lockstep. If you
+--   calculate <tt> unzipWith f xs </tt> and fully force <i>either</i> of
+--   the results, then the entire structure of the <i>other</i> one will be
+--   built as well. This behavior allows the garbage collector to collect
+--   each calculated pair component as soon as it dies, without having to
+--   wait for its mate to die. If you do not need this behavior, you may be
+--   better off simply calculating the sequence of pairs and using
+--   <a>fmap</a> to extract each component sequence.
+unzipWith :: (a -> (b, c)) -> Seq a -> (Seq b, Seq c)
 
 
 -- | Multi-way trees (<i>aka</i> rose trees) and forests.
@@ -6810,21 +6890,82 @@ showTreeWith :: (k -> a -> String) -> Bool -> Bool -> Map k a -> String
 valid :: Ord k => Map k a -> Bool
 
 
--- | An efficient implementation of ordered maps from keys to values
---   (dictionaries).
+-- | <h1>Strict Maps (aka dictionaries)</h1>
 --   
---   API of this module is strict in both the keys and the values. If you
---   need value-lazy maps, use <a>Data.Map.Lazy</a> instead. The <a>Map</a>
---   type is shared between the lazy and strict modules, meaning that the
---   same <a>Map</a> value can be passed to functions in both modules
---   (although that is rarely needed).
+--   The <tt><a>Map</a> k v</tt> type represents an <i>ordered</i> map
+--   indexed by keys of type <tt>k</tt> containing <i>strict</i> values of
+--   type <tt>v</tt>.
 --   
---   These modules are intended to be imported qualified, to avoid name
---   clashes with Prelude functions, e.g.
+--   When deciding if this is the correct data structure to use, consider:
+--   
+--   <ul>
+--   <li>The API of this module is strict in both the keys and the values.
+--   If you need <i>value-lazy</i> maps, use <a>Data.Map.Lazy</a>
+--   instead.</li>
+--   <li>If your key type is <tt>Int</tt>, use <a>Data.IntMap.Strict</a>
+--   instead.</li>
+--   <li>If you don't care about ordering, use <tt>Data.HashMap.Strict</tt>
+--   from the <a>unordered-containers</a> package instead.</li>
+--   </ul>
+--   
+--   For a walkthrough of the most commonly used functions see the <a>maps
+--   introduction</a>.
+--   
+--   This module is intended to be imported qualified, to avoid name
+--   clashes with Prelude functions:
 --   
 --   <pre>
 --   import qualified Data.Map.Strict as Map
 --   </pre>
+--   
+--   Note that the implementation is <i>left-biased</i>, the elements of a
+--   first argument are always preferred to the second, for example in
+--   <a>union</a> or <a>insert</a>.
+--   
+--   <h2>Detailed performance information</h2>
+--   
+--   The amortized running time is given for each operation, with <i>n</i>
+--   referring to the number of entries in the map.
+--   
+--   Benchmarks comparing <a>Data.Map.Strict</a> with other dictionary
+--   implementations can be found at
+--   <a>https://github.com/haskell-perf/dictionaries</a>.
+--   
+--   <h2>Strictness propertios</h2>
+--   
+--   This module satisfies the following strictness properties:
+--   
+--   <ol>
+--   <li>Key arguments are evaluated to WHNF;</li>
+--   <li>Keys and values are evaluated to WHNF before they are stored in
+--   the map.</li>
+--   </ol>
+--   
+--   Here's an example illustrating the first property:
+--   
+--   <pre>
+--   delete undefined m  ==  undefined
+--   </pre>
+--   
+--   Here are some examples that illustrate the second property:
+--   
+--   <pre>
+--   map (\ v -&gt; undefined) m  ==  undefined      -- m is not empty
+--   mapKeys (\ k -&gt; undefined) m  ==  undefined  -- m is not empty
+--   </pre>
+--   
+--   <h2>Warning</h2>
+--   
+--   The size of a <a>Map</a> must not exceed <tt>maxBound::Int</tt>.
+--   Violation of this condition is not detected and if the size limit is
+--   exceeded, its behaviour is undefined.
+--   
+--   Be aware that the <tt>Functor</tt>, <tt>Traversable</tt> and
+--   <tt>Data</tt> instances are the same as for the <a>Data.Map.Lazy</a>
+--   module, so if they are used on strict maps, the resulting maps will be
+--   lazy.
+--   
+--   <h2>Implementation</h2>
 --   
 --   The implementation of <a>Map</a> is based on <i>size balanced</i>
 --   binary trees (or trees of <i>bounded balance</i>) as described by:
@@ -6846,21 +6987,9 @@ valid :: Ord k => Map k a -> Bool
 --   <a>https://arxiv.org/abs/1602.02120v3</a>.</li>
 --   </ul>
 --   
---   Note that the implementation is <i>left-biased</i> -- the elements of
---   a first argument are always preferred to the second, for example in
---   <a>union</a> or <a>insert</a>.
---   
---   <i>Warning</i>: The size of the map must not exceed
---   <tt>maxBound::Int</tt>. Violation of this condition is not detected
---   and if the size limit is exceeded, its behaviour is undefined.
---   
---   Operation comments contain the operation time complexity in the Big-O
---   notation (<a>http://en.wikipedia.org/wiki/Big_O_notation</a>).
---   
---   Be aware that the <tt>Functor</tt>, <tt>Traversable</tt> and
---   <tt>Data</tt> instances are the same as for the <a>Data.Map.Lazy</a>
---   module, so if they are used on strict maps, the resulting maps will be
---   lazy.
+--   The <a>Map</a> type is shared between the lazy and strict modules,
+--   meaning that the same <a>Map</a> value can be passed to functions in
+--   both modules (although that is rarely needed).
 module Data.Map.Strict
 
 -- | A Map from keys <tt>k</tt> to values <tt>a</tt>.
@@ -8698,21 +8827,70 @@ runWhenMatched :: WhenMatched f k x y z -> k -> x -> y -> f (Maybe z)
 runWhenMissing :: WhenMissing f k x y -> k -> x -> f (Maybe y)
 
 
--- | An efficient implementation of ordered maps from keys to values
---   (dictionaries).
+-- | <h1>Lazy Maps (aka dictionaries)</h1>
 --   
---   API of this module is strict in the keys, but lazy in the values. If
---   you need value-strict maps, use <a>Data.Map.Strict</a> instead. The
---   <a>Map</a> type itself is shared between the lazy and strict modules,
---   meaning that the same <a>Map</a> value can be passed to functions in
---   both modules (although that is rarely needed).
+--   The <tt><a>Map</a> k v</tt> type represents an <i>ordered</i> map
+--   indexed by keys of type <tt>k</tt> containing <i>lazy</i> values of
+--   type <tt>v</tt>.
 --   
---   These modules are intended to be imported qualified, to avoid name
---   clashes with Prelude functions, e.g.
+--   When deciding if this is the correct data structure to use, consider:
+--   
+--   <ul>
+--   <li>The API of this module is strict in the keys but lazy in the
+--   values. If you don't need <i>value-lazy</i> maps, use
+--   <a>Data.Map.Strict</a> instead.</li>
+--   <li>If your key type is <tt>Int</tt>, use <a>Data.IntMap.Lazy</a>
+--   instead.</li>
+--   <li>If you don't care about ordering, use <tt>Data.HashMap.Lazy</tt>
+--   from the <a>unordered-containers</a> package instead.</li>
+--   </ul>
+--   
+--   For a walkthrough of the most commonly used functions see the <a>maps
+--   introduction</a>.
+--   
+--   This module is intended to be imported qualified, to avoid name
+--   clashes with Prelude functions:
 --   
 --   <pre>
 --   import qualified Data.Map.Lazy as Map
 --   </pre>
+--   
+--   Note that the implementation is <i>left-biased</i>, the elements of a
+--   first argument are always preferred to the second, for example in
+--   <a>union</a> or <a>insert</a>.
+--   
+--   <h2>Detailed performance information</h2>
+--   
+--   The amortized running time is given for each operation, with <i>n</i>
+--   referring to the number of entries in the map.
+--   
+--   Benchmarks comparing <a>Data.Map.Lazy</a> with other dictionary
+--   implementations can be found at
+--   <a>https://github.com/haskell-perf/dictionaries</a>.
+--   
+--   <h2>Strictness propertios</h2>
+--   
+--   This module satisfies the following strictness property:
+--   
+--   <ul>
+--   <li>Key arguments are evaluated to WHNF</li>
+--   </ul>
+--   
+--   Here are some examples that illustrate the property:
+--   
+--   <pre>
+--   insertWith (\ new old -&gt; old) undefined v m  ==  undefined
+--   insertWith (\ new old -&gt; old) k undefined m  ==  OK
+--   delete undefined m  ==  undefined
+--   </pre>
+--   
+--   <h2>Warning</h2>
+--   
+--   The size of a <a>Map</a> must not exceed <tt>maxBound::Int</tt>.
+--   Violation of this condition is not detected and if the size limit is
+--   exceeded, its behaviour is undefined.
+--   
+--   <h2>Implementation</h2>
 --   
 --   The implementation of <a>Map</a> is based on <i>size balanced</i>
 --   binary trees (or trees of <i>bounded balance</i>) as described by:
@@ -8733,17 +8911,6 @@ runWhenMissing :: WhenMissing f k x y -> k -> x -> f (Maybe y)
 --   Parallel Ordered Sets</i>",
 --   <a>https://arxiv.org/abs/1602.02120v3</a>.</li>
 --   </ul>
---   
---   Note that the implementation is <i>left-biased</i> -- the elements of
---   a first argument are always preferred to the second, for example in
---   <a>union</a> or <a>insert</a>.
---   
---   <i>Warning</i>: The size of the map must not exceed
---   <tt>maxBound::Int</tt>. Violation of this condition is not detected
---   and if the size limit is exceeded, its behaviour is undefined.
---   
---   Operation comments contain the operation time complexity in the Big-O
---   notation (<a>http://en.wikipedia.org/wiki/Big_O_notation</a>).
 module Data.Map.Lazy
 
 -- | A Map from keys <tt>k</tt> to values <tt>a</tt>.
