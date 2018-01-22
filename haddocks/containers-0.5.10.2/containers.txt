@@ -656,7 +656,19 @@ instance (GHC.Read.Read a, GHC.Classes.Ord a) => GHC.Read.Read (Data.Set.Interna
 instance Control.DeepSeq.NFData a => Control.DeepSeq.NFData (Data.Set.Internal.Set a)
 
 
--- | An efficient implementation of sets.
+-- | <h1>Sets</h1>
+--   
+--   The <tt><a>Set</a> e</tt> type represents a set of <i>unique</i>,
+--   <i>ordered</i> elements of type <tt>e</tt>.
+--   
+--   For a walkthrough of the most commonly used functions see the <a>sets
+--   introduction</a>.
+--   
+--   Note that the implementation is <i>left-biased</i> -- the elements of
+--   a first argument are always preferred to the second, for example in
+--   <a>union</a> or <a>insert</a>. Of course, left-biasing can only be
+--   observed when equality is an equivalence relation instead of
+--   structural equality.
 --   
 --   These modules are intended to be imported qualified, to avoid name
 --   clashes with Prelude functions, e.g.
@@ -665,6 +677,14 @@ instance Control.DeepSeq.NFData a => Control.DeepSeq.NFData (Data.Set.Internal.S
 --   import Data.Set (Set)
 --   import qualified Data.Set as Set
 --   </pre>
+--   
+--   <h2>Warning</h2>
+--   
+--   The size of the set must not exceed <tt>maxBound::Int</tt>. Violation
+--   of this condition is not detected and if the size limit is exceeded,
+--   its behaviour is undefined.
+--   
+--   <h2>Implementation</h2>
 --   
 --   The implementation of <a>Set</a> is based on <i>size balanced</i>
 --   binary trees (or trees of <i>bounded balance</i>) as described by:
@@ -685,16 +705,6 @@ instance Control.DeepSeq.NFData a => Control.DeepSeq.NFData (Data.Set.Internal.S
 --   Parallel Ordered Sets</i>",
 --   <a>https://arxiv.org/abs/1602.02120v3</a>.</li>
 --   </ul>
---   
---   Note that the implementation is <i>left-biased</i> -- the elements of
---   a first argument are always preferred to the second, for example in
---   <a>union</a> or <a>insert</a>. Of course, left-biasing can only be
---   observed when equality is an equivalence relation instead of
---   structural equality.
---   
---   <i>Warning</i>: The size of the set must not exceed
---   <tt>maxBound::Int</tt>. Violation of this condition is not detected
---   and if the size limit is exceeded, its behaviour is undefined.
 module Data.Set
 
 -- | A set of values <tt>a</tt>.
