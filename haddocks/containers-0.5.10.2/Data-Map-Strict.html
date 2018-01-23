@@ -6,13 +6,7 @@ window.onload = function () {pageLoad();};
  them in a <code><a href="Data-Map-Strict.html#t:Map">Map</a></code>. This is usually more efficient when laziness is not
  necessary. When laziness <em>is</em> required, use the functions in <a href="Data-Map-Lazy.html">Data.Map.Lazy</a>.</p><p>In particular, the functions in this module obey the following law:</p><ul><li>If all values stored in all maps in the arguments are in WHNF, then all
     values stored in all maps in the results will be in WHNF once those maps
-    are evaluated.</li></ul><p><em>Examples:</em></p><pre><code><a href="Data-Map-Strict.html#v:insert">insert</a></code> k undefined m == undefined
-<code><a href="Data-Map-Strict.html#v:insert">insert</a></code> 1 <code>a</code> $ <a href="Data-Map-Lazy.html">Data.Map.Lazy</a>.<code><a href="Data-Map-Lazy.html#v:fromList">fromList</a></code> ((2,undefined) : zip [3 .. 9] [<code>b</code>..])
-  == <a href="Data-Map-Lazy.html">Data.Map.Lazy</a>.<code><a href="Data-Map-Lazy.html#v:fromList">fromList</a></code> ((1,<code>a</code>) : (2, undefined) : zip [3..9] [<code>b</code>..])
-<code><a href="Data-Map-Strict.html#v:union">union</a></code> (<code><a href="Data-Map-Strict.html#v:fromList">fromList</a></code> $ zip [1..10] [<code>a</code>..]) (<a href="Data-Map-Lazy.html">Data.Map.Lazy</a>.<code><a href="Data-Map-Lazy.html#v:fromList">fromList</a></code> $ zip [1..10] (repeat undefined)) == <code><a href="Data-Map-Strict.html#v:fromList">fromList</a></code> $ zip [1..10] [<code>a</code>..])
-<code><a href="Data-Map-Strict.html#v:unionWith">unionWith</a></code> (_ _ -&gt; undefined) m1 m2 == undefined
-<code><a href="Data-Map-Strict.html#v:alterF">alterF</a></code> (_ -&gt; pure (Just undefined)) k m == pure undefined
-</pre><p>When deciding if this is the correct data structure to use, consider:</p><ul><li>If you are using <code>Int</code> keys, you will get much better performance for most
+    are evaluated.</li></ul><p>When deciding if this is the correct data structure to use, consider:</p><ul><li>If you are using <code>Int</code> keys, you will get much better performance for most
  operations using <a href="Data-IntMap-Strict.html">Data.IntMap.Strict</a>.</li><li>If you don't care about ordering, consider use <code>Data.HashMap.Strict</code> from the
  <a href="https://hackage.haskell.org/package/unordered-containers">unordered-containers</a>
  package instead.</li></ul><p>For a walkthrough of the most commonly used functions see the
