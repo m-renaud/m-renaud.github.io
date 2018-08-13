@@ -46,7 +46,7 @@ function createMoreInfoHtml(flight) {
     return "<span style='color:" + currentColor + ";'>" + flight.site + "</span>"
 	+ "  <span style='color:gray'>[" + escapeHtml(flight.wing) + "]</span><br/><br/>"
 	+ flight.comments + "<br/>"
-	+ (flight.doarama ? "Doarama: <link>" : "");
+	+ (flight.doarama ? "Doarama: <a href='https://doarama.com/view/" + flight.doarama + "'>View flight</a>" : "");
 }
 
 var selectedFlight = undefined;
