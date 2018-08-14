@@ -19,6 +19,14 @@ function escapeHtml(t) {
     return $('<div/>').text(t).html();
 }
 
+function siteHtml(site) {
+    return "<span style='color:" + color(site) + ";'>" + site + "</span>"
+}
+
+function wingHtml(wing) {
+    return "<span style='color:gray'>[" + escapeHtml(wing) + "]</span>"
+}
+
 // Given a 'flight', return the HTML to show in the tooltip when the mouse is
 // hovered over it.
 //
@@ -26,31 +34,54 @@ function escapeHtml(t) {
 //   <site> [<wing>]
 //   <description>
 function createTooltipHtml(flight) {
-    var currentColor = color(flight.site);
+    var trimmedCommentText = flight.comments;
+    if (trimmedCommentText.length > 150) {
+	trimmedCommentText = trimmedCommentText.substring(0, 150) + "...";
+    }
+
     var commentsHtml = flight.comments ?
-	escapeHtml(flight.comments)
+	escapeHtml(trimmedCommentText)
 	: "<span style='color: gray'>" + escapeHtml("<no comments>") + "</span>";
-    return "<span style='color:" + currentColor + ";'>" + flight.site + "</span>"
-	+ "  <span style='color:gray'>[" + escapeHtml(flight.wing) + "]</span><br/>"
+    return siteHtml(flight.site) + "  " + wingHtml(flight.wing) + "<br/>"
 	+ commentsHtml + "<br/>"
 	+ (flight.comments ? "<span style='color:green'>Click for more info.</span>" : "");
+}
+
+function dateHtml(date) {
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString("en-US", options);
 }
 
 // Given a 'flight', return the HTML which contains all info about the flight.
 // This is displayed below the plot when a flight is clicked on.
 function createMoreInfoHtml(flight) {
-    var currentColor = color(flight.site);
     var commentsHtml = flight.comments ?
 	escapeHtml(flight.comments)
 	: "<span style='color: gray'>" + escapeHtml("<no comments>") + "</span>";
-    return "<span style='color:" + currentColor + ";'>" + flight.site + "</span>"
-	+ "  <span style='color:gray'>[" + escapeHtml(flight.wing) + "]</span><br/><br/>"
-	+ flight.comments + "<br/>"
-	+ (flight.doarama ? "Doarama: <a href='https://doarama.com/view/" + flight.doarama + "'>View flight</a>" : "");
+    return siteHtml(flight.site) + "  " + wingHtml(flight.wing) + " - " + dateHtml(flight.date) + "<br/><br/>"
+	+ commentsHtml + "<br/>"
+	+ (flight.doarama ? "<br/><a href='https://doarama.com/view/" + flight.doarama + "'>View flight on Doarama</a>" : "");
 }
 
 var selectedFlight = undefined;
 var selectedSite = undefined;
+
+function resetFlightDots() {
+    d3.selectAll(".dot")
+	.style("opacity", 1)
+	.style("stroke", "#333")
+	.style("fill", function (flight) { return color(flight.site); });
+    selectedFlight = undefined;
+}
+
+function resetLegend() {
+    d3.selectAll(".legend")
+	.transition()
+	.duration(200)
+	.style("opacity", 1);
+    selectedSite = undefined;    
+    resetFlightDots();
+}
 
 // Creates a scatterplot from the flight data in 'config.flightsDataFile' (PSV format).
 //
@@ -102,31 +133,50 @@ function createFlightsScatterPlot() {
     };
 
     var flightClick = function(flight) {
-	svg.select('selected-flight')
-	    .style('fill', function(flight) { return color(flight.site); });
+	d3.select(selectedFlight).style("fill", color(flight.site));
+	d3.selectAll('.dot').style("opacity", 0.4);
+	
+	selectedFlight = this;
+
 	d3.select('#more-info').html("");
 	d3.select('#more-info').append("div")
 	    .style("left", "20px")
 	    .style("top", "1000px")
 	    .html(createMoreInfoHtml(flight));
+	d3.select(this).style("fill", "yellow").style("opacity", 1.0).moveToFront();
     }
 
-    // Retrieve the data from the "pipe-separated value" (PSV) file.
-    var psv = d3.dsvFormat("|");
-    d3.request(config.flightsDataFile)
-	.mimeType("text/plain")
-	.response(function(xhr) { return psv.parse(xhr.responseText) })
-	.get(function(error, data) {
-	    if (data == undefined) {
-		console.log("Data failed to load. Path: " + flightsCsvFile);
-	    }
-	    
-	    data.forEach(function(d, idx) {
-		d.date = parseDate(d.date);
-		d.minutes = +d.minutes;
-		d.flightNumber = idx;
-	    });
+    d3.selection.prototype.moveToFront = function() {
+	return this.each(function(){
+	    this.parentNode.appendChild(this);
+	});
+    };
 
+    d3.select("body")
+	.on("keydown", function() {
+	    if (d3.event.keyCode == 27) {
+		d3.selectAll('.dot')
+		    .style("opacity", 1.0)
+		    .style("fill", function(flight) { return color(flight.site); });
+		selectedFlight = undefined;
+
+		resetLegend();
+		resetFlightDots();
+	    }
+	});
+    
+
+    // Retrieve the data from the "pipe-separated value" (PSV) file.
+    d3.dsv("|", config.flightsDataFile, function(d) {
+	return {
+	    date: parseDate(d.date),
+	    site: d.site,
+	    wing: d.wing,
+	    minutes: +d.minutes,
+	    doarama: d.doarama,
+	    comments: d.comments
+	}
+    }).then(function (data) {
 	    // Scale the range of the data
 	    x.domain(d3.extent(data, function(flight) { return flight.date; }));
 	    y.domain([0, d3.max(data, function(flight) { return flight.minutes; })]);
@@ -134,14 +184,14 @@ function createFlightsScatterPlot() {
 	    // --------------------------------------------------
 	    // Data points (flights)
 	    // --------------------------------------------------
-	    
+
 	    svg.selectAll(".dot")
 		.data(data)
 		.enter()
 		.append("circle")
-    	        .classed("dot", true)
+	        .classed("dot", true)
 		.attr("r", 6)
-    		.style("stroke", "#333")
+		.style("stroke", "#333")
 		.style('fill', function(flight) { return color(flight.site); })
 		.attr("cx", function(flight) { return x(flight.date); })
 		.attr("cy", function(flight) { return y(flight.minutes); })
@@ -167,7 +217,7 @@ function createFlightsScatterPlot() {
 		.attr('transform', 'translate(0,' + height + ')')
 		.call(d3.axisBottom(x));
 
-	    svg.append("text")             
+	    svg.append("text")
 		.attr("transform", "translate(" + (width/2) + " ," + (height + config.margin.top) + ")")
 		.style("text-anchor", "middle")
 		.text("Date");
@@ -187,7 +237,7 @@ function createFlightsScatterPlot() {
 	    // --------------------------------------------------
 	    // Legend
 	    // --------------------------------------------------
-	    
+
 	    var legend = svg.selectAll('.legend')
 		.data(color.domain())
 		.enter().append('g')
@@ -212,15 +262,7 @@ function createFlightsScatterPlot() {
 	    legend.on("click", function(site) {
 		// If you click the same site again, remove the filter.
 		if (site == selectedSite) {
-		    d3.selectAll(".legend")
-			.transition()
-			.duration(200)
-			.style("opacity", 1);
-		    d3.selectAll(".dot")
-			.style("opacity", 1)
-			.style("stroke", "#333")
-			.style("fill", function (flight) { return color(flight.site); });
-		    selectedSite = undefined;
+		    resetLegend();
 		    return;
 		}
 
@@ -228,7 +270,7 @@ function createFlightsScatterPlot() {
 		// This is used to toggle site filtering when the same site is
 		// clicked twice.
 		selectedSite = site;
-		
+
 		// Dim all legend items, then un-dim the selected one.
 		d3.selectAll(".legend").style("opacity", 0.1);
 		d3.select(this).style("opacity", 1);
