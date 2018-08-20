@@ -66,6 +66,10 @@ function createMoreInfoHtml(flight) {
 var selectedFlight = undefined;
 var selectedSite = undefined;
 
+function clearMoreInfoSection() {
+    d3.select('#more-info').html("");    
+}
+
 function resetFlightDots() {
     d3.selectAll(".dot")
 	.style("opacity", 1)
@@ -155,16 +159,11 @@ function createFlightsScatterPlot() {
     d3.select("body")
 	.on("keydown", function() {
 	    if (d3.event.keyCode == 27) {
-		d3.selectAll('.dot')
-		    .style("opacity", 1.0)
-		    .style("fill", function(flight) { return color(flight.site); });
-		selectedFlight = undefined;
-
 		resetLegend();
 		resetFlightDots();
+		clearMoreInfoSection();
 	    }
 	});
-    
 
     // Retrieve the data from the "pipe-separated value" (PSV) file.
     d3.dsv("|", config.flightsDataFile, function(d) {
@@ -177,116 +176,118 @@ function createFlightsScatterPlot() {
 	    comments: d.comments
 	}
     }).then(function (data) {
-	    // Scale the range of the data
-	    x.domain(d3.extent(data, function(flight) { return flight.date; }));
-	    y.domain([0, d3.max(data, function(flight) { return flight.minutes; })]);
+	// Scale the range of the data
+	x.domain(d3.extent(data, function(flight) { return flight.date; }));
+	y.domain([0, d3.max(data, function(flight) { return flight.minutes; })]);
 
-	    // --------------------------------------------------
-	    // Data points (flights)
-	    // --------------------------------------------------
+	// --------------------------------------------------
+	// Data points (flights)
+	// --------------------------------------------------
 
-	    svg.selectAll(".dot")
-		.data(data)
-		.enter()
-		.append("circle")
-	        .classed("dot", true)
-		.attr("r", 6)
+	svg.selectAll(".dot")
+	    .data(data)
+	    .enter()
+	    .append("circle")
+	    .classed("dot", true)
+	    .attr("r", 6)
+	    .style("stroke", "#333")
+	    .style('fill', function(flight) { return color(flight.site); })
+	    .attr("cx", function(flight) { return x(flight.date); })
+	    .attr("cy", function(flight) { return y(flight.minutes); })
+	    .style("cursor", "pointer")
+	    .on("mouseover", tooltipMouseover)
+	    .on("mouseout", tooltipMouseout)
+	    .on("mousedown", flightClick);
+
+	// --------------------------------------------------
+	// Title and axis
+	// --------------------------------------------------
+
+	// Title
+	svg.append("text")
+	    .attr("y", 10 - config.margin.top)
+	    .attr("x", width / 2)
+	    .attr("dy", "1em")
+	    .style("text-anchor", "middle")
+	    .style('font-size', '20px')
+	    .text("Flights");
+
+	// X-Axis
+	svg.append('g')
+	    .attr('transform', 'translate(0,' + height + ')')
+	    .call(d3.axisBottom(x));
+
+	svg.append("text")
+	    .attr("transform", "translate(" + (width/2) + " ," + (height + config.margin.top) + ")")
+	    .style("text-anchor", "middle")
+	    .text("Date");
+
+	// Y-Axis
+	svg.append('g')
+	    .call(d3.axisLeft(y));
+
+	svg.append("text")
+	    .attr("transform", "rotate(-90)")
+	    .attr("y", 0 - config.margin.left)
+	    .attr("x",0 - (height / 2))
+	    .attr("dy", "1em")
+	    .style("text-anchor", "middle")
+	    .text("Flight time (min)");
+
+	// --------------------------------------------------
+	// Legend
+	// --------------------------------------------------
+
+	var legend = svg.selectAll('.legend')
+	    .data(color.domain())
+	    .enter().append('g')
+	    .style("cursor", "pointer")
+	    .attr('class', 'legend')
+	    .attr('transform', function(site, i) { return 'translate(0,' + i * 20 + ')'; });
+
+	var legendOffset = 18 - config.margin.right;
+
+	legend.append('rect')
+	    .attr('x', width - legendOffset)
+	    .attr('width', 18)
+	    .attr('height', 18)
+	    .style('fill', color);
+
+	legend.append('text')
+	    .attr('x', width - legendOffset - 6)
+	    .attr('y', 9)
+	    .attr('dy', '.35em')
+	    .style('text-anchor', 'end')
+	    .text(function(site) { return site; });
+
+	legend.on("click", function(site) {
+	    // If you click the same site again, remove the filter.
+	    if (site == selectedSite) {
+		resetLegend();
+		return;
+	    }
+
+	    // Save which site is currently being filtered.
+	    // This is used to toggle site filtering when the same site is
+	    // clicked twice.
+	    selectedSite = site;
+
+	    // Dim all legend items, then un-dim the selected one.
+	    d3.selectAll(".legend").style("opacity", 0.1);
+	    d3.select(this).style("opacity", 1);
+
+	    d3.selectAll(".dot")
+		.transition()
+		.duration(200)
+		.style("opacity", 0.0)
+		.style("opacity", 1)
 		.style("stroke", "#333")
-		.style('fill', function(flight) { return color(flight.site); })
-		.attr("cx", function(flight) { return x(flight.date); })
-		.attr("cy", function(flight) { return y(flight.minutes); })
-		.on("mouseover", tooltipMouseover)
-		.on("mouseout", tooltipMouseout)
-		.on("mousedown", flightClick);
+		.style("fill", function (flight) {
+		    return (site == undefined || flight.site == site)
+			? color(site)
+			: "#eee";
+		})
 
-	    // --------------------------------------------------
-	    // Title and axis
-	    // --------------------------------------------------
-
-	    // Title
-	    svg.append("text")
-		.attr("y", 10 - config.margin.top)
-		.attr("x", width / 2)
-		.attr("dy", "1em")
-		.style("text-anchor", "middle")
-		.style('font-size', '20px')
-		.text("Flights");
-
-	    // X-Axis
-	    svg.append('g')
-		.attr('transform', 'translate(0,' + height + ')')
-		.call(d3.axisBottom(x));
-
-	    svg.append("text")
-		.attr("transform", "translate(" + (width/2) + " ," + (height + config.margin.top) + ")")
-		.style("text-anchor", "middle")
-		.text("Date");
-
-	    // Y-Axis
-	    svg.append('g')
-		.call(d3.axisLeft(y));
-
-	    svg.append("text")
-		.attr("transform", "rotate(-90)")
-		.attr("y", 0 - config.margin.left)
-		.attr("x",0 - (height / 2))
-		.attr("dy", "1em")
-		.style("text-anchor", "middle")
-		.text("Flight time (min)");
-
-	    // --------------------------------------------------
-	    // Legend
-	    // --------------------------------------------------
-
-	    var legend = svg.selectAll('.legend')
-		.data(color.domain())
-		.enter().append('g')
-		.attr('class', 'legend')
-		.attr('transform', function(site, i) { return 'translate(0,' + i * 20 + ')'; });
-
-	    var legendOffset = 18 - config.margin.right;
-
-	    legend.append('rect')
-		.attr('x', width - legendOffset)
-		.attr('width', 18)
-		.attr('height', 18)
-		.style('fill', color);
-
-	    legend.append('text')
-		.attr('x', width - legendOffset - 6)
-		.attr('y', 9)
-		.attr('dy', '.35em')
-		.style('text-anchor', 'end')
-		.text(function(site) { return site; });
-
-	    legend.on("click", function(site) {
-		// If you click the same site again, remove the filter.
-		if (site == selectedSite) {
-		    resetLegend();
-		    return;
-		}
-
-		// Save which site is currently being filtered.
-		// This is used to toggle site filtering when the same site is
-		// clicked twice.
-		selectedSite = site;
-
-		// Dim all legend items, then un-dim the selected one.
-		d3.selectAll(".legend").style("opacity", 0.1);
-		d3.select(this).style("opacity", 1);
-
-		d3.selectAll(".dot")
-		    .transition()
-		    .duration(200)
-		    .style("opacity", 0.0)
-		    .style("opacity", 1)
-		    .style("stroke", "#333")
-		    .style("fill", function (flight) {
-			return (site == undefined || flight.site == site)
-			    ? color(site)
-			    : "#eee";
-		    })
-
-	    });
 	});
+    });
 }
