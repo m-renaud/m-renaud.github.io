@@ -9,10 +9,13 @@
   <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
+  <h1>Summary:</h1>
+  <div id="summary"></div>
   <div id="svg-container"></div>
   <div id="more-info"></div>
   <script>
-    $(document).ready(createFlightsScatterPlot);
+    $(document).ready(Chart.init);
+    window.addEventListener('resize', Chart.render);
   </script>
 </body>
 </html>
