@@ -35,6 +35,14 @@ ul, p, blockquote, dl {
     background: rgba(0,0,0,0.05);
 }
 
+code span.code-unselectable[data-text]::before {
+    content: attr(data-text);
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
 code {
   background: rgba(10,10,10,0.03);
   border-radius: 5px;
@@ -107,7 +115,7 @@ a:hover {
 }
 
 a:visited {
-  color: #779;
+    color: #228;
 }
 
 ul {
