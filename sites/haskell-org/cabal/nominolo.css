@@ -24,6 +24,20 @@ body {
   text-align: center
 }
 
+a {
+  text-decoration: none;
+  color: #44b;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #66e;
+}
+
+a:visited {
+    color: #228;
+}
+
 ul, p, blockquote, dl {
   margin-left: 1em;
 }
@@ -49,10 +63,8 @@ code {
   border: 1px solid #ccc;
   display: block;
   padding: 0.5em;
-  margin-top: 2em;
+  margin-top: 1em;
 }
-
-.package-info 
 
 blockquote {
   padding-left: 1.5em;
@@ -101,21 +113,6 @@ h2 > a, h2 > a:visited {
 
 h3 {
   font-size: 1.2em;
-}
-
-a {
-  text-decoration: none;
-  font-weight: bold;
-  color: #44b;
-}
-
-a:hover {
-  text-decoration: underline;
-  color: #66e;
-}
-
-a:visited {
-    color: #228;
 }
 
 ul {

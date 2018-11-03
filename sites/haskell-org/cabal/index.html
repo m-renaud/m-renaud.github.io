@@ -40,9 +40,31 @@
       Sometimes the older installed version is still on the program search
       <span class="inline-code">$PATH</span>, you can check you're running the latest version with:<br>
       <code>
-	<span class="code-unselectable"data-text="$ ">cabal --version
+	<span class="code-unselectable"data-text="$ ">cabal --version</span>
       </code>
     </p>
+
+    <h2>Quick Start Guide</h2>
+
+    Start by installing the <span class="inline-code">cabal</span> executable (see <a href="#install-upgrade">the previous section</a>) and the Haskell compiler <span class="inline-code">ghc</span> (see <a href="https://www.haskell.org/ghc/download_ghc_8_4_4.html">the GHC download docs</a>).
+
+    <h3>Starting a new project</h3>
+
+      <code>
+      mkdir myproject && cd myproject<br/>
+      cabal init  # Select "Library and Executable"<br/>
+      cabal v2-build<br/>
+      cabal v2-run<br/>
+      </code>
+
+      <ul>
+	<li>The <span class="inline-code">cabal init</span> command will create all the needed files to start a project correctly.</li>
+	<li>The <span class="inline-code">cabal v2-build</span> command will build the project you just initialized.
+	<li>The <span class="inline-code">cabal v2-run</span> will run the executable in the project.</li>
+      </ul>
+
+      <p>You'll notice that the build and run commands are prefixed with <span class="inline-code">v2-</span>, this is because cabal is transitioning to a <a href="https://www.haskell.org/cabal/users-guide/nix-local-build-overview.html">new build model</a> which makes a lot of things better. Eventually this will become the default, but for now you need to ask for it specifically.
+  
 
     <h2>Documentation</h2>
     <ul>
