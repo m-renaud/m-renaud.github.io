@@ -1,0 +1,123 @@
+
+body {
+  font-family: sans-serif;
+  line-height: 1.4;
+  margin: auto;
+  max-width: 55em;
+  color: rgba(0,0,0, 0.8);
+}
+
+.mainheader {
+    color: #483465;
+    padding-top: 1.5em;
+}
+
+.mainheader > a, .mainheader > a:visited {
+    color: #483465;
+}
+
+.subheading {
+    font-weight: lighter;
+}
+
+.subtitle {
+  text-align: center
+}
+
+ul, p, blockquote, dl {
+  margin-left: 1em;
+}
+
+.inline-code {
+    padding: 3px;
+    border-radius: 3px;
+    font-family: monospace;
+    background: rgba(0,0,0,0.05);
+}
+
+code {
+  background: rgba(10,10,10,0.03);
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  display: block;
+  padding: 0.5em;
+  margin-top: 2em;
+}
+
+.package-info 
+
+blockquote {
+  padding-left: 1.5em;
+  border-left: 5px solid #3f6bcf;
+}
+
+li {
+  padding: 0.25em;
+}
+
+.floatleft {
+  float: left;
+  margin-left: 0;
+}
+
+#important {
+  color: red;
+  font-size: larger;
+}
+
+.highlight {
+  background: #feb;
+  padding: 0.2em;
+}
+
+
+h1, h2, h3, h4 {
+  font-family: Georgia, serif;
+  font-weight: bold;
+  color: rgba(0,0,0,0.8);
+}
+
+h1 { 
+  font-size: 2.4em;
+}
+
+h2 {
+    padding-top: 0.5em;
+    color: #67498F;
+    font-size: 1.6em;
+}
+
+h2 > a, h2 > a:visited {
+    color: #67498F;
+}
+
+h3 {
+  font-size: 1.2em;
+}
+
+a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #44b;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #66e;
+}
+
+a:visited {
+  color: #779;
+}
+
+ul {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 1em;
+    text-indent: -1em;
+}
+
+ul li:before {
+    content: "\0BB \020";
+}
+

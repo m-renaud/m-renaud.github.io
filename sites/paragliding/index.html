@@ -7,9 +7,12 @@
   <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
   <script type="text/javascript" src="flightPlot.js"></script>
   <link rel="stylesheet" type="text/css" href="./style.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
 </head>
 <body>
-  <h1>Summary:</h1>
+  <h1>Flight Log - Matt Renaud <a href="https://ushpa.aero/m/99118">#99118</a></h1>
+  <div id="content">
+  <h2>Summary:</h2>
   <div id="summary"></div>
   <div id="svg-container"></div>
   <div id="more-info"></div>
@@ -17,5 +20,6 @@
     $(document).ready(Chart.init);
     window.addEventListener('resize', Chart.render);
   </script>
+  </div>
 </body>
 </html>

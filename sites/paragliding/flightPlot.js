@@ -367,7 +367,7 @@ var Chart = (function(window, d3) {
 	margin.right = winWidth < breakPoint ? 0 : margin.right;
 	margin.left = winWidth < breakPoint ? 0 : margin.left;
 
-	width = winWidth - margin.left - margin.right - 20;
+	width = winWidth - margin.left - margin.right - 40;
 	height = 0.4*width;
     }
 
