@@ -123,6 +123,7 @@ ul {
 }
 
 ul li:before {
+    padding-left: 1em;
     content: "\0BB \020";
 }
 
